@@ -51,6 +51,7 @@ public struct SkeletonRow: View {
         }
         .foregroundStyle(DSColor.surfaceElevated)
         .redacted(reason: .placeholder)
+        .shimmering()
     }
 }
 
