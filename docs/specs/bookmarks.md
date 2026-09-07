@@ -1,5 +1,16 @@
 # Bookmarks Feature Specs
 
+## Requirements from the brief
+
+| Brief | Requirement | Where it is covered |
+|---|---|---|
+| Task 2 | Each item on the list has a "Like" button to bookmark favourite items | Narrative #1, scenario 1. The Like button is drawn as a heart; its accessibility label is "Like" |
+| Task 2 | The bookmark is stored locally on the device | Narrative #1, scenario 1 |
+| Task 2 | It is still visible after restarting the app | Narrative #1, scenario 2 |
+
+Scenarios are tagged **Brief** when the brief asks for them and **Addition** when they are ours.
+The Saved tab, unbookmarking, and the failure cases are additions.
+
 ## Story: Customer bookmarks listings they like
 
 ### Narrative #1
@@ -10,6 +21,8 @@
 
 #### Scenarios (acceptance criteria)
 
+**Brief, Task 2.**
+
 ```
 Given a listing on the Listings tab that is not liked
  When the customer taps its heart
@@ -18,6 +31,8 @@ Given a listing on the Listings tab that is not liked
   And the listing appears on the Saved tab
 ```
 
+**Brief, Task 2.**
+
 ```
 Given a liked listing
  When the customer kills the app and launches it again
@@ -25,12 +40,16 @@ Given a liked listing
   And the listing is still on the Saved tab
 ```
 
+**Addition.** Unliking.
+
 ```
 Given a liked listing on the Listings tab
  When the customer taps its heart again
  Then the heart clears immediately
   And the listing leaves the Saved tab
 ```
+
+**Addition.** Failure handling.
 
 ```
 Given a listing whose like cannot be saved to the device
@@ -47,6 +66,8 @@ Given a listing whose like cannot be saved to the device
 
 #### Scenarios (acceptance criteria)
 
+**Addition.** The Saved tab.
+
 ```
 Given the customer has liked listings
  When the customer opens the Saved tab
@@ -54,6 +75,8 @@ Given the customer has liked listings
   And each row shows the image, the title, the price and the address as saved at like time
   And this works without connectivity
 ```
+
+**Addition.**
 
 ```
 Given the customer has no liked listings
@@ -69,12 +92,16 @@ Given the customer has no liked listings
 
 #### Scenarios (acceptance criteria)
 
+**Addition.**
+
 ```
 Given a listing on the Saved tab
  When the customer taps its heart or swipes to remove
  Then the row leaves the Saved tab immediately
   And the listing's heart on the Listings tab clears
 ```
+
+**Addition.**
 
 ```
 Given a listing on the Saved tab whose removal cannot be saved to the device

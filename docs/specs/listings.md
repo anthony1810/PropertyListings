@@ -1,5 +1,16 @@
 # Listings Feature Specs
 
+## Requirements from the brief
+
+| Brief | Requirement | Where it is covered |
+|---|---|---|
+| Task 1 | Display a list of real estate listings from `GET /properties` | Narrative #1, scenario 1 |
+| Task 1 | Each item shows the first image, the title, the price and the address | Narrative #1, scenario 1 |
+| Task 1 | Layout is free | Design brief and Figma file |
+| Remarks | Compiles and runs on iOS 18.0 with Xcode 26, SwiftUI for the UI | Project settings, CI |
+
+Scenarios are tagged **Brief** when the brief asks for them and **Addition** when they are ours.
+
 ## Story: Customer requests to see property listings
 
 ### Narrative #1
@@ -10,6 +21,8 @@
 
 #### Scenarios (acceptance criteria)
 
+**Brief, Task 1.**
+
 ```
 Given the customer has connectivity
  When the customer opens the Listings tab
@@ -18,6 +31,8 @@ Given the customer has connectivity
   And the app replaces the cache with the new listings
 ```
 
+**Addition.** The payload has listings without a price.
+
 ```
 Given the customer has connectivity
   And a listing has no price
@@ -25,12 +40,16 @@ Given the customer has connectivity
  Then that row shows "Price on request"
 ```
 
+**Addition.** The payload has listings without a street.
+
 ```
 Given the customer has connectivity
   And a listing has no street
  When the listings are displayed
  Then that row shows the postal code and locality only
 ```
+
+**Addition.** Error handling.
 
 ```
 Given the customer has connectivity
@@ -48,6 +67,8 @@ Given the customer has connectivity
 
 #### Scenarios (acceptance criteria)
 
+**Addition.** Offline support.
+
 ```
 Given the customer has no connectivity
   And there is a cached version of the listings
@@ -55,6 +76,8 @@ Given the customer has no connectivity
  When the customer opens the Listings tab
  Then the app displays the cached listings
 ```
+
+**Addition.**
 
 ```
 Given the customer has no connectivity
@@ -64,12 +87,16 @@ Given the customer has no connectivity
  Then the app shows an error state with a Retry action
 ```
 
+**Addition.**
+
 ```
 Given the customer has no connectivity
   And the cache is empty
  When the customer opens the Listings tab
  Then the app shows an error state with a Retry action
 ```
+
+**Addition.**
 
 ```
 Given the app launches
