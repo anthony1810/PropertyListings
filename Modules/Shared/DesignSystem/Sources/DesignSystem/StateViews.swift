@@ -11,11 +11,11 @@ public struct ErrorStateView: View {
 
     public var body: some View {
         ContentUnavailableView {
-            Label("Something went wrong", systemImage: "wifi.exclamationmark")
+            Label(DesignSystemStrings.errorTitle, systemImage: "wifi.exclamationmark")
         } description: {
             Text(message)
         } actions: {
-            Button("Retry", action: retry)
+            Button(DesignSystemStrings.errorRetry, action: retry)
                 .buttonStyle(.borderedProminent)
         }
     }

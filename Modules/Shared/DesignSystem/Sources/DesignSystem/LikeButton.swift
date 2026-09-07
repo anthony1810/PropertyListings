@@ -19,8 +19,8 @@ public struct LikeButton: View {
                 .contentTransition(.symbolEffect(.replace))
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Like")
-        .accessibilityValue(isOn ? "Liked" : "Not liked")
+        .accessibilityLabel(DesignSystemStrings.likeLabel)
+        .accessibilityValue(isOn ? DesignSystemStrings.likeValueOn : DesignSystemStrings.likeValueOff)
         .accessibilityAddTraits(isOn ? .isSelected : [])
         .sensoryFeedback(.impact(weight: .light), trigger: isOn)
     }
