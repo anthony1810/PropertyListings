@@ -7,6 +7,9 @@
    <Group
       location = "group:Modules"
       name = "Modules">
+      <FileRef
+         location = "group:Listings">
+      </FileRef>
       <Group
          location = "group:Shared"
          name = "Shared">
