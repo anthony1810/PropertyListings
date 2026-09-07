@@ -3,17 +3,17 @@ import Testing
 @testable import TestSupport
 
 @Suite struct FixtureCoverageTests {
-    @Test func casesAndFilesAgree() {
+    @Test func verifyFixtureCoverage_passes_whenCasesAndFilesAgree() {
         verifyFixtureCoverage(Fixture.self)
     }
 
-    @Test func reportsAFileWithNoCase() {
+    @Test func verifyFixtureCoverage_reportsAFileWithNoCase() {
         withKnownIssue {
             verifyFixtureCoverage(FixtureMissingACase.self)
         }
     }
 
-    @Test func reportsACaseWithNoFile() {
+    @Test func verifyFixtureCoverage_reportsACaseWithNoFile() {
         withKnownIssue {
             verifyFixtureCoverage(FixtureNamingAMissingFile.self)
         }

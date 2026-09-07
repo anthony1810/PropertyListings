@@ -4,12 +4,12 @@ import Testing
 
 @Suite struct TokensTests {
     @Test(arguments: ["surface", "surfaceElevated", "textPrimary", "textSecondary", "accent", "like"])
-    func colourAssetExists(name: String) {
+    func colourAsset_exists(name: String) {
         #expect(UIColor(named: name, in: .module, compatibleWith: nil) != nil, "missing colour asset \(name)")
     }
 
     @Test(arguments: ["surface", "surfaceElevated", "textPrimary", "textSecondary", "accent", "like"])
-    func colourAssetHasADistinctDarkVariant(name: String) throws {
+    func colourAsset_hasADistinctDarkVariant(name: String) throws {
         let colour = try #require(UIColor(named: name, in: .module, compatibleWith: nil))
         let light = colour.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
         let dark = colour.resolvedColor(with: UITraitCollection(userInterfaceStyle: .dark))
