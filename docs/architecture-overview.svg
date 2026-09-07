@@ -1,7 +1,7 @@
-<svg viewBox="0 0 1400 760" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<svg viewBox="0 0 1060 724" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
 <defs>
-  <marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
-    <path d="M0,0 L8,4.5 L0,9" fill="none" stroke="#8b949e" stroke-width="1.6"/>
+  <marker id="dep" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+    <path d="M0,0 L8,5 L0,10" fill="none" stroke="#8b949e" stroke-width="1.6"/>
   </marker>
 </defs>
 <style>
@@ -9,134 +9,113 @@
   .s{font-size:12.5px;font-weight:600;fill:#e6edf3}
   .d{font-size:11px;fill:#8b949e}
   .lbl{font-size:11px;fill:#8b949e}
-  .lblr{font-size:11px;fill:#f85149;font-weight:600}
 </style>
-<rect x="0" y="0" width="1400" height="760" fill="#0d1117"/>
+<rect x="0" y="0" width="1060" height="724" fill="#0d1117"/>
 
 <!-- ============ iOS APP ============ -->
-<rect x="16" y="16" width="1000" height="728" rx="12" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+<rect x="16" y="16" width="1028" height="688" rx="12" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
 <text x="36" y="46" class="t">PropertyListings · iOS 18.0 · Swift 6 · one workspace · two tabs</text>
+<text x="1024" y="46" class="lbl" text-anchor="end">dashed arrow = depends on</text>
 
 <!-- Composition root -->
-<rect x="36" y="62" width="960" height="70" rx="10" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
+<rect x="36" y="62" width="988" height="70" rx="10" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
 <text x="52" y="86" class="s" fill="#e3b341">App — Composition Root</text>
-<text x="52" y="106" class="d">the only place concretes meet: binds endpoint → HTTP client → mapper, cache decorator, local fallback, both view models, the tab bar</text>
-<text x="52" y="122" class="d">owns the only service URL · adapts one vertical's model to the other's · nothing below knows this file exists</text>
+<text x="52" y="106" class="d">the only place concretes meet: binds endpoint → HTTP client → mapper, cache decorator, local fallback, both view models</text>
+<text x="52" y="122" class="d">AppRouter owns tabs and alerts, feature views stay dumb · depends on every target below · owns the only service URL · adapts one vertical's model to the other's</text>
 
 <!-- ===== Listings vertical ===== -->
-<rect x="36" y="152" width="460" height="392" rx="10" fill="none" stroke="#30363d" stroke-dasharray="5 4"/>
-<text x="52" y="176" class="s">Listings (one package, five targets)</text>
+<rect x="76" y="152" width="420" height="338" rx="10" fill="none" stroke="#30363d" stroke-dasharray="5 4"/>
+<text x="92" y="176" class="s">Listings (one package, five targets)</text>
 
-<rect x="50" y="190" width="432" height="56" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
-<text x="62" y="212" class="s" fill="#f78166">ListingsUI</text>
-<text x="62" y="232" class="d">SwiftUI. The Listings tab: list, loading, empty and error states. Thin.</text>
+<rect x="90" y="190" width="392" height="52" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="102" y="210" class="s" fill="#f78166">ListingsUI</text>
+<text x="102" y="230" class="d">SwiftUI. The Listings tab: list, loading, empty and error states.</text>
 
-<rect x="50" y="258" width="432" height="56" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
-<text x="62" y="280" class="s" fill="#d2a8ff">ListingsPresentation</text>
-<text x="62" y="300" class="d">@Observable view model and row mapping. No SwiftUI import. Tested with spies.</text>
+<rect x="90" y="264" width="392" height="52" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
+<text x="102" y="284" class="s" fill="#d2a8ff">ListingsPresentation</text>
+<text x="102" y="304" class="d">@Observable view model and row mapping. No SwiftUI import.</text>
 
-<rect x="50" y="326" width="432" height="56" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
-<text x="62" y="348" class="s" fill="#58a6ff">ListingsFeature</text>
-<text x="62" y="368" class="d">Pure domain: models, seams, the cache policy. Foundation only.</text>
+<rect x="90" y="338" width="392" height="52" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
+<text x="102" y="358" class="s" fill="#58a6ff">ListingsFeature</text>
+<text x="102" y="378" class="d">Pure domain: models, seams, the cache policy. Foundation only.</text>
 
-<rect x="50" y="394" width="432" height="56" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
-<text x="62" y="416" class="s" fill="#3fb950">ListingsAPI</text>
-<text x="62" y="436" class="d">Endpoint and mapper only. Never sees the HTTP client.</text>
+<rect x="90" y="412" width="185" height="62" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="102" y="432" class="s" fill="#3fb950">ListingsAPI</text>
+<text x="102" y="450" class="d">Endpoint and mapper only.</text>
+<text x="102" y="465" class="d">Never sees the HTTP client.</text>
 
-<rect x="50" y="462" width="432" height="56" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
-<text x="62" y="484" class="s" fill="#3fb950">ListingsCache</text>
-<text x="62" y="504" class="d">Local loader and a JSON file store. Listings survive relaunch offline.</text>
+<rect x="297" y="412" width="185" height="62" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="309" y="432" class="s" fill="#3fb950">ListingsCache</text>
+<text x="309" y="450" class="d">Local loader and a JSON file store.</text>
+<text x="309" y="465" class="d">Listings survive relaunch offline.</text>
+
+<!-- Listings intra-column imports -->
+<line x1="286" y1="242" x2="286" y2="262" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
+<line x1="286" y1="316" x2="286" y2="336" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
+<line x1="182" y1="412" x2="182" y2="392" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
+<line x1="389" y1="412" x2="389" y2="392" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
 
 <!-- ===== Bookmarks vertical ===== -->
-<rect x="516" y="152" width="480" height="392" rx="10" fill="none" stroke="#30363d" stroke-dasharray="5 4"/>
-<text x="532" y="176" class="s">Bookmarks (one package, four targets)</text>
+<rect x="564" y="152" width="420" height="338" rx="10" fill="none" stroke="#30363d" stroke-dasharray="5 4"/>
+<text x="580" y="176" class="s">Bookmarks (one package, four targets)</text>
 
-<rect x="530" y="190" width="452" height="56" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
-<text x="542" y="212" class="s" fill="#f78166">BookmarksUI</text>
-<text x="542" y="232" class="d">SwiftUI. The Saved tab: every bookmark, unbookmark by heart or swipe.</text>
+<rect x="578" y="190" width="392" height="52" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="590" y="210" class="s" fill="#f78166">BookmarksUI</text>
+<text x="590" y="230" class="d">SwiftUI. The Saved tab: every bookmark, unbookmark by heart or swipe.</text>
 
-<rect x="530" y="258" width="452" height="56" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
-<text x="542" y="280" class="s" fill="#d2a8ff">BookmarksPresentation</text>
-<text x="542" y="300" class="d">@Observable view model over an observed stream. No SwiftUI import.</text>
+<rect x="578" y="264" width="392" height="52" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
+<text x="590" y="284" class="s" fill="#d2a8ff">BookmarksPresentation</text>
+<text x="590" y="304" class="d">@Observable view model over an observed stream. No SwiftUI import.</text>
 
-<rect x="530" y="326" width="452" height="56" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
-<text x="542" y="348" class="s" fill="#58a6ff">BookmarksFeature</text>
-<text x="542" y="368" class="d">Pure domain: the bookmark snapshot and the store seam. Knows nothing of Listings.</text>
+<rect x="578" y="338" width="392" height="52" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
+<text x="590" y="358" class="s" fill="#58a6ff">BookmarksFeature</text>
+<text x="590" y="378" class="d">Pure domain: the bookmark snapshot and the store seam.</text>
 
-<rect x="530" y="394" width="452" height="56" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
-<text x="542" y="416" class="s" fill="#3fb950">BookmarksPersistence</text>
-<text x="542" y="436" class="d">A JSON file store that replays and streams changes, so both tabs stay in sync.</text>
+<rect x="578" y="412" width="392" height="62" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="590" y="432" class="s" fill="#3fb950">BookmarksPersistence</text>
+<text x="590" y="450" class="d">A JSON file store that replays and streams changes,</text>
+<text x="590" y="465" class="d">so both tabs stay in sync.</text>
 
-<rect x="530" y="462" width="452" height="56" rx="9" fill="none" stroke="#30363d" stroke-dasharray="3 3"/>
-<text x="542" y="484" class="s" fill="#8b949e">no cache target, on purpose</text>
-<text x="542" y="504" class="d">Bookmarks has no remote. The file is the source of truth.</text>
+<!-- Bookmarks intra-column imports -->
+<line x1="774" y1="242" x2="774" y2="262" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
+<line x1="774" y1="316" x2="774" y2="336" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
+<line x1="774" y1="412" x2="774" y2="392" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
 
-<!-- no import between verticals -->
-<text x="506" y="230" class="lblr" text-anchor="middle">✕</text>
-<text x="506" y="440" class="lblr" text-anchor="middle" transform="rotate(-90 506 440)">no import between verticals</text>
+<!-- Root imports both verticals -->
+<line x1="286" y1="132" x2="286" y2="150" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
+<line x1="774" y1="132" x2="774" y2="150" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
 
 <!-- ===== Shared horizontals ===== -->
-<rect x="36" y="562" width="960" height="130" rx="10" fill="#161b22" stroke="#8b949e" stroke-width="1.6"/>
-<text x="52" y="586" class="s" fill="#8b949e">Shared horizontals: implementation only, never a domain interface; no feature knows another exists</text>
+<rect x="36" y="520" width="988" height="140" rx="10" fill="#161b22" stroke="#8b949e" stroke-width="1.6"/>
+<text x="52" y="648" class="s" fill="#8b949e">Shared horizontals: implementation only, never a domain interface; no feature knows another exists</text>
 
-<rect x="52" y="600" width="222" height="76" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="64" y="622" class="s">HTTPClient</text>
-<text x="64" y="640" class="d">one method, get(from: URL)</text>
-<text x="64" y="656" class="d">knows no endpoint, no response</text>
+<rect x="52" y="532" width="226" height="84" rx="8" fill="#0d1117" stroke="#30363d"/>
+<text x="64" y="554" class="s">HTTPClient</text>
+<text x="64" y="572" class="d">one method, get(from: URL)</text>
+<text x="64" y="588" class="d">knows no endpoint, no response</text>
+<text x="64" y="604" class="d">imported by the root only</text>
 
-<rect x="288" y="600" width="222" height="76" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="300" y="622" class="s">SharedPresentation</text>
-<text x="300" y="640" class="d">price and address formatting</text>
-<text x="300" y="656" class="d">used by both tabs</text>
+<rect x="296" y="532" width="226" height="84" rx="8" fill="#0d1117" stroke="#30363d"/>
+<text x="308" y="554" class="s">SharedPresentation</text>
+<text x="308" y="572" class="d">price and address formatting</text>
+<text x="308" y="588" class="d">used by both Presentation targets</text>
 
-<rect x="524" y="600" width="222" height="76" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="536" y="622" class="s">DesignSystem</text>
-<text x="536" y="640" class="d">tokens, card, like button, states</text>
-<text x="536" y="656" class="d">the only module importing Kingfisher</text>
+<rect x="540" y="532" width="226" height="84" rx="8" fill="#0d1117" stroke="#30363d"/>
+<text x="552" y="554" class="s">DesignSystem</text>
+<text x="552" y="572" class="d">tokens, card, like button, states</text>
+<text x="552" y="588" class="d">the only module importing Kingfisher</text>
+<text x="552" y="604" class="d">used by both UI targets</text>
 
-<rect x="760" y="600" width="222" height="76" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="772" y="622" class="s">TestSupport</text>
-<text x="772" y="640" class="d">spies, leak tracking, fixtures,</text>
-<text x="772" y="656" class="d">snapshot config · test targets only</text>
+<rect x="784" y="532" width="226" height="84" rx="8" fill="#0d1117" stroke="#30363d"/>
+<text x="796" y="554" class="s">TestSupport</text>
+<text x="796" y="572" class="d">spies, leak tracking, fixtures,</text>
+<text x="796" y="588" class="d">snapshot config</text>
+<text x="796" y="604" class="d">imported by test targets only</text>
+
+
 
 <!-- Test strip -->
-<rect x="36" y="706" width="960" height="26" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="52" y="724" class="d">Tests: unit per target · acceptance through the root · end-to-end against the real endpoint · snapshot · Maestro on iOS 18.2</text>
-
-<!-- ============ EXTERNAL ============ -->
-<rect x="1060" y="152" width="324" height="118" rx="12" fill="#161b22" stroke="#bc8cff" stroke-width="1.6"/>
-<text x="1076" y="180" class="s" fill="#bc8cff">Given endpoint (fixed)</text>
-<text x="1076" y="202" class="d">GET /properties → nine listings</text>
-<text x="1076" y="219" class="d">named once, in the composition root</text>
-<text x="1076" y="236" class="d">no auth · 120 requests a minute</text>
-
-<rect x="1060" y="300" width="324" height="100" rx="12" fill="#161b22" stroke="#bc8cff" stroke-width="1.6"/>
-<text x="1076" y="328" class="s" fill="#bc8cff">Kingfisher</text>
-<text x="1076" y="350" class="d">the only production dependency</text>
-<text x="1076" y="367" class="d">image decode, cache, downsample</text>
-<text x="1076" y="384" class="d">contained behind DesignSystem</text>
-
-<rect x="1060" y="430" width="324" height="100" rx="12" fill="#161b22" stroke="#bc8cff" stroke-width="1.6"/>
-<text x="1076" y="458" class="s" fill="#bc8cff">Point-Free test stack</text>
-<text x="1076" y="480" class="d">swift-concurrency-extras · swift-snapshot-testing</text>
-<text x="1076" y="497" class="d">swift-clocks · swift-dependencies</text>
-<text x="1076" y="514" class="d">test targets only, through TestSupport</text>
-
-<rect x="1060" y="560" width="324" height="100" rx="12" fill="#161b22" stroke="#bc8cff" stroke-width="1.6"/>
-<text x="1076" y="588" class="s" fill="#bc8cff">Figma</text>
-<text x="1076" y="610" class="d">design system and both screens,</text>
-<text x="1076" y="627" class="d">every state, light and dark</text>
-<text x="1076" y="644" class="d">tokens exported into DesignSystem</text>
-
-<!-- ============ FLOWS ============ -->
-<path d="M 996 96 C 1030 96, 1040 150, 1060 180" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#a)"/>
-<text x="1000" y="80" class="lbl">URL bound here</text>
-
-<path d="M 996 630 C 1030 630, 1020 260, 1060 220" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#a)"/>
-
-<path d="M 996 650 C 1030 650, 1030 380, 1060 350" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#a)"/>
-
-<path d="M 996 670 C 1030 670, 1030 500, 1060 480" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#a)"/>
-
-<path d="M 1060 620 C 1040 620, 1030 640, 1000 660" fill="none" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#a)"/>
+<rect x="36" y="672" width="988" height="24" rx="8" fill="#0d1117" stroke="#30363d"/>
+<text x="52" y="689" class="d">Tests: unit per target · acceptance through the root · end-to-end against the real endpoint · snapshot · Maestro on iOS 18.2</text>
+<text x="1024" y="712" class="lbl" text-anchor="end">Horizontal-within-vertical slicing, from "iOS Modular Architecture: From Monolith to Hybrid Approaches" by Anthony Tran</text>
 </svg>

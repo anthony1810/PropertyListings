@@ -49,7 +49,7 @@
 <text x="52" y="122" class="d">loadAndCacheRemoteListings = the cache DECORATOR (load, then try? local.save) · loadRemoteListingsWithLocalFallback = the fallback COMPOSITE</text>
 <text x="52" y="138" class="d">covered by ListingsAcceptanceTests: HTTPClientStub.online / .offline + InMemoryListingsStore + InMemoryBookmarkStore, through the real view models</text>
 <text x="52" y="154" class="d">adapts Listing ↔ Bookmark (Dependency Rejection: neither vertical knows the other's type) · owns the ONLY host name (ServiceURLs)</text>
-<text x="52" y="170" class="d">TabView { ListingsView · BookmarksView } · view models receive closures and AsyncStreams, never a host, a URL or a store</text>
+<text x="52" y="170" class="d">AppRouter (@Observable): selectedTab · alert route · RootView binds it · feature views stay dumb · view models receive closures, never a host, a URL or a store</text>
 
 <!-- ===== Listings vertical ===== -->
 <rect x="36" y="206" width="460" height="642" rx="10" fill="none" stroke="#30363d" stroke-dasharray="5 4"/>
@@ -226,6 +226,7 @@
 <path d="M 1140 870 C 1100 870, 1060 930, 1000 960" fill="none" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#a)"/>
 <text x="1078" y="940" class="lbl" text-anchor="middle">tokens</text>
 </svg>
+
 
 
 </div>
