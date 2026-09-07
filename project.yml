@@ -1,0 +1,36 @@
+name: PropertyListings
+options:
+  bundleIdPrefix: com.anthony
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "26.3"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    IPHONEOS_DEPLOYMENT_TARGET: "18.0"
+    CODE_SIGN_STYLE: Automatic
+targets:
+  PropertyListings:
+    type: application
+    platform: iOS
+    sources: [PropertyListings]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.anthony.propertylistings
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    info:
+      path: PropertyListings/Info.plist
+      properties:
+        CFBundleDisplayName: PropertyListings
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+schemes:
+  PropertyListings:
+    build:
+      targets:
+        PropertyListings: all
+    run:
+      config: Debug
