@@ -9,6 +9,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "SharedPresentation"),
+        .testTarget(name: "SharedPresentationTests", dependencies: ["SharedPresentation"]),
     ],
     swiftLanguageModes: [.v6]
 )
