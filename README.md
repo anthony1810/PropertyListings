@@ -61,6 +61,7 @@ PropertyListings.xcworkspace
 ```
 
 Feature specs: [Listings](docs/specs/listings.md), [Bookmarks](docs/specs/bookmarks.md).
+Design: [Figma file](https://www.figma.com/design/mGYnBSubQuhnIJkenp8aMC) and [docs/design/design-system.md](docs/design/design-system.md), tokens mapped to code.
 The detailed diagram with every type: [docs/architecture.html](docs/architecture.html).
 
 ## Status
