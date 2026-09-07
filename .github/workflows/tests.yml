@@ -1,0 +1,35 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+
+jobs:
+  packages:
+    runs-on: macos-26
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - Modules/Shared/TestSupport
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test --package-path ${{ matrix.package }}
+
+  app:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - run: Scripts/architecture-guard.sh
+      - run: |
+          set -o pipefail
+          xcodebuild build \
+            -workspace PropertyListings.xcworkspace \
+            -scheme PropertyListings \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+          | xcbeautify
