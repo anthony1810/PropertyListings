@@ -8,7 +8,7 @@
 A SwiftUI app that lists real estate from a REST endpoint and lets you bookmark listings on the device.
 Two tabs: Listings and Saved. iOS 18.0, Xcode 26, Swift 6.
 
-> Work in progress. Features land on `main` through one branch and one pull request each. See the status table.
+> Work in progress. `main` is protected: changes arrive only through a pull request, and the `all-green` check must pass first. Each feature is one branch and one pull request. See the status table.
 
 ## Architecture
 
