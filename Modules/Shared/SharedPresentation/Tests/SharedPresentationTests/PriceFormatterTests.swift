@@ -33,6 +33,6 @@ import Testing
     // MARK: - Helpers
 
     private func chf(_ number: String) -> String {
-        "CHF\u{00A0}" + number.replacingOccurrences(of: "'", with: "\u{2019}")
+        "CHF\u{00A0}" + number.replacingOccurrences(of: "'", with: deCH.groupingSeparator ?? "'")
     }
 }

@@ -67,7 +67,7 @@ The detailed diagram with every type: [docs/architecture.html](docs/architecture
 
 | Feature | Branch | State |
 |---|---|---|
-| Skeleton, shared modules, CI | `main` | in progress |
+| Skeleton, shared modules, CI | `main` | done |
 | Listings | `feature/listings` | planned |
 | Bookmarks and the Saved tab | `feature/bookmarks` | planned |
 
@@ -86,14 +86,23 @@ simulator works for the app itself; iPhone 17 is the one the snapshot tests are 
 
 ## Run the tests
 
-Package tests run on the Mac with no simulator:
+Packages without user-facing text run on the Mac with no simulator:
 
 ```bash
 swift test --package-path Modules/Shared/TestSupport
+swift test --package-path Modules/Shared/HTTPClient
 Scripts/architecture-guard.sh
 ```
 
-The app test plan runs on the simulator. Use **iPhone 17, iOS 26** so the snapshot tests compare against the
+Packages with string catalogs or locale formatting run on the simulator, because only Xcode compiles the
+catalogs and iOS is the platform whose formatting the tests assert:
+
+```bash
+xcodebuild test -scheme SharedPresentation-Package -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.3'
+xcodebuild test -scheme DesignSystem-Package -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.3'
+```
+
+Run those two from inside `Modules/Shared/<Package>`. The app test plan also runs on the simulator. Use **iPhone 17, iOS 26** so the snapshot tests compare against the
 recorded images; a different device or OS renders differently and fails the comparison:
 
 ```bash

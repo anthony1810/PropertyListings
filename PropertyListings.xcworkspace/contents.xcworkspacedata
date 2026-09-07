@@ -27,4 +27,10 @@
    <FileRef
       location = "group:docs">
    </FileRef>
+   <FileRef
+      location = "group:Scripts">
+   </FileRef>
+   <FileRef
+      location = "group:.github">
+   </FileRef>
 </Workspace>
