@@ -11,6 +11,9 @@
          location = "group:Shared"
          name = "Shared">
          <FileRef
+            location = "group:DesignSystem">
+         </FileRef>
+         <FileRef
             location = "group:HTTPClient">
          </FileRef>
          <FileRef
