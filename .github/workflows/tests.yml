@@ -8,7 +8,7 @@ on:
 
 env:
   DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
-  SIMULATOR: platform=iOS Simulator,name=iPhone 17,OS=latest
+  SIMULATOR: platform=iOS Simulator,name=iPhone 17
 
 jobs:
   host-packages:
@@ -31,6 +31,8 @@ jobs:
         package: [SharedPresentation, DesignSystem]
     steps:
       - uses: actions/checkout@v5
+      - name: Wait for CoreSimulator to list devices
+        run: xcrun simctl list devices available | grep -q "iPhone 17"
       - run: |
           set -o pipefail
           xcodebuild test \
