@@ -1,7 +1,9 @@
 import Foundation
 
 public enum PriceFormatter {
-    public static let onRequest = "Price on request"
+    public static var onRequest: String {
+        String(localized: "price.onRequest", bundle: .module)
+    }
 
     public static func text(amount: Decimal?, currency: String?, locale: Locale) -> String {
         guard let amount, let currency else { return onRequest }
@@ -11,6 +13,10 @@ public enum PriceFormatter {
                 .precision(.fractionLength(amount.isWhole ? 0 : 2))
         )
     }
+}
+
+public enum SharedPresentationResources {
+    public static let bundle = Bundle.module
 }
 
 private extension Decimal {

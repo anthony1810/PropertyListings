@@ -23,16 +23,16 @@ import Testing
     }
 
     @Test func text_fallsBackToOnRequestWithoutAmount() {
-        #expect(PriceFormatter.text(amount: nil, currency: "CHF", locale: deCH) == "Price on request")
+        #expect(PriceFormatter.text(amount: nil, currency: "CHF", locale: deCH) == PriceFormatter.onRequest)
     }
 
     @Test func text_fallsBackToOnRequestWithoutCurrency() {
-        #expect(PriceFormatter.text(amount: 100, currency: nil, locale: deCH) == "Price on request")
+        #expect(PriceFormatter.text(amount: 100, currency: nil, locale: deCH) == PriceFormatter.onRequest)
     }
 
     // MARK: - Helpers
 
     private func chf(_ number: String) -> String {
-        "CHF\u{00A0}\(number)"
+        "CHF\u{00A0}" + number.replacingOccurrences(of: "'", with: "\u{2019}")
     }
 }
