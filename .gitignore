@@ -1,0 +1,30 @@
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+.swiftpm/
+.build/
+Packages/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+timeline.xctimeline
+playground.xcworkspace
+
+# macOS
+.DS_Store
+
+# Assistant / planning artifacts (never committed)
+plans/
+*plan*.md
+CLAUDE.md
+.claude/
+.mcp.json
+
+# The workspace is the deliverable; the global gitignore on this machine would drop it
+!PropertyListings.xcworkspace/contents.xcworkspacedata
