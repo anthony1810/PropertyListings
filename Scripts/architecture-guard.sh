@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 fail=0
-say() { echo "guard: $1"; fail=1; }
+say() { echo "error: guard: $1"; fail=1; }
 sources() { grep -rlE "$1" "${@:2}" --include='*.swift' --exclude-dir=.build 2>/dev/null | grep -v '/Tests/' || true; }
 
 # 1. SwiftUI and UIKit only in the UI targets and the app

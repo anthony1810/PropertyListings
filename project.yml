@@ -28,6 +28,11 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.anthony.propertylistings
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+    preBuildScripts:
+      - name: Architecture guard
+        script: '"$SRCROOT/Scripts/architecture-guard.sh"'
+        basedOnDependencyAnalysis: false
     info:
       path: PropertyListings/Info.plist
       properties:
