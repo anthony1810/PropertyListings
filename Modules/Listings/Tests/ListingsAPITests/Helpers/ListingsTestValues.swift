@@ -1,8 +1,9 @@
 import Foundation
 import ListingsFeature
+import ListingsTestSupport
 import TestSupport
 
-func makeListing(
+func makeRemoteListing(
     id: String = "1",
     title: String = "A title",
     price: Decimal? = 100,
@@ -21,11 +22,13 @@ func makeListing(
     } else {
         nil
     }
-    let model = Listing(
+    let model = makeListing(
         id: id,
         title: title,
         price: expectedPrice,
-        address: Address(street: street, postalCode: postalCode, locality: locality),
+        street: street,
+        postalCode: postalCode,
+        locality: locality,
         imageURL: imageURL
     )
     let address: [String: String?] = ["street": street, "postalCode": postalCode, "locality": locality]

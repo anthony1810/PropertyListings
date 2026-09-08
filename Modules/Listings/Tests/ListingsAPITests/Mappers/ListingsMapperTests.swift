@@ -25,8 +25,8 @@ import TestSupport
     }
 
     @Test func map_deliversItemsOn200WithItems() throws {
-        let house = makeListing(id: "1", title: "Haus", street: "Musterstrasse 999")
-        let flat = makeListing(id: "2", title: "Maison", street: nil, postalCode: nil)
+        let house = makeRemoteListing(id: "1", title: "Haus", street: "Musterstrasse 999")
+        let flat = makeRemoteListing(id: "2", title: "Maison", street: nil, postalCode: nil)
 
         let result = try ListingsMapper.map(makeItemsJSON([house.json, flat.json]), from: anyHTTPURLResponse())
 
@@ -34,7 +34,7 @@ import TestSupport
     }
 
     @Test func map_readsTheTitleUnderThePrimaryLanguageKey() throws {
-        let french = makeListing(title: "Maison moderne", primaryLanguage: "fr")
+        let french = makeRemoteListing(title: "Maison moderne", primaryLanguage: "fr")
 
         let result = try ListingsMapper.map(makeItemsJSON([french.json]), from: anyHTTPURLResponse())
 
@@ -42,7 +42,7 @@ import TestSupport
     }
 
     @Test func map_fallsBackToAnyLanguageWhenThePrimaryBlockIsMissing() throws {
-        let onlyGerman = makeListing(
+        let onlyGerman = makeRemoteListing(
             title: "Haus",
             primaryLanguage: "fr",
             attachments: [],
@@ -55,7 +55,7 @@ import TestSupport
     }
 
     @Test func map_picksTheFirstImageAttachmentSkippingDocuments() throws {
-        let item = makeListing(attachments: [
+        let item = makeRemoteListing(attachments: [
             ("DOCUMENT", "https://img.example/brochure.pdf"),
             ("IMAGE", "https://img.example/first.jpg"),
             ("IMAGE", "https://img.example/second.jpg"),
@@ -68,7 +68,7 @@ import TestSupport
     }
 
     @Test func map_deliversNoImageURLWhenThereIsNoImageAttachment() throws {
-        let item = makeListing(attachments: [("DOCUMENT", "https://img.example/brochure.pdf")])
+        let item = makeRemoteListing(attachments: [("DOCUMENT", "https://img.example/brochure.pdf")])
 
         let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
 
@@ -77,7 +77,7 @@ import TestSupport
     }
 
     @Test func map_deliversNoImageURLWhenThereAreNoAttachments() throws {
-        let item = makeListing(attachments: [])
+        let item = makeRemoteListing(attachments: [])
 
         let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
 
@@ -85,7 +85,7 @@ import TestSupport
     }
 
     @Test func map_readsTheBuyPriceWithItsCurrency() throws {
-        let house = makeListing(price: 9_999_999, priceKind: "buy", currency: "CHF")
+        let house = makeRemoteListing(price: 9_999_999, priceKind: "buy", currency: "CHF")
 
         let result = try ListingsMapper.map(makeItemsJSON([house.json]), from: anyHTTPURLResponse())
 
@@ -94,7 +94,7 @@ import TestSupport
     }
 
     @Test func map_readsTheRentPriceWhenThereIsNoBuyPrice() throws {
-        let flat = makeListing(price: 1_250, priceKind: "rent", currency: "CHF")
+        let flat = makeRemoteListing(price: 1_250, priceKind: "rent", currency: "CHF")
 
         let result = try ListingsMapper.map(makeItemsJSON([flat.json]), from: anyHTTPURLResponse())
 
@@ -102,7 +102,7 @@ import TestSupport
     }
 
     @Test func map_deliversNoPriceWhenThePriceBlockIsEmpty() throws {
-        let item = makeListing(price: nil)
+        let item = makeRemoteListing(price: nil)
 
         let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
 
@@ -111,7 +111,7 @@ import TestSupport
     }
 
     @Test func map_deliversNoPriceWhenThereIsNoCurrency() throws {
-        let item = makeListing(price: 100, currency: nil)
+        let item = makeRemoteListing(price: 100, currency: nil)
 
         let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
 
@@ -120,7 +120,7 @@ import TestSupport
     }
 
     @Test func map_decodesTheFifteenDigitPriceExactly() throws {
-        let item = makeListing(price: Decimal(string: "999999999999999")!)
+        let item = makeRemoteListing(price: Decimal(string: "999999999999999")!)
 
         let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
 
@@ -148,7 +148,7 @@ import TestSupport
     }
 
     @Test func map_throwsWhenAnItemHasNoTitle() {
-        let untitled = makeListing(languageBlocks: ["de": ["text": [:]]])
+        let untitled = makeRemoteListing(languageBlocks: ["de": ["text": [:]]])
 
         #expect(throws: ListingsMapper.Error.invalidData) {
             try ListingsMapper.map(makeItemsJSON([untitled.json]), from: anyHTTPURLResponse())

@@ -44,7 +44,7 @@ import TestSupport
         let now = Date()
         let nonExpired = now.minusCacheMaxAge().adding(seconds: 1)
         let (sut, store) = makeSUT(currentDate: now)
-        let listings = [makeListing(id: "a"), makeListing(id: "b", price: nil)]
+        let listings = [makeListingPair(id: "a"), makeListingPair(id: "b", price: nil)]
         store.completeRetrieval(with: CachedListings(listings: listings.map(\.local), timestamp: nonExpired))
 
         let result = try await sut.load()
@@ -69,7 +69,7 @@ import TestSupport
     @Test func save_requestsDeletionThenInsertionOfMappedListingsWithTimestamp() async throws {
         let now = Date()
         let (sut, store) = makeSUT(currentDate: now)
-        let listings = [makeListing(id: "a"), makeListing(id: "b", price: nil)]
+        let listings = [makeListingPair(id: "a"), makeListingPair(id: "b", price: nil)]
 
         try await sut.save(listings.map(\.model))
 
@@ -80,7 +80,7 @@ import TestSupport
         let (sut, store) = makeSUT()
         store.completeDeletion(with: anyNSError())
 
-        _ = try? await sut.save([makeListing().model])
+        _ = try? await sut.save([makeListingPair().model])
 
         #expect(store.receivedMessages == [.deleteCachedListings])
     }
@@ -90,7 +90,7 @@ import TestSupport
         store.completeDeletion(with: anyNSError())
 
         await #expect(throws: Error.self) {
-            try await sut.save([makeListing().model])
+            try await sut.save([makeListingPair().model])
         }
     }
 
@@ -99,7 +99,7 @@ import TestSupport
         store.completeInsertion(with: anyNSError())
 
         await #expect(throws: Error.self) {
-            try await sut.save([makeListing().model])
+            try await sut.save([makeListingPair().model])
         }
     }
 

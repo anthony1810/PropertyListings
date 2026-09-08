@@ -1,32 +1,26 @@
 import Foundation
 import ListingsCache
 import ListingsFeature
+import ListingsTestSupport
 
-func makeListing(
+func makeListingPair(
     id: String = "any",
     price: Price? = Price(amount: 1_000, currency: "CHF")
 ) -> (model: Listing, local: LocalListing) {
-    let imageURL = URL(string: "https://a-url.com/\(id).jpg")
-    let model = Listing(
-        id: id,
-        title: "A title",
-        price: price,
-        address: Address(street: "A street", postalCode: "8000", locality: "A locality"),
-        imageURL: imageURL
-    )
+    let model = makeListing(id: id, price: price)
     let local = LocalListing(
-        id: id,
-        title: "A title",
-        priceAmount: price?.amount,
-        priceCurrency: price?.currency,
-        street: "A street",
-        postalCode: "8000",
-        locality: "A locality",
-        imageURL: imageURL
+        id: model.id,
+        title: model.title,
+        priceAmount: model.price?.amount,
+        priceCurrency: model.price?.currency,
+        street: model.address.street,
+        postalCode: model.address.postalCode,
+        locality: model.address.locality,
+        imageURL: model.imageURL
     )
     return (model, local)
 }
 
 func makeLocalListing(id: String = "any") -> LocalListing {
-    makeListing(id: id).local
+    makeListingPair(id: id).local
 }
