@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [SharedPresentation, DesignSystem]
+        package: [Shared/SharedPresentation, Shared/DesignSystem, Listings]
     steps:
       - uses: actions/checkout@v5
       - name: Wait for CoreSimulator to list devices
@@ -36,11 +36,11 @@ jobs:
       - run: |
           set -o pipefail
           xcodebuild test \
-            -scheme ${{ matrix.package }}-Package \
+            -scheme $(basename ${{ matrix.package }})-Package \
             -destination "$SIMULATOR" \
             -skipPackagePluginValidation \
           | xcbeautify
-        working-directory: Modules/Shared/${{ matrix.package }}
+        working-directory: Modules/${{ matrix.package }}
 
   app:
     runs-on: macos-26
