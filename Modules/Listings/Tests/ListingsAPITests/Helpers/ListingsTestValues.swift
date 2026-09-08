@@ -9,18 +9,24 @@ func makeListing(
     postalCode: String? = "8000",
     locality: String = "Zürich",
     primaryLanguage: String = "de",
+    attachments: [(type: String, url: String)] = [("IMAGE", "https://img.example/1.jpg")],
     languageBlocks: [String: [String: Any]]? = nil
 ) -> (model: Listing, json: [String: Any]) {
+    let imageURL = attachments.first { $0.type == "IMAGE" }.flatMap { URL(string: $0.url) }
     let model = Listing(
         id: id,
         title: title,
         price: nil,
         address: Address(street: street, postalCode: postalCode, locality: locality),
-        imageURL: nil
+        imageURL: imageURL
     )
     let address: [String: String?] = ["street": street, "postalCode": postalCode, "locality": locality]
     var localization: [String: Any] = ["primary": primaryLanguage]
-    for (language, block) in languageBlocks ?? [primaryLanguage: ["text": ["title": title]]] {
+    let defaultBlock: [String: Any] = [
+        "text": ["title": title],
+        "attachments": attachments.map { ["type": $0.type, "url": $0.url] },
+    ]
+    for (language, block) in languageBlocks ?? [primaryLanguage: defaultBlock] {
         localization[language] = block
     }
     let json: [String: Any] = [

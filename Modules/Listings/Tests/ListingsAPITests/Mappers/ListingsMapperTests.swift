@@ -45,12 +45,43 @@ import TestSupport
         let onlyGerman = makeListing(
             title: "Haus",
             primaryLanguage: "fr",
+            attachments: [],
             languageBlocks: ["de": ["text": ["title": "Haus"]]]
         )
 
         let result = try ListingsMapper.map(makeItemsJSON([onlyGerman.json]), from: anyHTTPURLResponse())
 
         #expect(result == [onlyGerman.model])
+    }
+
+    @Test func map_picksTheFirstImageAttachmentSkippingDocuments() throws {
+        let item = makeListing(attachments: [
+            ("DOCUMENT", "https://img.example/brochure.pdf"),
+            ("IMAGE", "https://img.example/first.jpg"),
+            ("IMAGE", "https://img.example/second.jpg"),
+        ])
+
+        let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
+
+        #expect(result == [item.model])
+        #expect(result.first?.imageURL == URL(string: "https://img.example/first.jpg"))
+    }
+
+    @Test func map_deliversNoImageURLWhenThereIsNoImageAttachment() throws {
+        let item = makeListing(attachments: [("DOCUMENT", "https://img.example/brochure.pdf")])
+
+        let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
+
+        #expect(result == [item.model])
+        #expect(result.first?.imageURL == nil)
+    }
+
+    @Test func map_deliversNoImageURLWhenThereAreNoAttachments() throws {
+        let item = makeListing(attachments: [])
+
+        let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
+
+        #expect(result == [item.model])
     }
 
     @Test func map_throwsWhenAnItemHasNoTitle() {

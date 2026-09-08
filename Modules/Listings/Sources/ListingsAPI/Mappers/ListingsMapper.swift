@@ -27,7 +27,7 @@ private extension ListingsMapper {
             title: title,
             price: nil,
             address: address(from: item.listing.address),
-            imageURL: nil
+            imageURL: imageURL(from: content?.attachments)
         )
     }
 
@@ -37,6 +37,13 @@ private extension ListingsMapper {
             postalCode: remote.postalCode,
             locality: remote.locality
         )
+    }
+
+    static func imageURL(from attachments: [RemoteAttachment]?) -> URL? {
+        attachments?
+            .first(where: \.isImage)
+            .flatMap(\.url)
+            .flatMap(URL.init(string:))
     }
 }
 
@@ -84,7 +91,17 @@ private extension ListingsMapper {
     }
 
     struct RemoteContent: Decodable {
+        let attachments: [RemoteAttachment]?
         let text: RemoteText?
+    }
+
+    struct RemoteAttachment: Decodable {
+        static let imageType = "IMAGE"
+
+        let type: String
+        let url: String?
+
+        var isImage: Bool { type == Self.imageType }
     }
 
     struct RemoteText: Decodable {
