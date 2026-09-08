@@ -22,6 +22,7 @@
 		90E021C576B36A78ECA96AFE /* ListingsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 0CE768B798ADBC571C77B0E1 /* ListingsFeature */; };
 		A3D9DA4BB1B85F9BA7174042 /* HTTPClient in Frameworks */ = {isa = PBXBuildFile; productRef = BD54B0390B38B1F7EBB6F7C0 /* HTTPClient */; };
 		A756C1106BAE270DFD73F280 /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 8E41188FA089F1A4E0A1731E /* ListingsAPI */; };
+		C3F0E5065866A7C2E98BF491 /* ServiceURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED1BA1F415AAC6FD6E88B51 /* ServiceURLs.swift */; };
 		C4D2C8192580EEE8BD7D8DDF /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF30EF5C3659003BB41469A /* AppRouter.swift */; };
 		CDFDACE11597A94BDE61CDF3 /* ListingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6E8775681EF4E11EF330 /* ListingsService.swift */; };
 		D016FECFBEC067B202A4D742 /* TestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 2DF054391E72E4715CE599E0 /* TestSupport */; };
@@ -49,6 +50,7 @@
 		4A0D2A33110AEB4CFEC44F54 /* PropertyListings.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PropertyListings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BF30EF5C3659003BB41469A /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		7D4B6E8775681EF4E11EF330 /* ListingsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsService.swift; sourceTree = "<group>"; };
+		7ED1BA1F415AAC6FD6E88B51 /* ServiceURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceURLs.swift; sourceTree = "<group>"; };
 		82070D5A912A1DAC3FE34668 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		8B6AD647C68A0F9259BB5E31 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F2F24AD3B93BE0C62F1CFE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				9F2F24AD3B93BE0C62F1CFE4 /* Info.plist */,
 				191461208EF00FD0D076FAD4 /* PropertyListingsApp.swift */,
 				11C1F8FE242BC06E39B1AA40 /* Composition */,
+				B4C3B9987DF902CA1E3C3B8D /* Configuration */,
 				FFB9626281DA71E06D0CF6A6 /* Resources */,
 			);
 			path = PropertyListings;
@@ -155,6 +158,14 @@
 				360A3C7B3D9B257DF72A9238 /* PropertyListingsTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B4C3B9987DF902CA1E3C3B8D /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				7ED1BA1F415AAC6FD6E88B51 /* ServiceURLs.swift */,
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		DF2ECE2C084856B0BF64CFC5 /* Helpers */ = {
@@ -353,6 +364,7 @@
 				C4D2C8192580EEE8BD7D8DDF /* AppRouter.swift in Sources */,
 				CDFDACE11597A94BDE61CDF3 /* ListingsService.swift in Sources */,
 				14FE093BD8720ED0CFE3864A /* PropertyListingsApp.swift in Sources */,
+				C3F0E5065866A7C2E98BF491 /* ServiceURLs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
