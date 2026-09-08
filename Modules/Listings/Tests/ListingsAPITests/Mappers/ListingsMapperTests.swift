@@ -84,6 +84,49 @@ import TestSupport
         #expect(result == [item.model])
     }
 
+    @Test func map_readsTheBuyPriceWithItsCurrency() throws {
+        let house = makeListing(price: 9_999_999, priceKind: "buy", currency: "CHF")
+
+        let result = try ListingsMapper.map(makeItemsJSON([house.json]), from: anyHTTPURLResponse())
+
+        #expect(result == [house.model])
+        #expect(result.first?.price == Price(amount: 9_999_999, currency: "CHF"))
+    }
+
+    @Test func map_readsTheRentPriceWhenThereIsNoBuyPrice() throws {
+        let flat = makeListing(price: 1_250, priceKind: "rent", currency: "CHF")
+
+        let result = try ListingsMapper.map(makeItemsJSON([flat.json]), from: anyHTTPURLResponse())
+
+        #expect(result == [flat.model])
+    }
+
+    @Test func map_deliversNoPriceWhenThePriceBlockIsEmpty() throws {
+        let item = makeListing(price: nil)
+
+        let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
+
+        #expect(result == [item.model])
+        #expect(result.first?.price == nil)
+    }
+
+    @Test func map_deliversNoPriceWhenThereIsNoCurrency() throws {
+        let item = makeListing(price: 100, currency: nil)
+
+        let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
+
+        #expect(result == [item.model])
+        #expect(result.first?.price == nil)
+    }
+
+    @Test func map_decodesTheFifteenDigitPriceExactly() throws {
+        let item = makeListing(price: Decimal(string: "999999999999999")!)
+
+        let result = try ListingsMapper.map(makeItemsJSON([item.json]), from: anyHTTPURLResponse())
+
+        #expect(result.first?.price?.amount == Decimal(string: "999999999999999"))
+    }
+
     @Test func map_throwsWhenAnItemHasNoTitle() {
         let untitled = makeListing(languageBlocks: ["de": ["text": [:]]])
 

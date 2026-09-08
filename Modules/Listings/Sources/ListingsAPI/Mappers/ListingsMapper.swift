@@ -25,10 +25,18 @@ private extension ListingsMapper {
         return Listing(
             id: item.id,
             title: title,
-            price: nil,
+            price: price(from: item.listing.prices),
             address: address(from: item.listing.address),
             imageURL: imageURL(from: content?.attachments)
         )
+    }
+
+    static func price(from remote: RemotePrices?) -> Price? {
+        guard let remote,
+              let currency = remote.currency,
+              let amount = remote.buy?.price ?? remote.rent?.price
+        else { return nil }
+        return Price(amount: amount, currency: currency)
     }
 
     static func address(from remote: RemoteAddress) -> Address {
@@ -60,8 +68,19 @@ private extension ListingsMapper {
     }
 
     struct RemoteListing: Decodable {
+        let prices: RemotePrices?
         let address: RemoteAddress
         let localization: RemoteLocalization
+    }
+
+    struct RemotePrices: Decodable {
+        let currency: String?
+        let buy: RemotePrice?
+        let rent: RemotePrice?
+    }
+
+    struct RemotePrice: Decodable {
+        let price: Decimal?
     }
 
     struct RemoteAddress: Decodable {
