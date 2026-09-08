@@ -15,12 +15,16 @@ public final class ListingsViewModel {
         }
     }
 
+    public static let toggleDebounce: Duration = .milliseconds(300)
+
     public private(set) var rows: [ListingRow] = []
     public private(set) var isLoading = false
     public private(set) var loadFailureMessage: String?
 
     private var listings: [Listing] = []
     private var bookmarkedIDs: Set<Listing.ID> = []
+    private var pendingToggles: [Listing.ID: Task<Void, Never>] = [:]
+    private var toggleBaselines: [Listing.ID: Bool] = [:]
 
     private let loadListings: @Sendable () async throws -> [Listing]
     private let observeBookmarkedIDs: @Sendable () -> any AsyncSequence<Set<Listing.ID>, Never>
@@ -28,6 +32,7 @@ public final class ListingsViewModel {
     private let removeBookmark: @Sendable (Listing.ID) async throws -> Void
     private let notify: @MainActor (String) -> Void
     private let locale: Locale
+    private let clock: any Clock<Duration>
 
     public init(
         loadListings: @Sendable @escaping () async throws -> [Listing],
@@ -35,7 +40,8 @@ public final class ListingsViewModel {
         saveBookmark: @Sendable @escaping (Listing) async throws -> Void,
         removeBookmark: @Sendable @escaping (Listing.ID) async throws -> Void,
         notify: @MainActor @escaping (String) -> Void,
-        locale: Locale
+        locale: Locale,
+        clock: any Clock<Duration>
     ) {
         self.loadListings = loadListings
         self.observeBookmarkedIDs = observeBookmarkedIDs
@@ -43,25 +49,21 @@ public final class ListingsViewModel {
         self.removeBookmark = removeBookmark
         self.notify = notify
         self.locale = locale
+        self.clock = clock
     }
 
-    public func toggleBookmark(id: Listing.ID) async {
+    public func toggleBookmark(id: Listing.ID) {
         guard let listing = listings.first(where: { $0.id == id }) else { return }
-        let previous = bookmarkedIDs
-        let wasBookmarked = previous.contains(id)
+        if toggleBaselines[id] == nil {
+            toggleBaselines[id] = bookmarkedIDs.contains(id)
+        }
         bookmarkedIDs.formSymmetricDifference([id])
         rebuildRows()
 
-        do {
-            if wasBookmarked {
-                try await removeBookmark(id)
-            } else {
-                try await saveBookmark(listing)
-            }
-        } catch {
-            bookmarkedIDs = previous
-            rebuildRows()
-            notify(Message.bookmarkNotSaved)
+        pendingToggles[id]?.cancel()
+        pendingToggles[id] = Task { [weak self, clock] in
+            guard (try? await clock.sleep(for: Self.toggleDebounce)) != nil else { return }
+            await self?.persistBookmark(for: listing)
         }
     }
 
@@ -85,6 +87,34 @@ public final class ListingsViewModel {
             } else {
                 notify(Message.listingsFailed)
             }
+        }
+    }
+}
+
+// MARK: - Bookmark persistence
+
+private extension ListingsViewModel {
+    func persistBookmark(for listing: Listing) async {
+        let id = listing.id
+        pendingToggles[id] = nil
+        guard let baseline = toggleBaselines.removeValue(forKey: id) else { return }
+        let isBookmarked = bookmarkedIDs.contains(id)
+        guard isBookmarked != baseline else { return }
+
+        do {
+            if isBookmarked {
+                try await saveBookmark(listing)
+            } else {
+                try await removeBookmark(id)
+            }
+        } catch {
+            if baseline {
+                bookmarkedIDs.insert(id)
+            } else {
+                bookmarkedIDs.remove(id)
+            }
+            rebuildRows()
+            notify(Message.bookmarkNotSaved)
         }
     }
 }

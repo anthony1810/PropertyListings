@@ -8,7 +8,7 @@ import TestSupport
 @MainActor
 @Suite final class ListingsViewModelTests {
     @Test func init_doesNotLoadAnything() {
-        let (sut, spy) = makeSUT()
+        let (sut, spy, _) = makeSUT()
 
         #expect(spy.receivedMessages == [])
         #expect(sut.rows == [])
@@ -19,7 +19,7 @@ import TestSupport
     // MARK: - Load
 
     @Test func load_deliversMappedRowsWithoutBookmarks() async {
-        let (sut, spy) = makeSUT()
+        let (sut, spy, _) = makeSUT()
         let house = makeListing(id: "a", price: Price(amount: 9_999_999, currency: "CHF"))
         let flat = makeListing(id: "b", price: nil)
         spy.completeListings(with: .success([house, flat]))
@@ -34,7 +34,7 @@ import TestSupport
     }
 
     @Test func load_isLoadingWhileTheLoaderRuns() async {
-        let (sut, spy) = makeSUT()
+        let (sut, spy, _) = makeSUT()
         let observed = LockIsolated<Bool?>(nil)
         spy.onNextLoadListings {
             let isLoading = sut.isLoading
@@ -49,7 +49,7 @@ import TestSupport
     }
 
     @Test func load_showsTheBlockingFailureWhenThereAreNoRowsYet() async {
-        let (sut, spy) = makeSUT()
+        let (sut, spy, _) = makeSUT()
         spy.completeListings(with: .failure(anyNSError()))
 
         await sut.load()
@@ -60,7 +60,7 @@ import TestSupport
     }
 
     @Test func load_keepsPreviousRowsAndNotifiesWhenARefreshFails() async {
-        let (sut, spy) = makeSUT()
+        let (sut, spy, _) = makeSUT()
         spy.completeListings(with: .success([makeListing(id: "a")]))
         await sut.load()
         let previousRows = sut.rows
@@ -74,7 +74,7 @@ import TestSupport
     }
 
     @Test func load_clearsTheBlockingFailureOnSuccess() async {
-        let (sut, spy) = makeSUT()
+        let (sut, spy, _) = makeSUT()
         spy.completeListings(with: .failure(anyNSError()))
         await sut.load()
         spy.completeListings(with: .success([makeListing(id: "a")]))
@@ -89,7 +89,7 @@ import TestSupport
 
     @Test func observeBookmarks_subscribesToBookmarkedIDs() async {
         await withMainSerialExecutor {
-            let (sut, spy) = makeSUT()
+            let (sut, spy, _) = makeSUT()
 
             let observation = Task { await sut.observeBookmarks() }
             await Task.megaYield()
@@ -101,7 +101,7 @@ import TestSupport
 
     @Test func observeBookmarks_flagsRowsAsTheStreamEmits() async {
         await withMainSerialExecutor {
-            let (sut, spy) = makeSUT()
+            let (sut, spy, _) = makeSUT()
             spy.completeListings(with: .success([makeListing(id: "a"), makeListing(id: "b")]))
             await sut.load()
             let observation = Task { await sut.observeBookmarks() }
@@ -121,7 +121,7 @@ import TestSupport
 
     @Test func observeBookmarks_flagsRowsLoadedAfterTheStreamEmitted() async {
         await withMainSerialExecutor {
-            let (sut, spy) = makeSUT()
+            let (sut, spy, _) = makeSUT()
             let observation = Task { await sut.observeBookmarks() }
             await Task.megaYield()
             spy.emitBookmarkedIDs(["a"])
@@ -137,21 +137,26 @@ import TestSupport
 
     // MARK: - Toggle bookmark
 
-    @Test func toggleBookmark_flagsTheRowAndSavesTheListingWhenNotBookmarked() async {
-        let (sut, spy) = makeSUT()
-        let listing = makeListing(id: "a")
-        spy.completeListings(with: .success([listing]))
-        await sut.load()
+    @Test func toggleBookmark_flagsTheRowAtOnceAndSavesTheListingAfterTheDebounce() async {
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT()
+            let listing = makeListing(id: "a")
+            spy.completeListings(with: .success([listing]))
+            await sut.load()
 
-        await sut.toggleBookmark(id: "a")
+            sut.toggleBookmark(id: "a")
 
-        #expect(sut.rows.map(\.isBookmarked) == [true])
-        #expect(spy.receivedMessages == [.loadListings, .saveBookmark(listing)])
+            #expect(sut.rows.map(\.isBookmarked) == [true])
+            #expect(spy.receivedMessages == [.loadListings])
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+            #expect(spy.receivedMessages == [.loadListings, .saveBookmark(listing)])
+        }
     }
 
-    @Test func toggleBookmark_unflagsTheRowAndRemovesTheBookmarkWhenBookmarked() async {
+    @Test func toggleBookmark_unflagsTheRowAtOnceAndRemovesTheBookmarkAfterTheDebounce() async {
         await withMainSerialExecutor {
-            let (sut, spy) = makeSUT()
+            let (sut, spy, clock) = makeSUT()
             spy.completeListings(with: .success([makeListing(id: "a")]))
             await sut.load()
             let observation = Task { await sut.observeBookmarks() }
@@ -159,45 +164,113 @@ import TestSupport
             spy.emitBookmarkedIDs(["a"])
             await Task.megaYield()
 
-            await sut.toggleBookmark(id: "a")
+            sut.toggleBookmark(id: "a")
 
             #expect(sut.rows.map(\.isBookmarked) == [false])
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
             #expect(spy.receivedMessages == [.loadListings, .observeBookmarkedIDs, .removeBookmark("a")])
             await observation.cancelAndWait()
         }
     }
 
     @Test func toggleBookmark_ignoresAnUnknownID() async {
-        let (sut, spy) = makeSUT()
-        spy.completeListings(with: .success([makeListing(id: "a")]))
-        await sut.load()
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT()
+            spy.completeListings(with: .success([makeListing(id: "a")]))
+            await sut.load()
 
-        await sut.toggleBookmark(id: "missing")
+            sut.toggleBookmark(id: "missing")
 
-        #expect(sut.rows.map(\.isBookmarked) == [false])
-        #expect(spy.receivedMessages == [.loadListings])
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+            #expect(sut.rows.map(\.isBookmarked) == [false])
+            #expect(spy.receivedMessages == [.loadListings])
+        }
+    }
+
+    @Test func toggleBookmark_persistsNothingWhenTapsWithinTheDebounceCancelOut() async {
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT()
+            spy.completeListings(with: .success([makeListing(id: "a")]))
+            await sut.load()
+
+            sut.toggleBookmark(id: "a")
+            sut.toggleBookmark(id: "a")
+
+            #expect(sut.rows.map(\.isBookmarked) == [false])
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+            #expect(spy.receivedMessages == [.loadListings])
+        }
+    }
+
+    @Test func toggleBookmark_restartsTheDebounceOnEveryTapAndPersistsTheFinalStateOnce() async {
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT()
+            let listing = makeListing(id: "a")
+            spy.completeListings(with: .success([listing]))
+            await sut.load()
+            let halfway = ListingsViewModel.toggleDebounce / 2
+
+            sut.toggleBookmark(id: "a")
+            await clock.advance(by: halfway)
+            sut.toggleBookmark(id: "a")
+            await clock.advance(by: halfway)
+            sut.toggleBookmark(id: "a")
+            await clock.advance(by: halfway)
+            await Task.megaYield()
+
+            #expect(sut.rows.map(\.isBookmarked) == [true])
+            #expect(spy.receivedMessages == [.loadListings])
+            await clock.advance(by: halfway)
+            await Task.megaYield()
+            #expect(spy.receivedMessages == [.loadListings, .saveBookmark(listing)])
+        }
+    }
+
+    @Test func toggleBookmark_persistsRowsIndependently() async {
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT()
+            let first = makeListing(id: "a")
+            let second = makeListing(id: "b")
+            spy.completeListings(with: .success([first, second]))
+            await sut.load()
+
+            sut.toggleBookmark(id: "a")
+            sut.toggleBookmark(id: "b")
+
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+            #expect(sut.rows.map(\.isBookmarked) == [true, true])
+            #expect(spy.receivedMessages == [.loadListings, .saveBookmark(first), .saveBookmark(second)])
+        }
     }
 
     @Test func toggleBookmark_revertsTheRowAndNotifiesWhenSavingFails() async {
-        let (sut, spy) = makeSUT()
-        let listing = makeListing(id: "a")
-        spy.completeListings(with: .success([listing]))
-        await sut.load()
-        spy.completeSaveBookmark(with: anyNSError())
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT()
+            let listing = makeListing(id: "a")
+            spy.completeListings(with: .success([listing]))
+            await sut.load()
+            spy.completeSaveBookmark(with: anyNSError())
 
-        await sut.toggleBookmark(id: "a")
+            sut.toggleBookmark(id: "a")
 
-        #expect(sut.rows.map(\.isBookmarked) == [false])
-        #expect(spy.receivedMessages == [
-            .loadListings,
-            .saveBookmark(listing),
-            .notify(ListingsViewModel.Message.bookmarkNotSaved),
-        ])
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+            #expect(sut.rows.map(\.isBookmarked) == [false])
+            #expect(spy.receivedMessages == [
+                .loadListings,
+                .saveBookmark(listing),
+                .notify(ListingsViewModel.Message.bookmarkNotSaved),
+            ])
+        }
     }
 
     @Test func toggleBookmark_revertsTheRowAndNotifiesWhenRemovingFails() async {
         await withMainSerialExecutor {
-            let (sut, spy) = makeSUT()
+            let (sut, spy, clock) = makeSUT()
             spy.completeListings(with: .success([makeListing(id: "a")]))
             await sut.load()
             let observation = Task { await sut.observeBookmarks() }
@@ -206,8 +279,10 @@ import TestSupport
             await Task.megaYield()
             spy.completeRemoveBookmark(with: anyNSError())
 
-            await sut.toggleBookmark(id: "a")
+            sut.toggleBookmark(id: "a")
 
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
             #expect(sut.rows.map(\.isBookmarked) == [true])
             #expect(spy.receivedMessages == [
                 .loadListings,
@@ -230,19 +305,21 @@ import TestSupport
 
     private func makeSUT(
         sourceLocation: SourceLocation = #_sourceLocation
-    ) -> (sut: ListingsViewModel, spy: ListingsLoaderSpy) {
+    ) -> (sut: ListingsViewModel, spy: ListingsLoaderSpy, clock: TestClock<Duration>) {
         let spy = ListingsLoaderSpy()
+        let clock = TestClock()
         let sut = ListingsViewModel(
             loadListings: spy.loadListings,
             observeBookmarkedIDs: spy.observeBookmarkedIDs,
             saveBookmark: spy.saveBookmark,
             removeBookmark: spy.removeBookmark,
             notify: spy.notify,
-            locale: locale
+            locale: locale,
+            clock: clock
         )
         trackForMemoryLeaks(sut, sourceLocation: sourceLocation)
         trackForMemoryLeaks(spy, sourceLocation: sourceLocation)
-        return (sut, spy)
+        return (sut, spy, clock)
     }
 
     private func trackForMemoryLeaks(_ instance: AnyObject, sourceLocation: SourceLocation) {

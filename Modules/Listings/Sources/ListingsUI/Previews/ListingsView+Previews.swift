@@ -14,7 +14,8 @@ extension ListingsViewModel {
             saveBookmark: { _ in },
             removeBookmark: { _ in },
             notify: { _ in },
-            locale: Locale(identifier: "de_CH")
+            locale: Locale(identifier: "de_CH"),
+            clock: ContinuousClock()
         )
     }
 }

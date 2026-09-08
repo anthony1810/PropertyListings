@@ -34,7 +34,7 @@ private extension ListingsView {
                     isLiked: row.isBookmarked
                 ),
                 likeIdentifier: AccessibilityID.like(row.id, isOn: row.isBookmarked),
-                onLike: { Task { await viewModel.toggleBookmark(id: row.id) } }
+                onLike: { viewModel.toggleBookmark(id: row.id) }
             )
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(AccessibilityID.row(row.id))
