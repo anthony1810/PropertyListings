@@ -7,6 +7,7 @@ let package = Package(
     products: [
         .library(name: "ListingsFeature", targets: ["ListingsFeature"]),
         .library(name: "ListingsAPI", targets: ["ListingsAPI"]),
+        .library(name: "ListingsCache", targets: ["ListingsCache"]),
     ],
     dependencies: [
         .package(path: "../Shared/TestSupport"),
@@ -15,6 +16,7 @@ let package = Package(
         .target(name: "ListingsFeature"),
         .testTarget(name: "ListingsFeatureTests", dependencies: ["ListingsFeature"]),
         .target(name: "ListingsAPI", dependencies: ["ListingsFeature"]),
+        .target(name: "ListingsCache", dependencies: ["ListingsFeature"]),
         .testTarget(
             name: "ListingsAPITests",
             dependencies: ["ListingsAPI", "TestSupport"],
