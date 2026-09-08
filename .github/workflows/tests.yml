@@ -49,10 +49,11 @@ jobs:
       - run: Scripts/architecture-guard.sh
       - run: |
           set -o pipefail
-          xcodebuild build \
+          xcodebuild test \
             -workspace PropertyListings.xcworkspace \
             -scheme PropertyListings \
-            -destination 'generic/platform=iOS Simulator' \
+            -destination "$SIMULATOR" \
+            -skipPackagePluginValidation \
             CODE_SIGNING_ALLOWED=NO \
           | xcbeautify
 
