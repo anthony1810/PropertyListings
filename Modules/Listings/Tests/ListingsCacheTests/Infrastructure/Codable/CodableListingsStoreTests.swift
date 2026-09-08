@@ -62,7 +62,7 @@ import TestSupport
 
     @Test func retrieve_failsOnInvalidData() async throws {
         let sut = makeSUT()
-        try Data("invalid data".utf8).write(to: storeURL)
+        try invalidJSON().write(to: storeURL)
 
         await #expect(throws: Error.self) {
             try await sut.retrieve()

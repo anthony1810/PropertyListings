@@ -14,7 +14,7 @@ import TestSupport
 
     @Test func map_throwsOn200WithInvalidJSON() {
         #expect(throws: ListingsMapper.Error.invalidData) {
-            try ListingsMapper.map(Data("invalid json".utf8), from: anyHTTPURLResponse())
+            try ListingsMapper.map(invalidJSON(), from: anyHTTPURLResponse())
         }
     }
 
