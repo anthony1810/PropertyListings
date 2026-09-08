@@ -8,8 +8,25 @@ extension ListingsViewModel {
         listings: [Listing] = Listing.previews,
         bookmarkedIDs: Set<Listing.ID> = [Listing.previews[0].id]
     ) -> ListingsViewModel {
+        preview(loadListings: { listings }, bookmarkedIDs: bookmarkedIDs)
+    }
+
+    static func previewLoading() -> ListingsViewModel {
+        preview(loadListings: { try await Task.sleep(for: .seconds(60)); return [] })
+    }
+
+    static func previewFailing() -> ListingsViewModel {
+        preview(loadListings: { throw PreviewError() })
+    }
+
+    private struct PreviewError: Error {}
+
+    private static func preview(
+        loadListings: @escaping @Sendable () async throws -> [Listing],
+        bookmarkedIDs: Set<Listing.ID> = []
+    ) -> ListingsViewModel {
         ListingsViewModel(
-            loadListings: { listings },
+            loadListings: loadListings,
             observeBookmarkedIDs: { AsyncStream { $0.yield(bookmarkedIDs) } },
             saveBookmark: { _ in },
             removeBookmark: { _ in },

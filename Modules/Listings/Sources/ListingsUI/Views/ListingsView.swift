@@ -23,7 +23,39 @@ public struct ListingsView: View {
 // MARK: - States
 
 private extension ListingsView {
+    @ViewBuilder
     var content: some View {
+        if viewModel.isLoading && viewModel.rows.isEmpty {
+            loading
+        } else if viewModel.rows.isEmpty, let message = viewModel.loadFailureMessage {
+            ErrorStateView(message: message) {
+                Task { await viewModel.load() }
+            }
+            .accessibilityIdentifier(AccessibilityID.error)
+        } else if viewModel.rows.isEmpty {
+            EmptyStateView(
+                title: ListingsUIStrings.emptyTitle,
+                hint: ListingsUIStrings.emptyHint,
+                systemImage: "house"
+            )
+            .accessibilityIdentifier(AccessibilityID.empty)
+        } else {
+            list
+        }
+    }
+
+    var loading: some View {
+        List(0..<Self.skeletonRowCount, id: \.self) { _ in
+            SkeletonRow()
+                .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
+        .accessibilityIdentifier(AccessibilityID.loading)
+    }
+
+    static var skeletonRowCount: Int { 3 }
+
+    var list: some View {
         List(viewModel.rows) { row in
             ListingCard(
                 model: ListingCard.Model(
@@ -56,6 +88,18 @@ private extension ListingsView {
 #if DEBUG
 #Preview("Content") {
     NavigationStack { ListingsView(viewModel: .preview()) }
+}
+
+#Preview("Loading") {
+    NavigationStack { ListingsView(viewModel: .previewLoading()) }
+}
+
+#Preview("Empty") {
+    NavigationStack { ListingsView(viewModel: .preview(listings: [])) }
+}
+
+#Preview("Error") {
+    NavigationStack { ListingsView(viewModel: .previewFailing()) }
 }
 #endif
 #endif
