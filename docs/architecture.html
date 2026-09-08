@@ -72,7 +72,7 @@
 <rect x="50" y="478" width="432" height="100" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
 <text x="62" y="500" class="s" fill="#58a6ff">ListingsFeature</text>
 <text x="62" y="518" class="d">Listing · Price(amount: Decimal, currency) · Address(street?, postalCode?, locality)</text>
-<text x="62" y="534" class="d">seams: ListingsStore (retrieve · insert · delete) · ListingsCache (save)</text>
+<text x="62" y="534" class="d">seam: ListingsCache (save), used by the root decorator · no store contract here</text>
 <text x="62" y="550" class="d">ListingsCachePolicy: pure rule, max age 7 days, validate(timestamp, against: now)</text>
 <text x="62" y="566" class="d">Foundation only · no HTTP, no files, no SwiftUI</text>
 
@@ -85,8 +85,8 @@
 
 <rect x="50" y="710" width="432" height="122" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
 <text x="62" y="732" class="s" fill="#3fb950">ListingsCache (ED "Feed Cache")</text>
-<text x="62" y="750" class="d">LocalListingsLoader(store:, currentDate:): load() · save(_:) · validateCache()</text>
-<text x="62" y="766" class="d">load() throws cacheMiss when empty or expired (deviation from ED's [])</text>
+<text x="62" y="750" class="d">LocalListing DTO · ListingsStore seam (retrieve · insert · delete) in local terms</text>
+<text x="62" y="766" class="d">LocalListingsLoader maps Listing to LocalListing · load() throws cacheMiss when empty or expired</text>
 <text x="62" y="782" class="d">Infrastructure/Codable: CodableListingsStore (actor, JSON file, atomic write)</text>
 <text x="62" y="798" class="d">Infrastructure/InMemory: InMemoryListingsStore (acceptance tests)</text>
 <text x="62" y="814" class="d">store tests run against a real temp file · this target never sees HTTP</text>
