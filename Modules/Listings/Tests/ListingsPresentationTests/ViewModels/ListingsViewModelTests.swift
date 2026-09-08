@@ -85,6 +85,56 @@ import TestSupport
         #expect(sut.rows.map(\.id) == ["a"])
     }
 
+    // MARK: - Observe bookmarks
+
+    @Test func observeBookmarks_subscribesToBookmarkedIDs() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+
+            let observation = Task { await sut.observeBookmarks() }
+            await Task.megaYield()
+
+            #expect(spy.receivedMessages == [.observeBookmarkedIDs])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func observeBookmarks_flagsRowsAsTheStreamEmits() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            spy.completeListings(with: .success([makeListing(id: "a"), makeListing(id: "b")]))
+            await sut.load()
+            let observation = Task { await sut.observeBookmarks() }
+            await Task.megaYield()
+
+            spy.emitBookmarkedIDs(["b"])
+            await Task.megaYield()
+            #expect(sut.rows.map(\.isBookmarked) == [false, true])
+
+            spy.emitBookmarkedIDs([])
+            await Task.megaYield()
+            #expect(sut.rows.map(\.isBookmarked) == [false, false])
+
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func observeBookmarks_flagsRowsLoadedAfterTheStreamEmitted() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            let observation = Task { await sut.observeBookmarks() }
+            await Task.megaYield()
+            spy.emitBookmarkedIDs(["a"])
+            await Task.megaYield()
+            spy.completeListings(with: .success([makeListing(id: "a"), makeListing(id: "b")]))
+
+            await sut.load()
+
+            #expect(sut.rows.map(\.isBookmarked) == [true, false])
+            await observation.cancelAndWait()
+        }
+    }
+
     // MARK: - Helpers
 
     private let locale = Locale(identifier: "de_CH")
@@ -100,6 +150,7 @@ import TestSupport
         let spy = ListingsLoaderSpy()
         let sut = ListingsViewModel(
             loadListings: spy.loadListings,
+            observeBookmarkedIDs: spy.observeBookmarkedIDs,
             notify: spy.notify,
             locale: locale
         )

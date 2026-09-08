@@ -5,12 +5,14 @@ import TestSupport
 final class ListingsLoaderSpy: Sendable {
     enum Message: Equatable {
         case loadListings
+        case observeBookmarkedIDs
         case notify(String)
     }
 
     private let _receivedMessages = LockIsolated<[Message]>([])
     private let _listingsResult = LockIsolated<Result<[Listing], Error>?>(nil)
     private let _onLoadListings = LockIsolated<(@MainActor @Sendable () -> Void)?>(nil)
+    private let bookmarkedIDs = AsyncStream<Set<String>>.makeStream()
 
     var receivedMessages: [Message] { _receivedMessages.value }
 
@@ -29,6 +31,15 @@ final class ListingsLoaderSpy: Sendable {
             await observe()
         }
         return try _listingsResult.value.evaluate()
+    }
+
+    func emitBookmarkedIDs(_ ids: Set<String>) {
+        bookmarkedIDs.continuation.yield(ids)
+    }
+
+    @Sendable func observeBookmarkedIDs() -> any AsyncSequence<Set<String>, Never> {
+        _receivedMessages.withValue { $0.append(.observeBookmarkedIDs) }
+        return bookmarkedIDs.stream
     }
 
     @MainActor func notify(_ message: String) {
