@@ -7,6 +7,8 @@ import TestSupport
 @testable import PropertyListings
 
 struct ListingsServiceTests {
+    // MARK: - Load listings
+
     @Test func loadListings_deliversRemoteListingsWhenOnline() async throws {
         let sut = makeSUT(client: online)
 
@@ -74,6 +76,26 @@ struct ListingsServiceTests {
         let listings = try await sut.loadListings()
 
         #expect(listings == [house.model])
+    }
+
+    // MARK: - Validate cache
+
+    @Test func validateCache_deletesExpiredCache() async throws {
+        let store = InMemoryListingsStore(cache: expiredCache)
+        let sut = makeSUT(client: .offline, store: store)
+
+        await sut.validateCache()
+
+        #expect(try await store.retrieve() == nil)
+    }
+
+    @Test func validateCache_keepsFreshCache() async throws {
+        let store = InMemoryListingsStore(cache: freshCache)
+        let sut = makeSUT(client: .offline, store: store)
+
+        await sut.validateCache()
+
+        #expect(try await store.retrieve() == freshCache)
     }
 
     // MARK: - Helpers

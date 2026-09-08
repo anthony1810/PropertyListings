@@ -20,6 +20,10 @@ struct ListingsService: Sendable {
         self.localListings = LocalListingsLoader(store: store, currentDate: currentDate)
     }
 
+    func validateCache() async {
+        await localListings.validateCache()
+    }
+
     func loadListings() async throws -> [Listing] {
         do {
             return try await loadAndCacheRemoteListings()
