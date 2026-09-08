@@ -7,35 +7,63 @@ public enum ListingsMapper {
     }
 
     public static func map(_ data: Data, from response: HTTPURLResponse) throws -> [Listing] {
-        guard response.statusCode == 200,
+        guard response.isOK,
               let root = try? JSONDecoder().decode(Root.self, from: data)
         else { throw Error.invalidData }
-        return try root.results.map(Listing.init(remote:))
+        return try root.results.map(listing(from:))
+    }
+}
+
+// MARK: - Remote to domain
+
+private extension ListingsMapper {
+    static func listing(from item: RemoteItem) throws -> Listing {
+        let content = item.listing.localization.content
+        guard let title = content?.text?.title else {
+            throw Error.invalidData
+        }
+        return Listing(
+            id: item.id,
+            title: title,
+            price: nil,
+            address: address(from: item.listing.address),
+            imageURL: nil
+        )
     }
 
-    // MARK: - Remote representation
+    static func address(from remote: RemoteAddress) -> Address {
+        Address(
+            street: remote.street,
+            postalCode: remote.postalCode,
+            locality: remote.locality
+        )
+    }
+}
 
-    private struct Root: Decodable {
+// MARK: - Remote representation
+
+private extension ListingsMapper {
+    struct Root: Decodable {
         let results: [RemoteItem]
     }
 
-    fileprivate struct RemoteItem: Decodable {
+    struct RemoteItem: Decodable {
         let id: String
         let listing: RemoteListing
     }
 
-    fileprivate struct RemoteListing: Decodable {
+    struct RemoteListing: Decodable {
         let address: RemoteAddress
         let localization: RemoteLocalization
     }
 
-    fileprivate struct RemoteAddress: Decodable {
+    struct RemoteAddress: Decodable {
         let street: String?
         let postalCode: String?
         let locality: String
     }
 
-    fileprivate struct RemoteLocalization: Decodable {
+    struct RemoteLocalization: Decodable {
         let content: RemoteContent?
 
         private struct Key: CodingKey {
@@ -55,30 +83,11 @@ public enum ListingsMapper {
         }
     }
 
-    fileprivate struct RemoteContent: Decodable {
+    struct RemoteContent: Decodable {
         let text: RemoteText?
     }
 
-    fileprivate struct RemoteText: Decodable {
+    struct RemoteText: Decodable {
         let title: String?
-    }
-}
-
-private extension Listing {
-    init(remote item: ListingsMapper.RemoteItem) throws {
-        guard let title = item.listing.localization.content?.text?.title else {
-            throw ListingsMapper.Error.invalidData
-        }
-        self.init(
-            id: item.id,
-            title: title,
-            price: nil,
-            address: Address(
-                street: item.listing.address.street,
-                postalCode: item.listing.address.postalCode,
-                locality: item.listing.address.locality
-            ),
-            imageURL: nil
-        )
     }
 }
