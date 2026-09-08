@@ -27,6 +27,21 @@ extension LocalListingsLoader: ListingsCache {
     }
 }
 
+extension LocalListingsLoader {
+    private struct InvalidCache: Swift.Error {}
+
+    public func validateCache() async {
+        do {
+            if let cache = try await store.retrieve(),
+               !ListingsCachePolicy.validate(cache.timestamp, against: currentDate()) {
+                throw InvalidCache()
+            }
+        } catch {
+            try? await store.deleteCachedListings()
+        }
+    }
+}
+
 // MARK: - Local to domain
 
 private extension LocalListingsLoader {

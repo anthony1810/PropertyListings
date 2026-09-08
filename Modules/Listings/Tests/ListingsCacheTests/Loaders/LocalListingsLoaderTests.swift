@@ -103,6 +103,46 @@ import TestSupport
         }
     }
 
+    // MARK: - Validate cache
+
+    @Test func validateCache_deletesExpiredCache() async {
+        let now = Date()
+        let (sut, store) = makeSUT(currentDate: now)
+        store.completeRetrieval(with: CachedListings(listings: [makeLocalListing()], timestamp: now.minusCacheMaxAge()))
+
+        await sut.validateCache()
+
+        #expect(store.receivedMessages == [.retrieve, .deleteCachedListings])
+    }
+
+    @Test func validateCache_deletesCacheOnRetrievalError() async {
+        let (sut, store) = makeSUT()
+        store.completeRetrieval(with: anyNSError())
+
+        await sut.validateCache()
+
+        #expect(store.receivedMessages == [.retrieve, .deleteCachedListings])
+    }
+
+    @Test func validateCache_doesNotDeleteNonExpiredCache() async {
+        let now = Date()
+        let (sut, store) = makeSUT(currentDate: now)
+        store.completeRetrieval(with: CachedListings(listings: [makeLocalListing()], timestamp: now.minusCacheMaxAge().adding(seconds: 1)))
+
+        await sut.validateCache()
+
+        #expect(store.receivedMessages == [.retrieve])
+    }
+
+    @Test func validateCache_doesNotDeleteEmptyCache() async {
+        let (sut, store) = makeSUT()
+        store.completeRetrieval(with: nil)
+
+        await sut.validateCache()
+
+        #expect(store.receivedMessages == [.retrieve])
+    }
+
     // MARK: - Helpers
 
     private let leakTrackers = LockIsolated<[MemoryLeakTracker]>([])
