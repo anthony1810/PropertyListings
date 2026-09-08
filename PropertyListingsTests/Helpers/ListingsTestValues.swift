@@ -1,4 +1,5 @@
 import Foundation
+import ListingsCache
 import ListingsFeature
 import ListingsTestSupport
 
@@ -7,7 +8,7 @@ func makeRemoteListing(
     title: String = "A title",
     price: Decimal? = 100,
     street: String? = "A street"
-) -> (model: Listing, json: [String: Any]) {
+) -> (model: Listing, local: LocalListing, json: [String: Any]) {
     let currency = "CHF"
     let imageURL = "https://a-url.com/\(id).jpg"
     let model = makeListing(
@@ -35,7 +36,17 @@ func makeRemoteListing(
             ],
         ],
     ]
-    return (model, json)
+    let local = LocalListing(
+        id: model.id,
+        title: model.title,
+        priceAmount: model.price?.amount,
+        priceCurrency: model.price?.currency,
+        street: model.address.street,
+        postalCode: model.address.postalCode,
+        locality: model.address.locality,
+        imageURL: model.imageURL
+    )
+    return (model, local, json)
 }
 
 func makeItemsJSON(_ items: [[String: Any]]) -> Data {
