@@ -16,6 +16,8 @@ packages:
     path: Modules/Listings
   HTTPClient:
     path: Modules/Shared/HTTPClient
+  TestSupport:
+    path: Modules/Shared/TestSupport
 targets:
   PropertyListings:
     type: application
@@ -32,6 +34,30 @@ targets:
         CFBundleDisplayName: PropertyListings
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+    dependencies:
+      - package: Listings
+        product: ListingsFeature
+      - package: Listings
+        product: ListingsAPI
+      - package: Listings
+        product: ListingsCache
+      - package: HTTPClient
+        product: HTTPClient
+      - package: HTTPClient
+        product: HTTPClientLive
+  PropertyListingsTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [PropertyListingsTests]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: PropertyListings
+      - package: Listings
+        product: ListingsTestSupport
+      - package: TestSupport
+        product: TestSupport
   PropertyListingsEndToEndTests:
     type: bundle.unit-test
     platform: macOS
@@ -53,8 +79,12 @@ schemes:
     build:
       targets:
         PropertyListings: all
+        PropertyListingsTests: [test]
     run:
       config: Debug
+    test:
+      config: Debug
+      targets: [PropertyListingsTests]
   PropertyListingsEndToEndTests:
     build:
       targets:
