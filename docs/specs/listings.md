@@ -59,6 +59,24 @@ Given the customer has connectivity
  Then the app shows an error state with a Retry action
 ```
 
+**Addition.** Refreshing.
+
+```
+Given the customer has listings on screen
+  And the cache is less than seven days old
+ When the customer pulls to refresh and the remote fails
+ Then the app keeps showing the listings
+  And no alert is shown
+```
+
+```
+Given the customer has listings on screen
+  And the cache is seven days old or more
+ When the customer pulls to refresh and the remote fails
+ Then the app keeps showing the listings
+  And the app shows an alert
+```
+
 ### Narrative #2
 
 > As an offline customer
@@ -221,11 +239,13 @@ grouped by narrative, driving the real composition with stubs at the edges.
 
 | Scenario | Proven by |
 |---|---|
-| Online, latest listings displayed and cached | `customerOpensListings_seesLatestListingsFromRemote` · `ListingsServiceTests.load_deliversRemoteListingsAndCachesThem_whenOnline` · Maestro `01-list-shows-listings` |
-| No price shows "Price on request" | `customerOpensListings_listingWithoutPrice_seesPriceOnRequest` · snapshot `content` |
-| No street shows postal code and locality | `customerOpensListings_listingWithoutStreet_seesPostalCodeAndLocalityOnly` · snapshot `content` |
-| Non-200 or malformed, no cache, error with Retry | `customerOpensListings_remoteFailsAndNoCache_seesErrorWithRetry` (parametrised) · `customerRetriesAfterAFailure_seesListings` · snapshot `error` |
-| Offline, fresh cache displayed | `offlineCustomer_seesCachedListings_whenCacheIsFresh` · manual airplane-mode check |
-| Offline, expired cache, error with Retry | `offlineCustomer_seesErrorWithRetry_whenCacheIsSevenDaysOld` |
-| Offline, empty cache, error with Retry | `offlineCustomer_seesErrorWithRetry_whenCacheIsEmpty` |
-| Launch deletes an expired cache | `appLaunch_deletesExpiredCache` |
+| Online, latest listings displayed and cached | `customerOpensListings_seesTheLatestListingsFromRemote` · `ListingsServiceTests.loadListings_cachesRemoteListingsWithTimestampWhenOnline` · Maestro `01-list-shows-listings` |
+| No price shows "Price on request" | `customerOpensListings_seesSwissPricesAndPriceOnRequest` · snapshot `content` |
+| No street shows postal code and locality | `customerOpensListings_seesTheAddressWithoutAStreetAsPostalCodeAndLocality` · snapshot `content` |
+| Non-200 or malformed, no cache, error with Retry | `customerOpensListings_seesTheErrorWithRetryWhenRemoteFailsAndThereIsNoCache` (parametrised) · `customerRetriesAfterAFailure_seesTheListings` · snapshot `error` |
+| Refresh fails, fresh cache, list kept silently | `customerPullsToRefreshAndItFails_keepsTheListFromTheFreshCacheWithoutAnAlert` |
+| Refresh fails, expired cache, list kept with an alert | `customerPullsToRefreshAfterSevenDaysAndItFails_keepsTheListAndSeesAnAlert` |
+| Offline, fresh cache displayed | `offlineCustomer_seesTheListingsCachedByAnEarlierVisit` · manual airplane-mode check |
+| Offline, expired cache, error with Retry | `offlineCustomer_seesTheErrorWithRetryWhenTheCacheIsSevenDaysOld` |
+| Offline, empty cache, error with Retry | `offlineCustomer_seesTheErrorWithRetryWhenThereIsNoCache` |
+| Launch deletes an expired cache | `appLaunch_deletesAnExpiredCache` |

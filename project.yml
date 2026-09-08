@@ -18,6 +18,10 @@ packages:
     path: Modules/Shared/HTTPClient
   TestSupport:
     path: Modules/Shared/TestSupport
+  DesignSystem:
+    path: Modules/Shared/DesignSystem
+  SharedPresentation:
+    path: Modules/Shared/SharedPresentation
 targets:
   PropertyListings:
     type: application
@@ -46,6 +50,14 @@ targets:
         product: ListingsAPI
       - package: Listings
         product: ListingsCache
+      - package: Listings
+        product: ListingsPresentation
+      - package: Listings
+        product: ListingsUI
+      - package: DesignSystem
+        product: DesignSystem
+      - package: SharedPresentation
+        product: SharedPresentation
       - package: HTTPClient
         product: HTTPClient
       - package: HTTPClient

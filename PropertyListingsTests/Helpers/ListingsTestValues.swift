@@ -7,7 +7,9 @@ func makeRemoteListing(
     id: String = "1",
     title: String = "A title",
     price: Decimal? = 100,
-    street: String? = "A street"
+    street: String? = "A street",
+    postalCode: String? = "8000",
+    locality: String = "A locality"
 ) -> (model: Listing, local: LocalListing, json: [String: Any]) {
     let currency = "CHF"
     let imageURL = "https://a-url.com/\(id).jpg"
@@ -16,6 +18,8 @@ func makeRemoteListing(
         title: title,
         price: price.map { Price(amount: $0, currency: currency) },
         street: street,
+        postalCode: postalCode,
+        locality: locality,
         imageURL: URL(string: imageURL)
     )
     var prices: [String: Any] = ["currency": currency]
