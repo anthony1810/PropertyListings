@@ -28,6 +28,13 @@ public extension Optional {
 
 public func anyURL() -> URL { URL(string: "https://any-url.com")! }
 public func anyNSError() -> NSError { NSError(domain: "any", code: 0) }
-public func anyHTTPURLResponse(statusCode: Int = 200) -> HTTPURLResponse {
+public func invalidJSON() -> Data { Data("invalid json".utf8) }
+public let okStatusCode = 200
+
+public func anyHTTPURLResponse(statusCode: Int = okStatusCode) -> HTTPURLResponse {
     HTTPURLResponse(url: anyURL(), statusCode: statusCode, httpVersion: nil, headerFields: nil)!
+}
+
+public func okHTTPURLResponse(for url: URL) -> HTTPURLResponse {
+    HTTPURLResponse(url: url, statusCode: okStatusCode, httpVersion: nil, headerFields: nil)!
 }
