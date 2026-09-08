@@ -144,7 +144,7 @@
 
 <rect x="366" y="1016" width="616" height="100" rx="8" fill="#0d1117" stroke="#30363d"/>
 <text x="378" y="1036" class="s">TestSupport (test-only)</text>
-<text x="378" y="1053" class="d">@_exported ConcurrencyExtras (LockIsolated · withMainSerialExecutor) · Clocks · DependenciesTestSupport</text>
+<text x="378" y="1053" class="d">@_exported ConcurrencyExtras (LockIsolated · withMainSerialExecutor) · Clocks</text>
 <text x="378" y="1069" class="d">MemoryLeakTracker · FixtureLoader · FixtureNaming · verifyFixtureCoverage · anyURL() · anyNSError()</text>
 <text x="378" y="1085" class="d">.iPhone17 snapshot config (402×874, displayScale 3) · precision 0.95 · perceptualPrecision 0.97</text>
 <text x="378" y="1101" class="d">HTTPClientStub.online / .offline for acceptance tests</text>
@@ -176,7 +176,7 @@
 <rect x="1140" y="640" width="344" height="118" rx="12" fill="#161b22" stroke="#bc8cff" stroke-width="1.6"/>
 <text x="1156" y="668" class="s" fill="#bc8cff">Point-Free stack (test targets only)</text>
 <text x="1156" y="690" class="d">swift-concurrency-extras · swift-snapshot-testing</text>
-<text x="1156" y="707" class="d">swift-clocks · swift-dependencies</text>
+<text x="1156" y="707" class="d">swift-clocks</text>
 <text x="1156" y="728" class="d">the same set OnDeck uses · reached only through</text>
 <text x="1156" y="745" class="d">TestSupport, never from a Sources/ target</text>
 
