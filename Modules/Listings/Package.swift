@@ -13,6 +13,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "ListingsFeature"),
+        .testTarget(name: "ListingsFeatureTests", dependencies: ["ListingsFeature"]),
         .target(name: "ListingsAPI", dependencies: ["ListingsFeature"]),
         .testTarget(
             name: "ListingsAPITests",
