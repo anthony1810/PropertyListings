@@ -21,7 +21,7 @@ import Testing
     private func getListings() async throws -> [Listing] {
         let baseURL = URL(string: "https://private-9f1bb1-homegate3.apiary-mock.com")!
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-        let (data, response) = try await client.get(from: ListingsEndpoint.get.url(baseURL: baseURL))
+        let (data, response) = try await client.get(from: ListingsEndpoint.page(from: 0, size: 5).url(baseURL: baseURL))
         return try ListingsMapper.map(data, from: response)
     }
 }

@@ -101,7 +101,7 @@ struct ListingsServiceTests {
     // MARK: - Helpers
 
     private let now = Date()
-    private let url = ListingsEndpoint.get.url(baseURL: anyURL())
+    private let url = ListingsEndpoint.page(from: 0, size: 5).url(baseURL: anyURL())
     private let house = makeRemoteListing(id: "1", title: "Haus", price: 9_999_999)
     private let flat = makeRemoteListing(id: "2", title: "Maison", price: nil, street: nil)
 

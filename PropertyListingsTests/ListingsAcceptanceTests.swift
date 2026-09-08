@@ -133,7 +133,7 @@ struct ListingsAcceptanceTests {
     private let now: Date
     private let today: LockIsolated<Date>
     private let deCH = Locale(identifier: "de_CH")
-    private let listingsURL = ListingsEndpoint.get.url(baseURL: ServiceURLs.listings)
+    private let listingsURL = ListingsEndpoint.page(from: 0, size: 5).url(baseURL: ServiceURLs.listings)
     private let house = makeRemoteListing(
         id: "1",
         title: "Haus",
