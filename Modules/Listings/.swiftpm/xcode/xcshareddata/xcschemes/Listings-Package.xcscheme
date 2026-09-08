@@ -17,6 +17,9 @@
          <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">
             <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="ListingsPresentation" BuildableName="ListingsPresentation" BlueprintName="ListingsPresentation" ReferencedContainer="container:"/>
          </BuildActionEntry>
+         <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">
+            <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="ListingsUI" BuildableName="ListingsUI" BlueprintName="ListingsUI" ReferencedContainer="container:"/>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
@@ -32,6 +35,9 @@
          </TestableReference>
          <TestableReference skipped="NO">
             <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="ListingsPresentationTests" BuildableName="ListingsPresentationTests" BlueprintName="ListingsPresentationTests" ReferencedContainer="container:"/>
+         </TestableReference>
+         <TestableReference skipped="NO">
+            <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="ListingsUITests" BuildableName="ListingsUITests" BlueprintName="ListingsUITests" ReferencedContainer="container:"/>
          </TestableReference>
       </Testables>
    </TestAction>
