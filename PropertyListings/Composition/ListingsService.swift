@@ -5,6 +5,8 @@ import ListingsCache
 import ListingsFeature
 
 struct ListingsService: Sendable {
+    static let pageSize = 5
+
     private let httpClient: HTTPClient
     private let baseURL: URL
     private let localListings: LocalListingsLoader
@@ -24,12 +26,12 @@ struct ListingsService: Sendable {
         await localListings.validateCache()
     }
 
-    func loadListings() async throws -> [Listing] {
+    func loadListings() async throws -> Paginated<Listing> {
         do {
             return try await loadAndCacheRemoteListings()
         } catch {
             try Task.checkCancellation()
-            return try await localListings.load()
+            return Paginated(items: try await localListings.load())
         }
     }
 }
@@ -37,19 +39,27 @@ struct ListingsService: Sendable {
 // MARK: - Cache decorator
 
 private extension ListingsService {
-    func loadAndCacheRemoteListings() async throws -> [Listing] {
-        let listings = try await loadRemoteListings()
+    func loadAndCacheRemoteListings() async throws -> Paginated<Listing> {
+        try await loadAndCacheRemotePage(from: 0, appendingTo: [])
+    }
+
+    func loadAndCacheRemotePage(from: Int, appendingTo loaded: [Listing]) async throws -> Paginated<Listing> {
+        let page = try await loadRemotePage(from: from)
+        let listings = loaded + page.listings
         try? await localListings.save(listings)
-        return listings
+        guard let nextFrom = page.nextFrom else { return Paginated(items: listings) }
+        return Paginated(items: listings) {
+            try await loadAndCacheRemotePage(from: nextFrom, appendingTo: listings)
+        }
     }
 }
 
 // MARK: - Remote
 
 private extension ListingsService {
-    func loadRemoteListings() async throws -> [Listing] {
-        let url = ListingsEndpoint.page(from: 0, size: 5).url(baseURL: baseURL)
+    func loadRemotePage(from: Int) async throws -> ListingsPage {
+        let url = ListingsEndpoint.page(from: from, size: Self.pageSize).url(baseURL: baseURL)
         let (data, response) = try await httpClient.get(from: url)
-        return try ListingsMapper.map(data, from: response).listings
+        return try ListingsMapper.map(data, from: response)
     }
 }

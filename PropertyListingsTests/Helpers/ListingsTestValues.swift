@@ -53,7 +53,19 @@ func makeRemoteListing(
     return (model, local, json)
 }
 
-func makeItemsJSON(_ items: [[String: Any]]) -> Data {
-    let envelope: [String: Any] = ["from": 0, "size": 100, "total": items.count, "results": items, "maxFrom": 0]
+func makeItemsJSON(
+    _ items: [[String: Any]],
+    from: Int = 0,
+    size: Int = 100,
+    total: Int? = nil,
+    maxFrom: Int = 0
+) -> Data {
+    let envelope: [String: Any] = [
+        "from": from,
+        "size": size,
+        "total": total ?? items.count,
+        "results": items,
+        "maxFrom": maxFrom,
+    ]
     return try! JSONSerialization.data(withJSONObject: envelope)
 }

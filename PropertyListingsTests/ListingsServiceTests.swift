@@ -14,7 +14,58 @@ struct ListingsServiceTests {
 
         let listings = try await sut.loadListings()
 
-        #expect(listings == [house.model, flat.model])
+        #expect(listings.items == [house.model, flat.model])
+    }
+
+    // MARK: - Paging
+
+    @Test func loadListings_requestsTheFirstPageOfFiveAndOffersLoadMoreWhenMoreExist() async throws {
+        let sut = makeSUT(client: HTTPClientStub([firstPageURL: [.success(firstPageJSON)]]))
+
+        let page = try await sut.loadListings()
+
+        #expect(page.items == [house.model, flat.model])
+        #expect(page.loadMore != nil)
+    }
+
+    @Test func loadListings_offersNoLoadMoreOnTheLastPage() async throws {
+        let sut = makeSUT(client: online)
+
+        let page = try await sut.loadListings()
+
+        #expect(page.loadMore == nil)
+    }
+
+    @Test func loadMore_appendsTheNextPageAndCachesTheUnion() async throws {
+        let store = InMemoryListingsStore()
+        let sut = makeSUT(client: twoPages, store: store)
+        let firstPage = try await sut.loadListings()
+
+        let secondPage = try await firstPage.loadMore?()
+
+        #expect(secondPage?.items == [house.model, flat.model, chalet.model])
+        #expect(secondPage?.loadMore == nil)
+        #expect(try await store.retrieve() == CachedListings(listings: [house.local, flat.local, chalet.local], timestamp: now))
+    }
+
+    @Test func loadMore_failsWhenOfflineWithoutTouchingTheCache() async throws {
+        let store = InMemoryListingsStore()
+        let sut = makeSUT(client: HTTPClientStub([firstPageURL: [.success(firstPageJSON)]]), store: store)
+        let firstPage = try await sut.loadListings()
+
+        await #expect(throws: Error.self) {
+            try await firstPage.loadMore?()
+        }
+        #expect(try await store.retrieve() == CachedListings(listings: [house.local, flat.local], timestamp: now))
+    }
+
+    @Test func loadListings_offersNoLoadMoreWhenServingTheCacheOffline() async throws {
+        let sut = makeSUT(client: .offline, store: InMemoryListingsStore(cache: freshCache))
+
+        let page = try await sut.loadListings()
+
+        #expect(page.items == [house.model])
+        #expect(page.loadMore == nil)
     }
 
     @Test func loadListings_cachesRemoteListingsWithTimestampWhenOnline() async throws {
@@ -56,7 +107,7 @@ struct ListingsServiceTests {
 
         let listings = try await sut.loadListings()
 
-        #expect(listings == [house.model])
+        #expect(listings.items == [house.model])
     }
 
     @Test func loadListings_deliversListingsCachedByAnEarlierOnlineLoadWhenOffline() async throws {
@@ -67,7 +118,7 @@ struct ListingsServiceTests {
 
         let listings = try await offlineSUT.loadListings()
 
-        #expect(listings == [house.model, flat.model])
+        #expect(listings.items == [house.model, flat.model])
     }
 
     @Test func loadListings_keepsServingTheCacheWhenRemoteIsMalformed() async throws {
@@ -75,7 +126,7 @@ struct ListingsServiceTests {
 
         let listings = try await sut.loadListings()
 
-        #expect(listings == [house.model])
+        #expect(listings.items == [house.model])
     }
 
     // MARK: - Validate cache
@@ -101,9 +152,24 @@ struct ListingsServiceTests {
     // MARK: - Helpers
 
     private let now = Date()
-    private let url = ListingsEndpoint.page(from: 0, size: 5).url(baseURL: anyURL())
+    private let url = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: anyURL())
+    private let firstPageURL = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: anyURL())
+    private let secondPageURL = ListingsEndpoint.page(from: 2, size: ListingsService.pageSize).url(baseURL: anyURL())
     private let house = makeRemoteListing(id: "1", title: "Haus", price: 9_999_999)
     private let flat = makeRemoteListing(id: "2", title: "Maison", price: nil, street: nil)
+    private let chalet = makeRemoteListing(id: "3", title: "Chalet")
+
+    private var firstPageJSON: Data {
+        makeItemsJSON([house.json, flat.json], from: 0, size: 2, total: 3, maxFrom: 2)
+    }
+
+    private var secondPageJSON: Data {
+        makeItemsJSON([chalet.json], from: 2, size: 2, total: 3, maxFrom: 2)
+    }
+
+    private var twoPages: HTTPClientStub {
+        HTTPClientStub([firstPageURL: [.success(firstPageJSON)], secondPageURL: [.success(secondPageJSON)]])
+    }
 
     private var online: HTTPClientStub {
         HTTPClientStub([url: [.success(makeItemsJSON([house.json, flat.json]))]])
