@@ -135,6 +135,90 @@ import TestSupport
         }
     }
 
+    // MARK: - Toggle bookmark
+
+    @Test func toggleBookmark_flagsTheRowAndSavesTheListingWhenNotBookmarked() async {
+        let (sut, spy) = makeSUT()
+        let listing = makeListing(id: "a")
+        spy.completeListings(with: .success([listing]))
+        await sut.load()
+
+        await sut.toggleBookmark(id: "a")
+
+        #expect(sut.rows.map(\.isBookmarked) == [true])
+        #expect(spy.receivedMessages == [.loadListings, .saveBookmark(listing)])
+    }
+
+    @Test func toggleBookmark_unflagsTheRowAndRemovesTheBookmarkWhenBookmarked() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            spy.completeListings(with: .success([makeListing(id: "a")]))
+            await sut.load()
+            let observation = Task { await sut.observeBookmarks() }
+            await Task.megaYield()
+            spy.emitBookmarkedIDs(["a"])
+            await Task.megaYield()
+
+            await sut.toggleBookmark(id: "a")
+
+            #expect(sut.rows.map(\.isBookmarked) == [false])
+            #expect(spy.receivedMessages == [.loadListings, .observeBookmarkedIDs, .removeBookmark("a")])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func toggleBookmark_ignoresAnUnknownID() async {
+        let (sut, spy) = makeSUT()
+        spy.completeListings(with: .success([makeListing(id: "a")]))
+        await sut.load()
+
+        await sut.toggleBookmark(id: "missing")
+
+        #expect(sut.rows.map(\.isBookmarked) == [false])
+        #expect(spy.receivedMessages == [.loadListings])
+    }
+
+    @Test func toggleBookmark_revertsTheRowAndNotifiesWhenSavingFails() async {
+        let (sut, spy) = makeSUT()
+        let listing = makeListing(id: "a")
+        spy.completeListings(with: .success([listing]))
+        await sut.load()
+        spy.completeSaveBookmark(with: anyNSError())
+
+        await sut.toggleBookmark(id: "a")
+
+        #expect(sut.rows.map(\.isBookmarked) == [false])
+        #expect(spy.receivedMessages == [
+            .loadListings,
+            .saveBookmark(listing),
+            .notify(ListingsViewModel.Message.bookmarkNotSaved),
+        ])
+    }
+
+    @Test func toggleBookmark_revertsTheRowAndNotifiesWhenRemovingFails() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            spy.completeListings(with: .success([makeListing(id: "a")]))
+            await sut.load()
+            let observation = Task { await sut.observeBookmarks() }
+            await Task.megaYield()
+            spy.emitBookmarkedIDs(["a"])
+            await Task.megaYield()
+            spy.completeRemoveBookmark(with: anyNSError())
+
+            await sut.toggleBookmark(id: "a")
+
+            #expect(sut.rows.map(\.isBookmarked) == [true])
+            #expect(spy.receivedMessages == [
+                .loadListings,
+                .observeBookmarkedIDs,
+                .removeBookmark("a"),
+                .notify(ListingsViewModel.Message.bookmarkNotSaved),
+            ])
+            await observation.cancelAndWait()
+        }
+    }
+
     // MARK: - Helpers
 
     private let locale = Locale(identifier: "de_CH")
@@ -151,6 +235,8 @@ import TestSupport
         let sut = ListingsViewModel(
             loadListings: spy.loadListings,
             observeBookmarkedIDs: spy.observeBookmarkedIDs,
+            saveBookmark: spy.saveBookmark,
+            removeBookmark: spy.removeBookmark,
             notify: spy.notify,
             locale: locale
         )
