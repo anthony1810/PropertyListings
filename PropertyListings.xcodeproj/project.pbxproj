@@ -11,17 +11,21 @@
 		14FE093BD8720ED0CFE3864A /* PropertyListingsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191461208EF00FD0D076FAD4 /* PropertyListingsApp.swift */; };
 		1DF9E00E361AB9D18DC8ABDC /* ListingsTestValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */; };
 		31D41BCBBFD4590CFD631C99 /* HTTPClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = 92BA569E54A614CFFF001F56 /* HTTPClientLive */; };
+		334CF67D1CEE6E34C62CC7D3 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 82070D5A912A1DAC3FE34668 /* Localizable.xcstrings */; };
 		36FF4E736DD624ED4641DD01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B6AD647C68A0F9259BB5E31 /* Assets.xcassets */; };
 		3F93ACD1707DB4C6332AF185 /* ListingsAPIEndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5B6A305F9F8010F0DE862 /* ListingsAPIEndToEndTests.swift */; };
 		449E9FF2605660E9AEFCF337 /* ListingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE4C182B5F5207442631DB0 /* ListingsServiceTests.swift */; };
 		50BE31F2CE3C9210A33BFE52 /* HTTPClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D761F6E685539D94DBF5C850 /* HTTPClientStub.swift */; };
 		664EFE19FBA8BC3E3888A71C /* HTTPClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = F8EDAE62ADF3DA58A23E201E /* HTTPClientLive */; };
 		6851A8450C9FDDFE497AA98D /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = CDA5F3069E88F3DFEC8F7316 /* ListingsAPI */; };
+		862F3F4A5D8BE5E8252C2A91 /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C061002CFC6973AC8B49A7 /* LocalizationTests.swift */; };
 		90E021C576B36A78ECA96AFE /* ListingsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 0CE768B798ADBC571C77B0E1 /* ListingsFeature */; };
 		A3D9DA4BB1B85F9BA7174042 /* HTTPClient in Frameworks */ = {isa = PBXBuildFile; productRef = BD54B0390B38B1F7EBB6F7C0 /* HTTPClient */; };
 		A756C1106BAE270DFD73F280 /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 8E41188FA089F1A4E0A1731E /* ListingsAPI */; };
+		C4D2C8192580EEE8BD7D8DDF /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF30EF5C3659003BB41469A /* AppRouter.swift */; };
 		CDFDACE11597A94BDE61CDF3 /* ListingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6E8775681EF4E11EF330 /* ListingsService.swift */; };
 		D016FECFBEC067B202A4D742 /* TestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 2DF054391E72E4715CE599E0 /* TestSupport */; };
+		D8CA0FCA26149BC6E38752D8 /* AppRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1AA23D6D31F6BDD6990883 /* AppRouterTests.swift */; };
 		EBE626E89A682944C760C0AF /* ListingsCache in Frameworks */ = {isa = PBXBuildFile; productRef = 8D60C12B895BC1F11F21614A /* ListingsCache */; };
 		F46AD66C392A00E38BAEEBB5 /* ListingsTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 3093FF3536C42EE8F630C546 /* ListingsTestSupport */; };
 /* End PBXBuildFile section */
@@ -43,13 +47,17 @@
 		24F20F4231156975DD571AC2 /* HTTPClient */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HTTPClient; path = Modules/Shared/HTTPClient; sourceTree = SOURCE_ROOT; };
 		360A3C7B3D9B257DF72A9238 /* PropertyListingsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PropertyListingsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A0D2A33110AEB4CFEC44F54 /* PropertyListings.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PropertyListings.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BF30EF5C3659003BB41469A /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		7D4B6E8775681EF4E11EF330 /* ListingsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsService.swift; sourceTree = "<group>"; };
+		82070D5A912A1DAC3FE34668 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		8B6AD647C68A0F9259BB5E31 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F2F24AD3B93BE0C62F1CFE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BCE4C182B5F5207442631DB0 /* ListingsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsServiceTests.swift; sourceTree = "<group>"; };
 		C2FB02D48B3BA2410D26F32F /* PropertyListingsEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PropertyListingsEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5C061002CFC6973AC8B49A7 /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
 		D761F6E685539D94DBF5C850 /* HTTPClientStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientStub.swift; sourceTree = "<group>"; };
 		DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsTestValues.swift; sourceTree = "<group>"; };
+		EA1AA23D6D31F6BDD6990883 /* AppRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouterTests.swift; sourceTree = "<group>"; };
 		F3E961E5898C72B8C3CA0D8C /* TestSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestSupport; path = Modules/Shared/TestSupport; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -91,6 +99,7 @@
 		11C1F8FE242BC06E39B1AA40 /* Composition */ = {
 			isa = PBXGroup;
 			children = (
+				6BF30EF5C3659003BB41469A /* AppRouter.swift */,
 				7D4B6E8775681EF4E11EF330 /* ListingsService.swift */,
 			);
 			path = Composition;
@@ -103,6 +112,7 @@
 				9F2F24AD3B93BE0C62F1CFE4 /* Info.plist */,
 				191461208EF00FD0D076FAD4 /* PropertyListingsApp.swift */,
 				11C1F8FE242BC06E39B1AA40 /* Composition */,
+				FFB9626281DA71E06D0CF6A6 /* Resources */,
 			);
 			path = PropertyListings;
 			sourceTree = "<group>";
@@ -129,7 +139,9 @@
 		8B16F7ED9D4FB973CB803DEC /* PropertyListingsTests */ = {
 			isa = PBXGroup;
 			children = (
+				EA1AA23D6D31F6BDD6990883 /* AppRouterTests.swift */,
 				BCE4C182B5F5207442631DB0 /* ListingsServiceTests.swift */,
+				D5C061002CFC6973AC8B49A7 /* LocalizationTests.swift */,
 				DF2ECE2C084856B0BF64CFC5 /* Helpers */,
 			);
 			path = PropertyListingsTests;
@@ -162,6 +174,14 @@
 				F3E961E5898C72B8C3CA0D8C /* TestSupport */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		FFB9626281DA71E06D0CF6A6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				82070D5A912A1DAC3FE34668 /* Localizable.xcstrings */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,7 +279,10 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				de,
 				en,
+				fr,
+				it,
 			);
 			mainGroup = 864EBD4C6E0A972734AE38AC;
 			minimizedProjectReferenceProxies = 1;
@@ -286,6 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				36FF4E736DD624ED4641DD01 /* Assets.xcassets in Resources */,
+				334CF67D1CEE6E34C62CC7D3 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4D2C8192580EEE8BD7D8DDF /* AppRouter.swift in Sources */,
 				CDFDACE11597A94BDE61CDF3 /* ListingsService.swift in Sources */,
 				14FE093BD8720ED0CFE3864A /* PropertyListingsApp.swift in Sources */,
 			);
@@ -335,9 +360,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8CA0FCA26149BC6E38752D8 /* AppRouterTests.swift in Sources */,
 				50BE31F2CE3C9210A33BFE52 /* HTTPClientStub.swift in Sources */,
 				449E9FF2605660E9AEFCF337 /* ListingsServiceTests.swift in Sources */,
 				1DF9E00E361AB9D18DC8ABDC /* ListingsTestValues.swift in Sources */,
+				862F3F4A5D8BE5E8252C2A91 /* LocalizationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
