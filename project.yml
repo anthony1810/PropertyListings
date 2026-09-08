@@ -11,6 +11,11 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
     IPHONEOS_DEPLOYMENT_TARGET: "18.0"
     CODE_SIGN_STYLE: Automatic
+packages:
+  Listings:
+    path: Modules/Listings
+  HTTPClient:
+    path: Modules/Shared/HTTPClient
 targets:
   PropertyListings:
     type: application
@@ -27,6 +32,22 @@ targets:
         CFBundleDisplayName: PropertyListings
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+  PropertyListingsEndToEndTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "15.0"
+    sources: [PropertyListingsEndToEndTests]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_IDENTITY: "-"
+    dependencies:
+      - package: Listings
+        product: ListingsAPI
+      - package: Listings
+        product: ListingsFeature
+      - package: HTTPClient
+        product: HTTPClientLive
 schemes:
   PropertyListings:
     build:
@@ -34,3 +55,10 @@ schemes:
         PropertyListings: all
     run:
       config: Debug
+  PropertyListingsEndToEndTests:
+    build:
+      targets:
+        PropertyListingsEndToEndTests: all
+    test:
+      config: Debug
+      targets: [PropertyListingsEndToEndTests]
