@@ -8,9 +8,11 @@ let package = Package(
         .library(name: "ListingsFeature", targets: ["ListingsFeature"]),
         .library(name: "ListingsAPI", targets: ["ListingsAPI"]),
         .library(name: "ListingsCache", targets: ["ListingsCache"]),
+        .library(name: "ListingsPresentation", targets: ["ListingsPresentation"]),
         .library(name: "ListingsTestSupport", targets: ["ListingsTestSupport"]),
     ],
     dependencies: [
+        .package(path: "../Shared/SharedPresentation"),
         .package(path: "../Shared/TestSupport"),
     ],
     targets: [
@@ -19,6 +21,11 @@ let package = Package(
         .target(name: "ListingsAPI", dependencies: ["ListingsFeature"]),
         .target(name: "ListingsCache", dependencies: ["ListingsFeature"]),
         .testTarget(name: "ListingsCacheTests", dependencies: ["ListingsCache", "ListingsTestSupport", "TestSupport"]),
+        .target(name: "ListingsPresentation", dependencies: ["ListingsFeature", "SharedPresentation"]),
+        .testTarget(
+            name: "ListingsPresentationTests",
+            dependencies: ["ListingsPresentation", "ListingsTestSupport", "TestSupport"]
+        ),
         .target(name: "ListingsTestSupport", dependencies: ["ListingsFeature"]),
         .testTarget(
             name: "ListingsAPITests",
