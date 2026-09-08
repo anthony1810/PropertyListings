@@ -48,8 +48,10 @@ private extension ListingsView {
         List(0..<Self.skeletonRowCount, id: \.self) { _ in
             SkeletonRow()
                 .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
+        .scrollContentBackground(.hidden)
         .accessibilityIdentifier(AccessibilityID.loading)
     }
 
@@ -71,6 +73,7 @@ private extension ListingsView {
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(AccessibilityID.row(row.id))
             .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
             .listRowInsets(
                 EdgeInsets(
                     top: DSSpacing.s,
@@ -81,6 +84,7 @@ private extension ListingsView {
             )
         }
         .listStyle(.plain)
+        .scrollContentBackground(.hidden)
         .accessibilityIdentifier(AccessibilityID.list)
     }
 }

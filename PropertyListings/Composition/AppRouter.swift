@@ -13,7 +13,7 @@ final class AppRouter {
 
         var title: String {
             switch self {
-            case .error: String(localized: "alert.errorTitle")
+            case .error: AppStrings.errorTitle
             }
         }
 

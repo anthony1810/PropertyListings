@@ -16,7 +16,7 @@ import Testing
         sut.present(.error("A message"))
 
         #expect(sut.alert == .error("A message"))
-        #expect(sut.alert?.title == String(localized: "alert.errorTitle"))
+        #expect(sut.alert?.title == AppStrings.errorTitle)
         #expect(sut.alert?.message == "A message")
     }
 
