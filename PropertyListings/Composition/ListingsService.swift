@@ -50,6 +50,6 @@ private extension ListingsService {
     func loadRemoteListings() async throws -> [Listing] {
         let url = ListingsEndpoint.page(from: 0, size: 5).url(baseURL: baseURL)
         let (data, response) = try await httpClient.get(from: url)
-        return try ListingsMapper.map(data, from: response)
+        return try ListingsMapper.map(data, from: response).listings
     }
 }

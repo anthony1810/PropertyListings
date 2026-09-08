@@ -6,11 +6,17 @@ public enum ListingsMapper {
         case invalidData
     }
 
-    public static func map(_ data: Data, from response: HTTPURLResponse) throws -> [Listing] {
+    public static func map(_ data: Data, from response: HTTPURLResponse) throws -> ListingsPage {
         guard response.isOK,
               let root = try? JSONDecoder().decode(Root.self, from: data)
         else { throw Error.invalidData }
-        return try root.results.map(listing(from:))
+        return ListingsPage(
+            listings: try root.results.map(listing(from:)),
+            from: root.from,
+            size: root.size,
+            total: root.total,
+            maxFrom: root.maxFrom
+        )
     }
 }
 
@@ -59,6 +65,10 @@ private extension ListingsMapper {
 
 private extension ListingsMapper {
     struct Root: Decodable {
+        let from: Int
+        let size: Int
+        let total: Int
+        let maxFrom: Int
         let results: [RemoteItem]
     }
 
