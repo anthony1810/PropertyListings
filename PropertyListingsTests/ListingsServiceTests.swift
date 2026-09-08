@@ -8,37 +8,72 @@ import TestSupport
 
 struct ListingsServiceTests {
     @Test func loadListings_deliversRemoteListingsWhenOnline() async throws {
-        let sut = makeSUT([url: [.success(listingsJSON, statusCode: 200)]])
+        let sut = makeSUT(client: online)
 
         let listings = try await sut.loadListings()
 
         #expect(listings == [house.model, flat.model])
     }
 
-    @Test func loadListings_failsWhenOffline() async {
-        let sut = makeSUT([:])
-
-        await #expect(throws: Error.self) {
-            try await sut.loadListings()
-        }
-    }
-
     @Test func loadListings_cachesRemoteListingsWithTimestampWhenOnline() async throws {
         let store = InMemoryListingsStore()
-        let sut = makeSUT([url: [.success(listingsJSON, statusCode: 200)]], store: store)
+        let sut = makeSUT(client: online, store: store)
 
         _ = try await sut.loadListings()
 
         #expect(try await store.retrieve() == CachedListings(listings: [house.local, flat.local], timestamp: now))
     }
 
-    @Test func loadListings_doesNotCacheWhenRemoteFails() async throws {
+    @Test func loadListings_doesNotCacheWhenRemoteIsMalformed() async throws {
         let store = InMemoryListingsStore()
-        let sut = makeSUT([url: [.success(Data("not json".utf8), statusCode: 200)]], store: store)
+        let sut = makeSUT(client: malformed, store: store)
 
         _ = try? await sut.loadListings()
 
         #expect(try await store.retrieve() == nil)
+    }
+
+    @Test func loadListings_throwsCacheMissWhenOfflineWithNoCache() async {
+        let sut = makeSUT(client: .offline)
+
+        await #expect(throws: LocalListingsLoader.Error.cacheMiss) {
+            try await sut.loadListings()
+        }
+    }
+
+    @Test func loadListings_throwsCacheMissWhenOfflineWithExpiredCache() async {
+        let sut = makeSUT(client: .offline, store: InMemoryListingsStore(cache: expiredCache))
+
+        await #expect(throws: LocalListingsLoader.Error.cacheMiss) {
+            try await sut.loadListings()
+        }
+    }
+
+    @Test func loadListings_deliversCachedListingsWhenOfflineWithFreshCache() async throws {
+        let sut = makeSUT(client: .offline, store: InMemoryListingsStore(cache: freshCache))
+
+        let listings = try await sut.loadListings()
+
+        #expect(listings == [house.model])
+    }
+
+    @Test func loadListings_deliversListingsCachedByAnEarlierOnlineLoadWhenOffline() async throws {
+        let store = InMemoryListingsStore()
+        let onlineSUT = makeSUT(client: online, store: store)
+        _ = try await onlineSUT.loadListings()
+        let offlineSUT = makeSUT(client: .offline, store: store)
+
+        let listings = try await offlineSUT.loadListings()
+
+        #expect(listings == [house.model, flat.model])
+    }
+
+    @Test func loadListings_keepsServingTheCacheWhenRemoteIsMalformed() async throws {
+        let sut = makeSUT(client: malformed, store: InMemoryListingsStore(cache: freshCache))
+
+        let listings = try await sut.loadListings()
+
+        #expect(listings == [house.model])
     }
 
     // MARK: - Helpers
@@ -48,17 +83,41 @@ struct ListingsServiceTests {
     private let house = makeRemoteListing(id: "1", title: "Haus", price: 9_999_999)
     private let flat = makeRemoteListing(id: "2", title: "Maison", price: nil, street: nil)
 
-    private var listingsJSON: Data { makeItemsJSON([house.json, flat.json]) }
+    private var online: HTTPClientStub {
+        HTTPClientStub([url: [.success(makeItemsJSON([house.json, flat.json]))]])
+    }
+
+    private var malformed: HTTPClientStub {
+        HTTPClientStub([url: [.success(invalidJSON())]])
+    }
+
+    private var freshCache: CachedListings {
+        CachedListings(listings: [house.local], timestamp: now.adding(days: -7).adding(seconds: 1))
+    }
+
+    private var expiredCache: CachedListings {
+        CachedListings(listings: [house.local], timestamp: now.adding(days: -7))
+    }
 
     private func makeSUT(
-        _ outcomes: [URL: [HTTPClientStub.Outcome]],
+        client: HTTPClientStub,
         store: InMemoryListingsStore = InMemoryListingsStore()
     ) -> ListingsService {
         ListingsService(
-            httpClient: HTTPClientStub(outcomes),
+            httpClient: client,
             store: store,
             baseURL: anyURL(),
             currentDate: { [now] in now }
         )
+    }
+}
+
+private extension Date {
+    func adding(days: Int) -> Date {
+        Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
+    }
+
+    func adding(seconds: TimeInterval) -> Date {
+        self + seconds
     }
 }

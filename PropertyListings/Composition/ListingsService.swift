@@ -21,7 +21,12 @@ struct ListingsService: Sendable {
     }
 
     func loadListings() async throws -> [Listing] {
-        try await loadAndCacheRemoteListings()
+        do {
+            return try await loadAndCacheRemoteListings()
+        } catch {
+            try Task.checkCancellation()
+            return try await localListings.load()
+        }
     }
 }
 

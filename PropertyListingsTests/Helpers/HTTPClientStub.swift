@@ -4,7 +4,7 @@ import TestSupport
 
 final class HTTPClientStub: HTTPClient {
     enum Outcome: Sendable {
-        case success(Data, statusCode: Int)
+        case success(Data)
         case failure
     }
 
@@ -26,8 +26,8 @@ final class HTTPClientStub: HTTPClient {
             return next
         }
         switch outcome {
-        case let .success(data, statusCode):
-            return (data, HTTPURLResponse(url: url, statusCode: statusCode, httpVersion: nil, headerFields: nil)!)
+        case let .success(data):
+            return (data, okHTTPURLResponse(for: url))
         case .failure:
             throw ConnectivityError()
         }
