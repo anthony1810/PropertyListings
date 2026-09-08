@@ -21,7 +21,11 @@ let package = Package(
         .target(name: "ListingsAPI", dependencies: ["ListingsFeature"]),
         .target(name: "ListingsCache", dependencies: ["ListingsFeature"]),
         .testTarget(name: "ListingsCacheTests", dependencies: ["ListingsCache", "ListingsTestSupport", "TestSupport"]),
-        .target(name: "ListingsPresentation", dependencies: ["ListingsFeature", "SharedPresentation"]),
+        .target(
+            name: "ListingsPresentation",
+            dependencies: ["ListingsFeature", "SharedPresentation"],
+            resources: [.process("Resources")]
+        ),
         .testTarget(
             name: "ListingsPresentationTests",
             dependencies: ["ListingsPresentation", "ListingsTestSupport", "TestSupport"]
