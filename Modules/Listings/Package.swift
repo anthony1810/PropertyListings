@@ -14,7 +14,11 @@ let package = Package(
     targets: [
         .target(name: "ListingsFeature"),
         .target(name: "ListingsAPI", dependencies: ["ListingsFeature"]),
-        .testTarget(name: "ListingsAPITests", dependencies: ["ListingsAPI", "TestSupport"]),
+        .testTarget(
+            name: "ListingsAPITests",
+            dependencies: ["ListingsAPI", "TestSupport"],
+            resources: [.copy("Fixtures")]
+        ),
     ],
     swiftLanguageModes: [.v6]
 )

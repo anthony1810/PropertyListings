@@ -127,6 +127,26 @@ import TestSupport
         #expect(result.first?.price?.amount == Decimal(string: "999999999999999"))
     }
 
+    @Test func map_decodesTheRealPayload() throws {
+        let result = try ListingsMapper.map(try Fixture.realPayload.data, from: anyHTTPURLResponse())
+
+        #expect(result.count == 9)
+        #expect(result.first == Listing(
+            id: "104123262",
+            title: "Luxuriöses Einfamilienhaus mit Pool - Musterinserat",
+            price: Price(amount: 9_999_999, currency: "CHF"),
+            address: Address(street: "Musterstrasse 999", postalCode: "2406", locality: "La Brévine"),
+            imageURL: URL(string: "https://media2.homegate.ch/listings/heia/104123262/image/6b53db714891bfe2321cc3a6d4af76e1.jpg")
+        ))
+        #expect(result[6] == Listing(
+            id: "3001697853",
+            title: "Test Homegate",
+            price: Price(amount: Decimal(string: "999999999999999")!, currency: "CHF"),
+            address: Address(street: nil, postalCode: "2406", locality: "La Brévine"),
+            imageURL: URL(string: "https://media2.homegate.ch/listings/heiasub3/3001697853/image/dbbad78b2e834742a70b6c35a0478e2c.jpg")
+        ))
+    }
+
     @Test func map_throwsWhenAnItemHasNoTitle() {
         let untitled = makeListing(languageBlocks: ["de": ["text": [:]]])
 
