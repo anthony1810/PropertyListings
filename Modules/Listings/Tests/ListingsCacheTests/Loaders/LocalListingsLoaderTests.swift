@@ -64,6 +64,45 @@ import TestSupport
         }
     }
 
+    // MARK: - Save
+
+    @Test func save_requestsDeletionThenInsertionOfMappedListingsWithTimestamp() async throws {
+        let now = Date()
+        let (sut, store) = makeSUT(currentDate: now)
+        let listings = [makeListing(id: "a"), makeListing(id: "b", price: nil)]
+
+        try await sut.save(listings.map(\.model))
+
+        #expect(store.receivedMessages == [.deleteCachedListings, .insert(listings.map(\.local), now)])
+    }
+
+    @Test func save_doesNotInsertOnDeletionError() async {
+        let (sut, store) = makeSUT()
+        store.completeDeletion(with: anyNSError())
+
+        _ = try? await sut.save([makeListing().model])
+
+        #expect(store.receivedMessages == [.deleteCachedListings])
+    }
+
+    @Test func save_failsOnDeletionError() async {
+        let (sut, store) = makeSUT()
+        store.completeDeletion(with: anyNSError())
+
+        await #expect(throws: Error.self) {
+            try await sut.save([makeListing().model])
+        }
+    }
+
+    @Test func save_failsOnInsertionError() async {
+        let (sut, store) = makeSUT()
+        store.completeInsertion(with: anyNSError())
+
+        await #expect(throws: Error.self) {
+            try await sut.save([makeListing().model])
+        }
+    }
+
     // MARK: - Helpers
 
     private let leakTrackers = LockIsolated<[MemoryLeakTracker]>([])

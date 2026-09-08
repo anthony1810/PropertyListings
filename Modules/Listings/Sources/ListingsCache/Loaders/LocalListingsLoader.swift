@@ -20,6 +20,13 @@ public struct LocalListingsLoader: Sendable {
     }
 }
 
+extension LocalListingsLoader: ListingsCache {
+    public func save(_ listings: [Listing]) async throws {
+        try await store.deleteCachedListings()
+        try await store.insert(listings.map(Self.local(from:)), timestamp: currentDate())
+    }
+}
+
 // MARK: - Local to domain
 
 private extension LocalListingsLoader {
@@ -36,5 +43,22 @@ private extension LocalListingsLoader {
     static func price(from local: LocalListing) -> Price? {
         guard let amount = local.priceAmount, let currency = local.priceCurrency else { return nil }
         return Price(amount: amount, currency: currency)
+    }
+}
+
+// MARK: - Domain to local
+
+private extension LocalListingsLoader {
+    static func local(from listing: Listing) -> LocalListing {
+        LocalListing(
+            id: listing.id,
+            title: listing.title,
+            priceAmount: listing.price?.amount,
+            priceCurrency: listing.price?.currency,
+            street: listing.address.street,
+            postalCode: listing.address.postalCode,
+            locality: listing.address.locality,
+            imageURL: listing.imageURL
+        )
     }
 }
