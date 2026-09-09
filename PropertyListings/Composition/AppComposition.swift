@@ -1,5 +1,7 @@
 import BookmarksFeature
 import BookmarksPersistence
+import BookmarksPresentation
+import BookmarksUI
 import DesignSystem
 import Foundation
 import HTTPClient
@@ -87,6 +89,29 @@ extension AppComposition {
             notify: { router.present(.error($0)) },
             locale: locale,
             clock: clock
+        )
+    }
+}
+
+// MARK: - Bookmarks
+
+extension AppComposition {
+    func makeBookmarksView() -> BookmarksView {
+        let router = router
+        return BookmarksView(
+            viewModel: makeBookmarksViewModel(),
+            onBrowseListings: { router.showListings() }
+        )
+    }
+
+    func makeBookmarksViewModel() -> BookmarksViewModel {
+        let bookmarks = bookmarks
+        let router = router
+        return BookmarksViewModel(
+            observeBookmarks: { bookmarks.observe() },
+            removeBookmark: { try await bookmarks.remove(id: $0) },
+            notify: { router.present(.error($0)) },
+            locale: locale
         )
     }
 }

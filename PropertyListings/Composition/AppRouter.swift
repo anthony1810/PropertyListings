@@ -6,6 +6,7 @@ import Observation
 final class AppRouter {
     enum Tab: Hashable {
         case listings
+        case saved
     }
 
     enum AlertRoute: Equatable {
@@ -29,6 +30,10 @@ final class AppRouter {
 
     func present(_ alert: AlertRoute) {
         self.alert = alert
+    }
+
+    func showListings() {
+        selectedTab = .listings
     }
 
     func dismissAlert() {

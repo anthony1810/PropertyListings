@@ -23,7 +23,7 @@
 		5605FCB538533C25866A3DDA /* LaunchArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3265C0674A1CEC16BE45C /* LaunchArguments.swift */; };
 		664EFE19FBA8BC3E3888A71C /* ListingsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 17DEFD7762836B1286F2890F /* ListingsUI */; };
 		6851A8450C9FDDFE497AA98D /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = CDA5F3069E88F3DFEC8F7316 /* ListingsAPI */; };
-		784AB48B2F2F09B700C9778E /* HTTPClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = F8EDAE62ADF3DA58A23E201E /* HTTPClientLive */; };
+		784AB48B2F2F09B700C9778E /* SharedPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 4637889EDC9753A828874667 /* SharedPresentation */; };
 		862F3F4A5D8BE5E8252C2A91 /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C061002CFC6973AC8B49A7 /* LocalizationTests.swift */; };
 		8CB8F7C616DF9B5BA0FF5755 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900585444AE411F2AAC4D0A /* RootView.swift */; };
 		90E021C576B36A78ECA96AFE /* ListingsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 0CE768B798ADBC571C77B0E1 /* ListingsFeature */; };
@@ -31,8 +31,9 @@
 		94DA2F8CF782F1A3DB67FC4D /* Listing+Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BA6453C4BAC20C49688B8D /* Listing+Bookmark.swift */; };
 		A3D9DA4BB1B85F9BA7174042 /* ListingsPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 352F1E3D664A70669D12D4F9 /* ListingsPresentation */; };
 		A756C1106BAE270DFD73F280 /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 8E41188FA089F1A4E0A1731E /* ListingsAPI */; };
-		B6653436F38679712593C1CF /* SharedPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 4637889EDC9753A828874667 /* SharedPresentation */; };
-		B92F9EF640CDA063D3B3B41E /* HTTPClient in Frameworks */ = {isa = PBXBuildFile; productRef = BD54B0390B38B1F7EBB6F7C0 /* HTTPClient */; };
+		A76070DE39048CE5941430E1 /* HTTPClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = F8EDAE62ADF3DA58A23E201E /* HTTPClientLive */; };
+		B6653436F38679712593C1CF /* BookmarksUI in Frameworks */ = {isa = PBXBuildFile; productRef = F3AEF2F81E0FC21BBE977614 /* BookmarksUI */; };
+		B92F9EF640CDA063D3B3B41E /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B3E5B4A3D0FA953B0FD7A43F /* DesignSystem */; };
 		BB884C80C89760557F1AB08C /* BookmarksPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = 06C6AE89E20DCAA40372AF4D /* BookmarksPersistence */; };
 		C3F0E5065866A7C2E98BF491 /* ServiceURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED1BA1F415AAC6FD6E88B51 /* ServiceURLs.swift */; };
 		C4D2C8192580EEE8BD7D8DDF /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF30EF5C3659003BB41469A /* AppRouter.swift */; };
@@ -42,8 +43,9 @@
 		E5A44CE35A91FB0D061EA87E /* ListingsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27B9E82F8C30512BA647A38 /* ListingsAcceptanceTests.swift */; };
 		EBE626E89A682944C760C0AF /* ListingsCache in Frameworks */ = {isa = PBXBuildFile; productRef = 8D60C12B895BC1F11F21614A /* ListingsCache */; };
 		F46AD66C392A00E38BAEEBB5 /* ListingsTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 3093FF3536C42EE8F630C546 /* ListingsTestSupport */; };
-		F497988E3F32F0DA77223082 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B3E5B4A3D0FA953B0FD7A43F /* DesignSystem */; };
+		F497988E3F32F0DA77223082 /* BookmarksPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = A6A20CC9E3EA17307935F038 /* BookmarksPresentation */; };
 		FB00E3477FA57245A7D62E08 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341791FBF78E1523BD2B75B8 /* AppStrings.swift */; };
+		FBED1C6C8907E75D4246D0BA /* HTTPClient in Frameworks */ = {isa = PBXBuildFile; productRef = BD54B0390B38B1F7EBB6F7C0 /* HTTPClient */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,10 +121,12 @@
 				664EFE19FBA8BC3E3888A71C /* ListingsUI in Frameworks */,
 				38503DDC118CEE50D30DFF6C /* BookmarksFeature in Frameworks */,
 				BB884C80C89760557F1AB08C /* BookmarksPersistence in Frameworks */,
-				F497988E3F32F0DA77223082 /* DesignSystem in Frameworks */,
-				B6653436F38679712593C1CF /* SharedPresentation in Frameworks */,
-				B92F9EF640CDA063D3B3B41E /* HTTPClient in Frameworks */,
-				784AB48B2F2F09B700C9778E /* HTTPClientLive in Frameworks */,
+				F497988E3F32F0DA77223082 /* BookmarksPresentation in Frameworks */,
+				B6653436F38679712593C1CF /* BookmarksUI in Frameworks */,
+				B92F9EF640CDA063D3B3B41E /* DesignSystem in Frameworks */,
+				784AB48B2F2F09B700C9778E /* SharedPresentation in Frameworks */,
+				FBED1C6C8907E75D4246D0BA /* HTTPClient in Frameworks */,
+				A76070DE39048CE5941430E1 /* HTTPClientLive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +293,8 @@
 				17DEFD7762836B1286F2890F /* ListingsUI */,
 				08A50B91E99EEEB746696F99 /* BookmarksFeature */,
 				06C6AE89E20DCAA40372AF4D /* BookmarksPersistence */,
+				A6A20CC9E3EA17307935F038 /* BookmarksPresentation */,
+				F3AEF2F81E0FC21BBE977614 /* BookmarksUI */,
 				B3E5B4A3D0FA953B0FD7A43F /* DesignSystem */,
 				4637889EDC9753A828874667 /* SharedPresentation */,
 				BD54B0390B38B1F7EBB6F7C0 /* HTTPClient */,
@@ -904,6 +910,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = HTTPClientLive;
 		};
+		A6A20CC9E3EA17307935F038 /* BookmarksPresentation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BookmarksPresentation;
+		};
 		B3E5B4A3D0FA953B0FD7A43F /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
@@ -915,6 +925,10 @@
 		CDA5F3069E88F3DFEC8F7316 /* ListingsAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ListingsAPI;
+		};
+		F3AEF2F81E0FC21BBE977614 /* BookmarksUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BookmarksUI;
 		};
 		F8EDAE62ADF3DA58A23E201E /* HTTPClientLive */ = {
 			isa = XCSwiftPackageProductDependency;

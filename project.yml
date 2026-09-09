@@ -60,6 +60,10 @@ targets:
         product: BookmarksFeature
       - package: Bookmarks
         product: BookmarksPersistence
+      - package: Bookmarks
+        product: BookmarksPresentation
+      - package: Bookmarks
+        product: BookmarksUI
       - package: DesignSystem
         product: DesignSystem
       - package: SharedPresentation

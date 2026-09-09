@@ -14,6 +14,9 @@ struct RootView: View {
             Tab(AppStrings.listingsTab, systemImage: "house", value: .listings) {
                 NavigationStack { composition.makeListingsView() }
             }
+            Tab(AppStrings.savedTab, systemImage: "heart", value: .saved) {
+                NavigationStack { composition.makeBookmarksView() }
+            }
         }
         .alert(
             router.alert?.title ?? "",
