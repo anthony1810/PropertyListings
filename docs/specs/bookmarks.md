@@ -178,17 +178,19 @@ the API and may diverge from it. The composition root maps one to the other.
 
 ## Scenario to test map
 
-Acceptance tests live in `PropertyListingsTests/BookmarksAcceptanceTests.swift`, one per scenario,
-grouped by narrative. Both tabs run over one in-memory store through the real composition; a
+Acceptance tests live in `PropertyListingsTests`, one per scenario, grouped by narrative. The like
+scenarios sit with the Listings tab in `ListingsAcceptanceTests`, the Saved tab scenarios in
+`BookmarksAcceptanceTests`. Both tabs run over one in-memory store through the real composition; a
 relaunch is a second composition over the same store.
 
 | Scenario | Proven by |
 |---|---|
-| Tap fills the heart, saves, appears on Saved | `customerTapsHeart_heartFillsAndListingAppearsOnSaved` · Maestro `03-saved-tab-shows-and-unbookmarks` |
-| Like survives kill and relaunch | `customerKillsAndRelaunches_likeIsStillThere` · Maestro `02-like-persists-across-relaunch` |
-| Tap again clears and leaves Saved | `customerTapsHeartAgain_heartClearsAndListingLeavesSaved` |
-| Save failure reverts with a message | `savingFails_heartRevertsWithAMessage` |
-| Saved lists everything newest first, offline | `customerOpensSaved_seesEveryLikeNewestFirst_withoutConnectivity` · snapshot `content` |
-| Saved empty state | `customerOpensSaved_withNoLikes_seesNothingToShow` · snapshot `empty` |
-| Remove on Saved clears the heart on Listings | `customerRemovesOnSaved_rowLeavesAndHeartClearsOnListings` · Maestro `03-saved-tab-shows-and-unbookmarks` |
-| Remove failure brings the row back | `removingFails_rowComesBackWithAMessage` |
+| Tap fills the heart at once | `customerLikesAListing_seesTheHeartFilledAtOnce` |
+| Like survives kill and relaunch | `customerLikesAListing_seesItStillLikedAfterRelaunch` · UI test `listingsTab_keepsALikeAcrossRelaunch` |
+| Tap again clears and stays cleared after relaunch | `customerUnlikesAListing_seesItClearedAfterRelaunch` |
+| Save failure reverts with an alert | `customerLikesAListingAndSavingFails_seesTheHeartRevertedAndAnAlert` |
+| Saved lists everything newest first, offline | `customerOpensSaved_seesEveryLikedListingNewestFirst` · snapshot `content` |
+| Saved empty state | `customerOpensSavedWithNoLikes_seesNothingToShow` · snapshot `empty` |
+| A like on Listings appears on Saved | `customerLikesOnListings_seesItAppearOnSaved` |
+| Remove on Saved clears the heart on Listings | `customerRemovesOnSaved_seesTheRowLeaveAndTheHeartClearOnListings` · UI test `savedTab_unbookmarkingClearsTheHeartOnListings` |
+| Remove failure brings the row back | `customerRemovesOnSavedAndItFails_seesTheRowBackAndAnAlert` |

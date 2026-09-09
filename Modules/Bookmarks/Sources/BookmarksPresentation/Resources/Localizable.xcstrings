@@ -1,0 +1,15 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "bookmarks.removeFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "That listing couldn't be removed. Please try again." } },
+        "de": { "stringUnit": { "state": "translated", "value": "Dieses Inserat konnte nicht entfernt werden. Bitte versuchen Sie es erneut." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Cette annonce n'a pas pu être retirée. Veuillez réessayer." } },
+        "it": { "stringUnit": { "state": "translated", "value": "Questo annuncio non è stato rimosso. Riprova." } }
+      }
+    }
+  }
+}

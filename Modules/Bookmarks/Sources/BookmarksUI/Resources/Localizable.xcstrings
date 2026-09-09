@@ -1,0 +1,51 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "bookmarks.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Saved" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Gespeichert" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Enregistrés" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Salvati" } }
+      }
+    },
+    "bookmarks.empty.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "No saved listings yet" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Noch keine gespeicherten Inserate" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Aucune annonce enregistrée" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Nessun annuncio salvato" } }
+      }
+    },
+    "bookmarks.empty.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Tap the heart on a listing to keep it here." } },
+        "de": { "stringUnit": { "state": "translated", "value": "Tippen Sie auf das Herz eines Inserats, um es hier zu behalten." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Touchez le cœur d'une annonce pour la garder ici." } },
+        "it": { "stringUnit": { "state": "translated", "value": "Tocca il cuore di un annuncio per tenerlo qui." } }
+      }
+    },
+    "bookmarks.empty.browse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Browse listings" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Inserate durchsuchen" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Parcourir les annonces" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Sfoglia gli annunci" } }
+      }
+    },
+    "bookmarks.remove": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Remove" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Entfernen" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Retirer" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Rimuovi" } }
+      }
+    }
+  }
+}

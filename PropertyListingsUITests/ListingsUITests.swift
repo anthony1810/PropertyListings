@@ -3,43 +3,35 @@ import XCTest
 @MainActor
 final class ListingsUITests: XCTestCase {
     func test_listingsTab_showsListingsFromTheRemote() {
-        let app = launch(reset: true)
+        let app = XCUIApplication.launch(.online, store: .empty)
 
-        let showsFirstListing = app.staticTexts[firstListingTitle].waitForExistence(timeout: 15)
-
-        XCTAssertTrue(showsFirstListing)
+        XCTAssertTrue(app.listingsTab.isShowing(.firstRow), "the first row is visible on the Listings tab")
     }
 
     func test_listingsTab_showsTheListingsCachedByAnEarlierLaunchWhenOffline() {
-        let firstLaunch = launch(reset: true)
-        _ = firstLaunch.staticTexts[firstListingTitle].waitForExistence(timeout: 15)
+        let firstLaunch = XCUIApplication.launch(.online, store: .empty)
+        XCTAssertTrue(firstLaunch.listingsTab.isShowing(.firstRow), "the first row is visible before the relaunch")
         firstLaunch.terminate()
-        let offlineLaunch = launch(reset: false, offline: true)
 
-        let showsCachedListing = offlineLaunch.staticTexts[firstListingTitle].waitForExistence(timeout: 15)
+        let offlineLaunch = XCUIApplication.launch(.offline, store: .kept)
 
-        XCTAssertTrue(showsCachedListing)
+        XCTAssertTrue(offlineLaunch.listingsTab.isShowing(.firstRow), "the first row is visible on the Listings tab while offline")
     }
 
     func test_listingsTab_showsTheErrorWithRetryWhenOfflineWithNoCache() {
-        let app = launch(reset: true, offline: true)
+        let app = XCUIApplication.launch(.offline, store: .empty)
 
-        let showsError = app.descendants(matching: .any)["listings.error"].waitForExistence(timeout: 15)
-        let showsRetry = app.buttons["Retry"].exists
-
-        XCTAssertTrue(showsError)
-        XCTAssertTrue(showsRetry)
+        XCTAssertTrue(app.listingsTab.isShowingErrorWithRetry, "the error state and its Retry button are visible on the Listings tab")
     }
 
-    // MARK: - Helpers
+    func test_listingsTab_keepsALikeAcrossRelaunch() {
+        let firstLaunch = XCUIApplication.launch(.online, store: .empty)
+        firstLaunch.listingsTab.like(.firstRow)
+        XCTAssertTrue(firstLaunch.listingsTab.isShowingLiked(.firstRow), "the first row's heart is on before the relaunch")
+        firstLaunch.terminate()
 
-    private let firstListingTitle = "Luxuriöses Einfamilienhaus mit Pool - Musterinserat"
+        let secondLaunch = XCUIApplication.launch(.online, store: .kept)
 
-    private func launch(reset: Bool, offline: Bool = false) -> XCUIApplication {
-        let app = XCUIApplication()
-        if reset { app.launchArguments += ["-reset"] }
-        if offline { app.launchArguments += ["-connectivity", "offline"] }
-        app.launch()
-        return app
+        XCTAssertTrue(secondLaunch.listingsTab.isShowingLiked(.firstRow), "the first row's heart is on after the relaunch")
     }
 }

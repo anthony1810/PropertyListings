@@ -20,6 +20,15 @@ import Testing
         #expect(sut.alert?.message == "A message")
     }
 
+    @Test func showListings_selectsTheListingsTab() {
+        let sut = AppRouter()
+        sut.selectedTab = .saved
+
+        sut.showListings()
+
+        #expect(sut.selectedTab == .listings)
+    }
+
     @Test func dismissAlert_clearsTheAlert() {
         let sut = AppRouter()
         sut.present(.error("A message"))

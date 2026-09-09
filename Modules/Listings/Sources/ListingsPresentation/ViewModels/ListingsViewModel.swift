@@ -22,6 +22,7 @@ public final class ListingsViewModel {
     public private(set) var isLoadingMore = false
     public private(set) var loadFailureMessage: String?
 
+    private var hasLoaded = false
     private var page = Paginated<Listing>(items: [])
     private var listings: [Listing] { page.items }
     private var bookmarkedIDs: Set<Listing.ID> = []
@@ -92,6 +93,11 @@ public final class ListingsViewModel {
         }
     }
 
+    public func loadIfNeeded() async {
+        guard !hasLoaded else { return }
+        await load()
+    }
+
     public func load() async {
         guard !isLoading else { return }
         isLoading = true
@@ -100,6 +106,8 @@ public final class ListingsViewModel {
             page = try await loadListings()
             loadFailureMessage = nil
             rebuildRows()
+        } catch is CancellationError {
+            return
         } catch {
             if listings.isEmpty {
                 loadFailureMessage = Message.listingsFailed
@@ -107,6 +115,7 @@ public final class ListingsViewModel {
                 notify(Message.listingsFailed)
             }
         }
+        hasLoaded = true
     }
 }
 

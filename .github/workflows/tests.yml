@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [Shared/SharedPresentation, Shared/DesignSystem, Listings]
+        package: [Shared/SharedPresentation, Shared/DesignSystem, Listings, Bookmarks]
     steps:
       - uses: actions/checkout@v5
       - name: Wait for CoreSimulator to list devices

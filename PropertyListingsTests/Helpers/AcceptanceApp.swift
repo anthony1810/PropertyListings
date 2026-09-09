@@ -1,0 +1,82 @@
+import BookmarksFeature
+import BookmarksPersistence
+import BookmarksPresentation
+import Foundation
+import ListingsCache
+import ListingsFeature
+import ListingsPresentation
+import TestSupport
+@testable import PropertyListings
+
+@MainActor
+struct AcceptanceApp {
+    struct Stores {
+        let listings: InMemoryListingsStore
+        let bookmarks: BookmarkStore
+
+        init(listings: InMemoryListingsStore = InMemoryListingsStore(), bookmarks: BookmarkStore = InMemoryBookmarkStore()) {
+            self.listings = listings
+            self.bookmarks = bookmarks
+        }
+    }
+
+    let stores: Stores
+    let composition: AppComposition
+    let listings: ListingsViewModel
+    let saved: BookmarksViewModel
+
+    private let clock: TestClock<Duration>
+
+    init(
+        client: HTTPClientStub,
+        stores: Stores,
+        today: LockIsolated<Date>,
+        locale: Locale,
+        clock: TestClock<Duration>
+    ) {
+        self.stores = stores
+        self.clock = clock
+        composition = AppComposition(
+            httpClient: client,
+            listingsStore: stores.listings,
+            bookmarkStore: stores.bookmarks,
+            currentDate: { [today] in today.value },
+            locale: locale,
+            clock: clock
+        )
+        listings = composition.listingsViewModel
+        saved = composition.bookmarksViewModel
+    }
+
+    var router: AppRouter { composition.router }
+    var hearts: [Bool] { listings.rows.map(\.isBookmarked) }
+    var titles: [String] { listings.rows.map(\.title) }
+    var savedIDs: [String] { saved.rows.map(\.id) }
+
+    func like(_ listing: Listing) async {
+        await toggle(listing)
+    }
+
+    func unlike(_ listing: Listing) async {
+        await toggle(listing)
+    }
+
+    func observingBookmarks(_ body: () async -> Void) async {
+        await withMainSerialExecutor {
+            let listingsObservation = Task { await listings.observeBookmarks() }
+            let savedObservation = Task { await saved.observe() }
+            await Task.megaYield()
+            await body()
+            await listingsObservation.cancelAndWait()
+            await savedObservation.cancelAndWait()
+        }
+    }
+
+    private func toggle(_ listing: Listing) async {
+        await withMainSerialExecutor {
+            listings.toggleBookmark(id: listing.id)
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+        }
+    }
+}

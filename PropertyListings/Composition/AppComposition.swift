@@ -1,3 +1,7 @@
+import BookmarksFeature
+import BookmarksPersistence
+import BookmarksPresentation
+import BookmarksUI
 import DesignSystem
 import Foundation
 import HTTPClient
@@ -15,6 +19,7 @@ final class AppComposition {
 
     private lazy var httpClient: HTTPClient = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
     private lazy var listingsStore: ListingsStore = CodableListingsStore(storeURL: Self.storeURL(named: "listings.json"))
+    private lazy var bookmarkStore: BookmarkStore = CodableBookmarkStore(storeURL: Self.storeURL(named: "bookmarks.json"))
     private var currentDate: @Sendable () -> Date = Date.init
     private var locale: Locale = .current
     private var clock: any Clock<Duration> = ContinuousClock()
@@ -27,7 +32,12 @@ final class AppComposition {
         baseURL: ServiceURLs.listings,
         currentDate: currentDate
     )
-    private let bookmarkedIDs = InMemoryBookmarkedIDs()
+    private lazy var bookmarks = LocalBookmarksLoader(store: bookmarkStore)
+
+    // MARK: - View models
+
+    private(set) lazy var listingsViewModel = makeListingsViewModel()
+    private(set) lazy var bookmarksViewModel = makeBookmarksViewModel()
 
     // MARK: - Init
 
@@ -43,6 +53,7 @@ final class AppComposition {
     convenience init(
         httpClient: HTTPClient,
         listingsStore: ListingsStore,
+        bookmarkStore: BookmarkStore,
         currentDate: @escaping @Sendable () -> Date,
         locale: Locale,
         clock: any Clock<Duration> = ContinuousClock()
@@ -50,6 +61,7 @@ final class AppComposition {
         self.init()
         self.httpClient = httpClient
         self.listingsStore = listingsStore
+        self.bookmarkStore = bookmarkStore
         self.currentDate = currentDate
         self.locale = locale
         self.clock = clock
@@ -66,21 +78,45 @@ final class AppComposition {
 
 extension AppComposition {
     func makeListingsView() -> ListingsView {
-        ListingsView(viewModel: makeListingsViewModel())
+        ListingsView(viewModel: listingsViewModel)
     }
 
-    func makeListingsViewModel() -> ListingsViewModel {
+    private func makeListingsViewModel() -> ListingsViewModel {
         let service = listingsService
-        let bookmarkedIDs = bookmarkedIDs
+        let bookmarks = bookmarks
         let router = router
+        let currentDate = currentDate
         return ListingsViewModel(
             loadListings: { try await service.loadListings() },
-            observeBookmarkedIDs: { bookmarkedIDs.observe() },
-            saveBookmark: { await bookmarkedIDs.insert($0.id) },
-            removeBookmark: { await bookmarkedIDs.remove($0) },
+            observeBookmarkedIDs: { bookmarks.observe().map { Set($0.map(\.id)) } },
+            saveBookmark: { try await bookmarks.save(Bookmark(listing: $0, savedAt: currentDate())) },
+            removeBookmark: { try await bookmarks.remove(id: $0) },
             notify: { router.present(.error($0)) },
             locale: locale,
             clock: clock
+        )
+    }
+}
+
+// MARK: - Bookmarks
+
+extension AppComposition {
+    func makeBookmarksView() -> BookmarksView {
+        let router = router
+        return BookmarksView(
+            viewModel: bookmarksViewModel,
+            onBrowseListings: { router.showListings() }
+        )
+    }
+
+    private func makeBookmarksViewModel() -> BookmarksViewModel {
+        let bookmarks = bookmarks
+        let router = router
+        return BookmarksViewModel(
+            observeBookmarks: { bookmarks.observe() },
+            removeBookmark: { try await bookmarks.remove(id: $0) },
+            notify: { router.present(.error($0)) },
+            locale: locale
         )
     }
 }

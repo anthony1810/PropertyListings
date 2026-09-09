@@ -22,18 +22,39 @@ public struct ErrorStateView: View {
 }
 
 public struct EmptyStateView: View {
+    public struct Action {
+        let title: String
+        let handler: () -> Void
+
+        public init(title: String, handler: @escaping () -> Void) {
+            self.title = title
+            self.handler = handler
+        }
+    }
+
     private let title: String
     private let hint: String
     private let systemImage: String
+    private let action: Action?
 
-    public init(title: String, hint: String, systemImage: String) {
+    public init(title: String, hint: String, systemImage: String, action: Action? = nil) {
         self.title = title
         self.hint = hint
         self.systemImage = systemImage
+        self.action = action
     }
 
     public var body: some View {
-        ContentUnavailableView(title, systemImage: systemImage, description: Text(hint))
+        ContentUnavailableView {
+            Label(title, systemImage: systemImage)
+        } description: {
+            Text(hint)
+        } actions: {
+            if let action {
+                Button(action.title, action: action.handler)
+                    .buttonStyle(.borderedProminent)
+            }
+        }
     }
 }
 
