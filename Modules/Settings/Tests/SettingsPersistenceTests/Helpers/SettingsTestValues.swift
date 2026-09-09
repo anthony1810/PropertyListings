@@ -10,3 +10,10 @@ func makeSettingsPair(
     let local = LocalSettings(appearance: model.appearance.rawValue, language: model.language.rawValue)
     return (model, local)
 }
+
+func makeLocalSettings(
+    appearance: Appearance = .system,
+    language: AppLanguage = .english
+) -> LocalSettings {
+    makeSettingsPair(appearance: appearance, language: language).local
+}
