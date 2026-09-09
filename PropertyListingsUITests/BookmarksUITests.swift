@@ -2,59 +2,31 @@ import XCTest
 
 @MainActor
 final class BookmarksUITests: XCTestCase {
-    func test_savedTab_unbookmarkingClearsTheHeartOnListings() {
-        let app = launch(reset: true)
-        let like = app.buttons["listing.like.\(firstListingID).off"]
-        XCTAssertTrue(like.waitForExistence(timeout: 15))
-        like.tap()
-        app.tabBars.buttons["Saved"].tap()
-        let savedRow = app.descendants(matching: .any)["bookmark.row.\(firstListingID)"]
-        XCTAssertTrue(savedRow.waitForExistence(timeout: 10))
-
-        app.buttons["bookmark.like.\(firstListingID)"].tap()
-
-        let showsEmptyState = app.descendants(matching: .any)["bookmarks.empty"].waitForExistence(timeout: 5)
-        app.tabBars.buttons["Listings"].tap()
-        let heartIsOff = app.buttons["listing.like.\(firstListingID).off"].waitForExistence(timeout: 5)
-        XCTAssertTrue(showsEmptyState)
-        XCTAssertTrue(heartIsOff)
-    }
-
     func test_savedTab_showsTheBookmarksSavedByAnEarlierLaunchWhenOffline() {
-        let firstLaunch = launch(reset: true)
-        let like = firstLaunch.buttons["listing.like.\(firstListingID).off"]
-        XCTAssertTrue(like.waitForExistence(timeout: 15))
-        like.tap()
-        XCTAssertTrue(firstLaunch.buttons["listing.like.\(firstListingID).on"].waitForExistence(timeout: 5))
+        let firstLaunch = XCUIApplication.launch(.online, store: .empty)
+        firstLaunch.listingsTab.like(.firstRow)
+        XCTAssertTrue(firstLaunch.listingsTab.isShowingLiked(.firstRow), "the first row's heart is on before the relaunch")
         firstLaunch.terminate()
-        let offlineLaunch = launch(reset: false, offline: true)
 
-        offlineLaunch.tabBars.buttons["Saved"].tap()
+        let offlineLaunch = XCUIApplication.launch(.offline, store: .kept)
 
-        let showsSavedRow = offlineLaunch.descendants(matching: .any)["bookmark.row.\(firstListingID)"].waitForExistence(timeout: 10)
-        XCTAssertTrue(showsSavedRow)
+        XCTAssertTrue(offlineLaunch.savedTab.isShowing(.firstRow), "the first row is visible on the Saved tab while offline")
     }
 
     func test_savedTab_showsNothingToShowWhenOfflineWithNoBookmarks() {
-        let app = launch(reset: true, offline: true)
+        let app = XCUIApplication.launch(.offline, store: .empty)
 
-        app.tabBars.buttons["Saved"].tap()
-
-        let showsEmptyState = app.descendants(matching: .any)["bookmarks.empty"].waitForExistence(timeout: 10)
-        let showsBrowse = app.buttons["Browse listings"].exists
-        XCTAssertTrue(showsEmptyState)
-        XCTAssertTrue(showsBrowse)
+        XCTAssertTrue(app.savedTab.isShowingEmptyState, "the empty state and its Browse listings button are visible on the Saved tab")
     }
 
-    // MARK: - Helpers
+    func test_savedTab_unbookmarkingClearsTheHeartOnListings() {
+        let app = XCUIApplication.launch(.online, store: .empty)
+        app.listingsTab.like(.firstRow)
+        XCTAssertTrue(app.savedTab.isShowing(.firstRow), "the first row is visible on the Saved tab after the like")
 
-    private let firstListingID = "104123262"
+        app.savedTab.unbookmark(.firstRow)
 
-    private func launch(reset: Bool, offline: Bool = false) -> XCUIApplication {
-        let app = XCUIApplication()
-        if reset { app.launchArguments += ["-reset"] }
-        if offline { app.launchArguments += ["-connectivity", "offline"] }
-        app.launch()
-        return app
+        XCTAssertTrue(app.savedTab.isShowingEmptyState, "the Saved tab shows its empty state after the unbookmark")
+        XCTAssertTrue(app.listingsTab.isShowingUnliked(.firstRow), "the first row's heart is off on the Listings tab")
     }
 }
