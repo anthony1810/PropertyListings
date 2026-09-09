@@ -63,6 +63,81 @@ import TestSupport
         }
     }
 
+    // MARK: - Remove
+
+    @Test func remove_dropsTheRowAtOnceAndRemovesTheBookmark() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            let observation = Task { await sut.observe() }
+            await Task.megaYield()
+            spy.emitBookmarks([makeBookmark(id: "a"), makeBookmark(id: "b")])
+            await Task.megaYield()
+
+            await sut.remove(id: "a")
+
+            #expect(sut.rows.map(\.id) == ["b"])
+            #expect(spy.receivedMessages == [.observeBookmarks, .removeBookmark("a")])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func remove_ignoresAnUnknownID() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            let observation = Task { await sut.observe() }
+            await Task.megaYield()
+            spy.emitBookmarks([makeBookmark(id: "a")])
+            await Task.megaYield()
+
+            await sut.remove(id: "missing")
+
+            #expect(sut.rows.map(\.id) == ["a"])
+            #expect(spy.receivedMessages == [.observeBookmarks])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func remove_ignoresASecondCallForTheSameRowWhileOneIsInFlight() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            let observation = Task { await sut.observe() }
+            await Task.megaYield()
+            spy.emitBookmarks([makeBookmark(id: "a")])
+            await Task.megaYield()
+            let gate = spy.removeBookmarkStub.holdNext()
+            let first = Task { await sut.remove(id: "a") }
+            await Task.megaYield()
+
+            await sut.remove(id: "a")
+
+            gate.open()
+            await first.value
+            #expect(spy.receivedMessages == [.observeBookmarks, .removeBookmark("a")])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func remove_restoresTheRowInPlaceAndNotifiesWhenItFails() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            let observation = Task { await sut.observe() }
+            await Task.megaYield()
+            spy.emitBookmarks([makeBookmark(id: "a"), makeBookmark(id: "b"), makeBookmark(id: "c")])
+            await Task.megaYield()
+            spy.removeBookmarkStub.complete(with: .failure(anyNSError()))
+
+            await sut.remove(id: "b")
+
+            #expect(sut.rows.map(\.id) == ["a", "b", "c"])
+            #expect(spy.receivedMessages == [
+                .observeBookmarks,
+                .removeBookmark("b"),
+                .notify(BookmarksViewModel.Message.removeFailed),
+            ])
+            await observation.cancelAndWait()
+        }
+    }
+
     // MARK: - Helpers
 
     private let locale = Locale(identifier: "de_CH")
@@ -78,6 +153,7 @@ import TestSupport
         let spy = BookmarksLoaderSpy()
         let sut = BookmarksViewModel(
             observeBookmarks: spy.observeBookmarks,
+            removeBookmark: spy.removeBookmark,
             notify: spy.notify,
             locale: locale
         )
