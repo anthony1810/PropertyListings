@@ -3,6 +3,7 @@ import Foundation
 
 public actor LocalBookmarksLoader {
     private let store: BookmarkStore
+    private var subscribers: [UUID: AsyncStream<[Bookmark]>.Continuation] = [:]
 
     public init(store: BookmarkStore) {
         self.store = store
@@ -16,10 +17,45 @@ public actor LocalBookmarksLoader {
 
     public func save(_ bookmark: Bookmark) async throws {
         try await store.insert(Self.local(from: bookmark))
+        await broadcast()
     }
 
     public func remove(id: Bookmark.ID) async throws {
         try await store.delete(id: id)
+        await broadcast()
+    }
+
+    public nonisolated func observe() -> AsyncStream<[Bookmark]> {
+        AsyncStream { continuation in
+            let key = UUID()
+            Task { await self.subscribe(key: key, continuation: continuation) }
+            continuation.onTermination = { _ in
+                Task { await self.unsubscribe(key: key) }
+            }
+        }
+    }
+}
+
+// MARK: - Broadcast
+
+private extension LocalBookmarksLoader {
+    func subscribe(key: UUID, continuation: AsyncStream<[Bookmark]>.Continuation) async {
+        subscribers[key] = continuation
+        continuation.yield(await currentBookmarks())
+    }
+
+    func unsubscribe(key: UUID) {
+        subscribers[key] = nil
+    }
+
+    func broadcast() async {
+        guard !subscribers.isEmpty else { return }
+        let bookmarks = await currentBookmarks()
+        subscribers.values.forEach { $0.yield(bookmarks) }
+    }
+
+    func currentBookmarks() async -> [Bookmark] {
+        (try? await load()) ?? []
     }
 }
 

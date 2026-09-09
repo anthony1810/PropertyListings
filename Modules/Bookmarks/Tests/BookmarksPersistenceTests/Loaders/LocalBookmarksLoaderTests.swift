@@ -4,6 +4,7 @@ import Foundation
 import Testing
 import TestSupport
 
+@MainActor
 @Suite final class LocalBookmarksLoaderTests {
     @Test func init_doesNotMessageStore() {
         let (_, store) = makeSUT()
@@ -70,6 +71,119 @@ import TestSupport
 
         await #expect(throws: Error.self) {
             try await sut.remove(id: "a")
+        }
+    }
+
+    // MARK: - Observe
+
+    @Test func observe_replaysTheCurrentBookmarksOnSubscribe() async throws {
+        await withMainSerialExecutor {
+            let (sut, store) = makeSUT()
+            let bookmark = makeBookmarkPair(id: "a")
+            store.retrievalStub.complete(with: .success([bookmark.local]))
+            let received = LockIsolated<[[Bookmark]]>([])
+
+            let observation = Task {
+                for await bookmarks in sut.observe() {
+                    received.withValue { $0.append(bookmarks) }
+                }
+            }
+            await Task.megaYield()
+
+            #expect(received.value == [[bookmark.model]])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func observe_yieldsTheNewListAfterSave() async throws {
+        try await withMainSerialExecutor {
+            let (sut, store) = makeSUT()
+            let bookmark = makeBookmarkPair(id: "a")
+            let received = LockIsolated<[[Bookmark]]>([])
+            let observation = Task {
+                for await bookmarks in sut.observe() {
+                    received.withValue { $0.append(bookmarks) }
+                }
+            }
+            await Task.megaYield()
+            store.retrievalStub.complete(with: .success([bookmark.local]))
+
+            try await sut.save(bookmark.model)
+            await Task.megaYield()
+
+            #expect(received.value == [[], [bookmark.model]])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func observe_yieldsTheNewListAfterRemove() async throws {
+        try await withMainSerialExecutor {
+            let (sut, store) = makeSUT()
+            let bookmark = makeBookmarkPair(id: "a")
+            store.retrievalStub.complete(with: .success([bookmark.local]))
+            let received = LockIsolated<[[Bookmark]]>([])
+            let observation = Task {
+                for await bookmarks in sut.observe() {
+                    received.withValue { $0.append(bookmarks) }
+                }
+            }
+            await Task.megaYield()
+            store.retrievalStub.complete(with: .success([]))
+
+            try await sut.remove(id: "a")
+            await Task.megaYield()
+
+            #expect(received.value == [[bookmark.model], []])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func observe_reachesEverySubscriber() async throws {
+        try await withMainSerialExecutor {
+            let (sut, store) = makeSUT()
+            let bookmark = makeBookmarkPair(id: "a")
+            let first = LockIsolated<[[Bookmark]]>([])
+            let second = LockIsolated<[[Bookmark]]>([])
+            let firstObservation = Task {
+                for await bookmarks in sut.observe() {
+                    first.withValue { $0.append(bookmarks) }
+                }
+            }
+            let secondObservation = Task {
+                for await bookmarks in sut.observe() {
+                    second.withValue { $0.append(bookmarks) }
+                }
+            }
+            await Task.megaYield()
+            store.retrievalStub.complete(with: .success([bookmark.local]))
+
+            try await sut.save(bookmark.model)
+            await Task.megaYield()
+
+            #expect(first.value == [[], [bookmark.model]])
+            #expect(second.value == [[], [bookmark.model]])
+            await firstObservation.cancelAndWait()
+            await secondObservation.cancelAndWait()
+        }
+    }
+
+    @Test func observe_stopsYieldingAfterCancellation() async throws {
+        try await withMainSerialExecutor {
+            let (sut, store) = makeSUT()
+            let received = LockIsolated<[[Bookmark]]>([])
+            let observation = Task {
+                for await bookmarks in sut.observe() {
+                    received.withValue { $0.append(bookmarks) }
+                }
+            }
+            await Task.megaYield()
+            await observation.cancelAndWait()
+            store.retrievalStub.complete(with: .success([makeLocalBookmark()]))
+
+            try await sut.save(makeBookmarkPair().model)
+            await Task.megaYield()
+
+            #expect(received.value == [[]])
         }
     }
 
