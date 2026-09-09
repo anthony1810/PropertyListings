@@ -44,8 +44,8 @@ struct AcceptanceApp {
             locale: locale,
             clock: clock
         )
-        listings = composition.makeListingsViewModel()
-        saved = composition.makeBookmarksViewModel()
+        listings = composition.listingsViewModel
+        saved = composition.bookmarksViewModel
     }
 
     var router: AppRouter { composition.router }

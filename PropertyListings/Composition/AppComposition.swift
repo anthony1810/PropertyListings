@@ -34,6 +34,11 @@ final class AppComposition {
     )
     private lazy var bookmarks = LocalBookmarksLoader(store: bookmarkStore)
 
+    // MARK: - View models
+
+    private(set) lazy var listingsViewModel = makeListingsViewModel()
+    private(set) lazy var bookmarksViewModel = makeBookmarksViewModel()
+
     // MARK: - Init
 
     init() {
@@ -73,10 +78,10 @@ final class AppComposition {
 
 extension AppComposition {
     func makeListingsView() -> ListingsView {
-        ListingsView(viewModel: makeListingsViewModel())
+        ListingsView(viewModel: listingsViewModel)
     }
 
-    func makeListingsViewModel() -> ListingsViewModel {
+    private func makeListingsViewModel() -> ListingsViewModel {
         let service = listingsService
         let bookmarks = bookmarks
         let router = router
@@ -99,12 +104,12 @@ extension AppComposition {
     func makeBookmarksView() -> BookmarksView {
         let router = router
         return BookmarksView(
-            viewModel: makeBookmarksViewModel(),
+            viewModel: bookmarksViewModel,
             onBrowseListings: { router.showListings() }
         )
     }
 
-    func makeBookmarksViewModel() -> BookmarksViewModel {
+    private func makeBookmarksViewModel() -> BookmarksViewModel {
         let bookmarks = bookmarks
         let router = router
         return BookmarksViewModel(
