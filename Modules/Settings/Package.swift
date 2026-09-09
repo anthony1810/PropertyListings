@@ -1,0 +1,20 @@
+// swift-tools-version: 6.0
+import PackageDescription
+
+let package = Package(
+    name: "Settings",
+    defaultLocalization: "en",
+    platforms: [.iOS(.v18), .macOS(.v15)],
+    products: [
+        .library(name: "SettingsFeature", targets: ["SettingsFeature"]),
+        .library(name: "SettingsTestSupport", targets: ["SettingsTestSupport"]),
+    ],
+    dependencies: [
+        .package(path: "../Shared/TestSupport"),
+    ],
+    targets: [
+        .target(name: "SettingsFeature"),
+        .target(name: "SettingsTestSupport", dependencies: ["SettingsFeature"]),
+    ],
+    swiftLanguageModes: [.v6]
+)
