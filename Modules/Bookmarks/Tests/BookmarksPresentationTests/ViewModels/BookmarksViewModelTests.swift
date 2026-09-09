@@ -132,7 +132,49 @@ import TestSupport
             #expect(spy.receivedMessages == [
                 .observeBookmarks,
                 .removeBookmark("b"),
-                .notify(BookmarksViewModel.Message.removeFailed),
+                .notify(BookmarksViewModel.Message.removeFailed(locale)),
+            ])
+            await observation.cancelAndWait()
+        }
+    }
+
+    // MARK: - Update locale
+
+    @Test func update_rebuildsRowsInTheNewLocale() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            let bookmark = makeBookmark(id: "a", price: Price(amount: 9_999_999, currency: "CHF"))
+            let observation = Task { await sut.observe() }
+            await Task.megaYield()
+            spy.emitBookmarks([bookmark])
+            await Task.megaYield()
+            let american = Locale(identifier: "en_US")
+
+            sut.update(locale: american)
+
+            #expect(sut.locale == american)
+            #expect(sut.rows == [BookmarkRowMapper.map(bookmark, locale: american)])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func remove_notifiesInTheCurrentLocaleWhenItFails() async {
+        await withMainSerialExecutor {
+            let (sut, spy) = makeSUT()
+            let observation = Task { await sut.observe() }
+            await Task.megaYield()
+            spy.emitBookmarks([makeBookmark(id: "a")])
+            await Task.megaYield()
+            let french = Locale(identifier: "fr_CH")
+            sut.update(locale: french)
+            spy.removeBookmarkStub.complete(with: .failure(anyNSError()))
+
+            await sut.remove(id: "a")
+
+            #expect(spy.receivedMessages == [
+                .observeBookmarks,
+                .removeBookmark("a"),
+                .notify(BookmarksViewModel.Message.removeFailed(french)),
             ])
             await observation.cancelAndWait()
         }
