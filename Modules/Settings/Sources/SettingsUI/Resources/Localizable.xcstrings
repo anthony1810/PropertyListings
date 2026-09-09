@@ -1,0 +1,60 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "settings.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Settings" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Einstellungen" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Réglages" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Impostazioni" } }
+      }
+    },
+    "settings.appearance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Appearance" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Erscheinungsbild" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Apparence" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Aspetto" } }
+      }
+    },
+    "settings.appearance.system": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "System" } },
+        "de": { "stringUnit": { "state": "translated", "value": "System" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Système" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Sistema" } }
+      }
+    },
+    "settings.appearance.light": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Light" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Hell" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Clair" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Chiaro" } }
+      }
+    },
+    "settings.appearance.dark": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Dark" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Dunkel" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Sombre" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Scuro" } }
+      }
+    },
+    "settings.language": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Language" } },
+        "de": { "stringUnit": { "state": "translated", "value": "Sprache" } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Langue" } },
+        "it": { "stringUnit": { "state": "translated", "value": "Lingua" } }
+      }
+    }
+  }
+}

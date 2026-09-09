@@ -9,9 +9,11 @@ let package = Package(
         .library(name: "SettingsFeature", targets: ["SettingsFeature"]),
         .library(name: "SettingsPersistence", targets: ["SettingsPersistence"]),
         .library(name: "SettingsPresentation", targets: ["SettingsPresentation"]),
+        .library(name: "SettingsUI", targets: ["SettingsUI"]),
         .library(name: "SettingsTestSupport", targets: ["SettingsTestSupport"]),
     ],
     dependencies: [
+        .package(path: "../Shared/DesignSystem"),
         .package(path: "../Shared/SharedPresentation"),
         .package(path: "../Shared/TestSupport"),
     ],
@@ -31,6 +33,15 @@ let package = Package(
             name: "SettingsPresentationTests",
             dependencies: ["SettingsPresentation", "SettingsTestSupport", "TestSupport"]
         ),
+        .target(
+            name: "SettingsUI",
+            dependencies: [
+                "SettingsPresentation",
+                .product(name: "DesignSystem", package: "DesignSystem", condition: .when(platforms: [.iOS])),
+            ],
+            resources: [.process("Resources")]
+        ),
+        .testTarget(name: "SettingsUITests", dependencies: ["SettingsUI", "SettingsTestSupport", "TestSupport"]),
         .target(name: "SettingsTestSupport", dependencies: ["SettingsFeature"]),
     ],
     swiftLanguageModes: [.v6]

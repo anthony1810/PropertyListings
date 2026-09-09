@@ -6,7 +6,7 @@ say() { echo "error: guard: $1"; fail=1; }
 sources() { grep -rlE "$1" "${@:2}" --include='*.swift' --exclude-dir=.build 2>/dev/null | grep -v '/Tests/' || true; }
 
 # 1. SwiftUI and UIKit only in the UI targets and the app
-bad=$(sources '^import (SwiftUI|UIKit)$' Modules | grep -vE '/Sources/(ListingsUI|BookmarksUI|DesignSystem|TestSupport)/' || true)
+bad=$(sources '^import (SwiftUI|UIKit)$' Modules | grep -vE '/Sources/(ListingsUI|BookmarksUI|SettingsUI|DesignSystem|TestSupport)/' || true)
 [ -z "$bad" ] || say "SwiftUI/UIKit outside the UI targets: $bad"
 
 # 2. No import between the verticals
