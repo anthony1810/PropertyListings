@@ -11,12 +11,18 @@
          <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">
             <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="BookmarksPersistence" BuildableName="BookmarksPersistence" BlueprintName="BookmarksPersistence" ReferencedContainer="container:"/>
          </BuildActionEntry>
+         <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">
+            <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="BookmarksPresentation" BuildableName="BookmarksPresentation" BlueprintName="BookmarksPresentation" ReferencedContainer="container:"/>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
       <Testables>
          <TestableReference skipped="NO">
             <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="BookmarksPersistenceTests" BuildableName="BookmarksPersistenceTests" BlueprintName="BookmarksPersistenceTests" ReferencedContainer="container:"/>
+         </TestableReference>
+         <TestableReference skipped="NO">
+            <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="BookmarksPresentationTests" BuildableName="BookmarksPresentationTests" BlueprintName="BookmarksPresentationTests" ReferencedContainer="container:"/>
          </TestableReference>
       </Testables>
    </TestAction>

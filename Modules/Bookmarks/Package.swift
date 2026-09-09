@@ -8,9 +8,11 @@ let package = Package(
     products: [
         .library(name: "BookmarksFeature", targets: ["BookmarksFeature"]),
         .library(name: "BookmarksPersistence", targets: ["BookmarksPersistence"]),
+        .library(name: "BookmarksPresentation", targets: ["BookmarksPresentation"]),
         .library(name: "BookmarksTestSupport", targets: ["BookmarksTestSupport"]),
     ],
     dependencies: [
+        .package(path: "../Shared/SharedPresentation"),
         .package(path: "../Shared/TestSupport"),
     ],
     targets: [
@@ -19,6 +21,11 @@ let package = Package(
         .testTarget(
             name: "BookmarksPersistenceTests",
             dependencies: ["BookmarksPersistence", "BookmarksTestSupport", "TestSupport"]
+        ),
+        .target(name: "BookmarksPresentation", dependencies: ["BookmarksFeature", "SharedPresentation"]),
+        .testTarget(
+            name: "BookmarksPresentationTests",
+            dependencies: ["BookmarksPresentation", "BookmarksTestSupport", "TestSupport"]
         ),
         .target(name: "BookmarksTestSupport", dependencies: ["BookmarksFeature"]),
     ],
