@@ -7,6 +7,7 @@ let package = Package(
     platforms: [.iOS(.v18), .macOS(.v15)],
     products: [
         .library(name: "BookmarksFeature", targets: ["BookmarksFeature"]),
+        .library(name: "BookmarksPersistence", targets: ["BookmarksPersistence"]),
         .library(name: "BookmarksTestSupport", targets: ["BookmarksTestSupport"]),
     ],
     dependencies: [
@@ -14,6 +15,11 @@ let package = Package(
     ],
     targets: [
         .target(name: "BookmarksFeature"),
+        .target(name: "BookmarksPersistence", dependencies: ["BookmarksFeature"]),
+        .testTarget(
+            name: "BookmarksPersistenceTests",
+            dependencies: ["BookmarksPersistence", "BookmarksTestSupport", "TestSupport"]
+        ),
         .target(name: "BookmarksTestSupport", dependencies: ["BookmarksFeature"]),
     ],
     swiftLanguageModes: [.v6]
