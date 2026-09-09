@@ -102,6 +102,63 @@ import TestSupport
         }
     }
 
+    @Test func load_leavesNoFailureBehindWhenCancelled() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: .failure(CancellationError()))
+
+        await sut.load()
+
+        #expect(sut.rows == [])
+        #expect(sut.loadFailureMessage == nil)
+        #expect(spy.receivedMessages == [.loadListings])
+    }
+
+    // MARK: - Load if needed
+
+    @Test func loadIfNeeded_loadsWhenNothingHasLoadedYet() async {
+        let (sut, spy, _) = makeSUT()
+        let house = makeListing(id: "a")
+        spy.completeListings(with: .success([house]))
+
+        await sut.loadIfNeeded()
+
+        #expect(sut.rows.map(\.id) == ["a"])
+        #expect(spy.receivedMessages == [.loadListings])
+    }
+
+    @Test func loadIfNeeded_doesNotLoadAgainAfterASuccessfulLoad() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: .success([makeListing(id: "a")]))
+        await sut.loadIfNeeded()
+
+        await sut.loadIfNeeded()
+
+        #expect(spy.receivedMessages == [.loadListings])
+    }
+
+    @Test func loadIfNeeded_doesNotLoadAgainAfterAFailedLoad() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: .failure(anyNSError()))
+        await sut.loadIfNeeded()
+
+        await sut.loadIfNeeded()
+
+        #expect(sut.loadFailureMessage == ListingsViewModel.Message.listingsFailed)
+        #expect(spy.receivedMessages == [.loadListings])
+    }
+
+    @Test func loadIfNeeded_loadsAgainAfterACancelledLoad() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: .failure(CancellationError()))
+        await sut.loadIfNeeded()
+        spy.completeListings(with: .success([makeListing(id: "a")]))
+
+        await sut.loadIfNeeded()
+
+        #expect(sut.rows.map(\.id) == ["a"])
+        #expect(spy.receivedMessages == [.loadListings, .loadListings])
+    }
+
     // MARK: - Load more
 
     @Test func load_reportsWhetherMoreCanBeLoaded() async {

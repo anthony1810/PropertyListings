@@ -14,7 +14,7 @@ public struct ListingsView: View {
         content
             .navigationTitle(ListingsUIStrings.title)
             .background(DSColor.surface)
-            .task { await viewModel.load() }
+            .task { await viewModel.loadIfNeeded() }
             .task { await viewModel.observeBookmarks() }
             .refreshable { await viewModel.load() }
     }
