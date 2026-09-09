@@ -1,6 +1,15 @@
 {
-  "originHash" : "049c620b0bea14f2c9143f45dbbf95b100047e7afcdcba514304b51c8da38f86",
+  "originHash" : "9f808936a70458d4bb4545e1b1f9eb0f5d4c114bab86bdacf5cc308a4a385cc5",
   "pins" : [
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher",
+      "state" : {
+        "revision" : "be0d257b9bd47a4e6e1265fc8c237411825f107a",
+        "version" : "8.12.0"
+      }
+    },
     {
       "identity" : "swift-clocks",
       "kind" : "remoteSourceControl",

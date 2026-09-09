@@ -9,9 +9,11 @@ let package = Package(
         .library(name: "BookmarksFeature", targets: ["BookmarksFeature"]),
         .library(name: "BookmarksPersistence", targets: ["BookmarksPersistence"]),
         .library(name: "BookmarksPresentation", targets: ["BookmarksPresentation"]),
+        .library(name: "BookmarksUI", targets: ["BookmarksUI"]),
         .library(name: "BookmarksTestSupport", targets: ["BookmarksTestSupport"]),
     ],
     dependencies: [
+        .package(path: "../Shared/DesignSystem"),
         .package(path: "../Shared/SharedPresentation"),
         .package(path: "../Shared/TestSupport"),
     ],
@@ -31,6 +33,15 @@ let package = Package(
             name: "BookmarksPresentationTests",
             dependencies: ["BookmarksPresentation", "BookmarksTestSupport", "TestSupport"]
         ),
+        .target(
+            name: "BookmarksUI",
+            dependencies: [
+                "BookmarksPresentation",
+                .product(name: "DesignSystem", package: "DesignSystem", condition: .when(platforms: [.iOS])),
+            ],
+            resources: [.process("Resources")]
+        ),
+        .testTarget(name: "BookmarksUITests", dependencies: ["BookmarksUI", "BookmarksTestSupport", "TestSupport"]),
         .target(name: "BookmarksTestSupport", dependencies: ["BookmarksFeature"]),
     ],
     swiftLanguageModes: [.v6]
