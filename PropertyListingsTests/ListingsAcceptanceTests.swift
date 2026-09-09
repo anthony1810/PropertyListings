@@ -20,7 +20,7 @@ struct ListingsAcceptanceTests {
     // MARK: - Narrative 1, online customer
 
     @Test func customerOpensListings_seesTheLatestListingsFromRemote() async {
-        let (listings, _) = makeApp(client: online)
+        let listings = launch(online).listings
 
         await listings.load()
 
@@ -30,7 +30,7 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func customerOpensListings_seesSwissPricesAndPriceOnRequest() async {
-        let (listings, _) = makeApp(client: online)
+        let listings = launch(online).listings
 
         await listings.load()
 
@@ -38,7 +38,7 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func customerOpensListings_seesTheAddressWithoutAStreetAsPostalCodeAndLocality() async {
-        let (listings, _) = makeApp(client: online)
+        let listings = launch(online).listings
 
         await listings.load()
 
@@ -47,7 +47,7 @@ struct ListingsAcceptanceTests {
 
     @Test(arguments: [HTTPClientStub.Outcome.success(invalidJSON()), .failure])
     func customerOpensListings_seesTheErrorWithRetryWhenRemoteFailsAndThereIsNoCache(outcome: HTTPClientStub.Outcome) async {
-        let (listings, _) = makeApp(client: HTTPClientStub([listingsURL: [outcome]]))
+        let listings = launch(HTTPClientStub([listingsURL: [outcome]])).listings
 
         await listings.load()
 
@@ -56,7 +56,7 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func customerRetriesAfterAFailure_seesTheListings() async {
-        let (listings, _) = makeApp(client: HTTPClientStub([listingsURL: [.failure, .success(listingsJSON)]]))
+        let listings = launch(HTTPClientStub([listingsURL: [.failure, .success(listingsJSON)]])).listings
         await listings.load()
 
         await listings.load()
@@ -66,7 +66,8 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func customerPullsToRefreshAndItFails_keepsTheListFromTheFreshCacheWithoutAnAlert() async {
-        let (listings, app) = makeApp(client: HTTPClientStub([listingsURL: [.success(listingsJSON), .failure]]))
+        let app = launch(HTTPClientStub([listingsURL: [.success(listingsJSON), .failure]]))
+        let listings = app.listings
         await listings.load()
 
         await listings.load()
@@ -77,7 +78,8 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func customerPullsToRefreshAfterSevenDaysAndItFails_keepsTheListAndSeesAnAlert() async {
-        let (listings, app) = makeApp(client: HTTPClientStub([listingsURL: [.success(listingsJSON), .failure]]))
+        let app = launch(HTTPClientStub([listingsURL: [.success(listingsJSON), .failure]]))
+        let listings = app.listings
         await listings.load()
         today.setValue(now.adding(days: 7))
 
@@ -89,7 +91,7 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func customerScrollsToTheEnd_seesTheNextPageAppended() async {
-        let (listings, _) = makeApp(client: twoPages)
+        let listings = launch(twoPages).listings
         await listings.load()
 
         await listings.loadMore()
@@ -99,7 +101,8 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func customerScrollsToTheEndAndItFails_keepsTheListAndSeesAnAlert() async {
-        let (listings, app) = makeApp(client: HTTPClientStub([firstPageURL: [.success(firstPageJSON)]]))
+        let app = launch(HTTPClientStub([firstPageURL: [.success(firstPageJSON)]]))
+        let listings = app.listings
         await listings.load()
 
         await listings.loadMore()
@@ -111,76 +114,56 @@ struct ListingsAcceptanceTests {
     // MARK: - Narrative 3, liking a listing
 
     @Test func customerLikesAListing_seesTheHeartFilledAtOnce() async {
-        let (listings, _) = makeApp(client: online)
-        await listings.load()
+        let app = launch(online)
+        await app.listings.load()
 
-        listings.toggleBookmark(id: house.model.id)
+        app.listings.toggleBookmark(id: house.model.id)
 
-        #expect(listings.rows.map(\.isBookmarked) == [true, false])
+        #expect(app.hearts == [true, false], "the first row's heart is on before anything is written")
     }
 
     @Test func customerLikesAListing_seesItStillLikedAfterRelaunch() async {
-        await withMainSerialExecutor {
-            let store = InMemoryBookmarkStore()
-            let (firstLaunch, _) = makeApp(client: online, bookmarkStore: store)
-            await firstLaunch.load()
-            firstLaunch.toggleBookmark(id: house.model.id)
-            await clock.advance(by: ListingsViewModel.toggleDebounce)
-            await Task.megaYield()
-            let (secondLaunch, _) = makeApp(client: online, bookmarkStore: store)
-            await secondLaunch.load()
-            let observation = Task { await secondLaunch.observeBookmarks() }
+        let firstLaunch = launch(online)
+        await firstLaunch.listings.load()
+        await firstLaunch.like(house.model)
+        let secondLaunch = launch(online, sharing: firstLaunch.stores)
+        await secondLaunch.listings.load()
 
-            await Task.megaYield()
-
-            #expect(secondLaunch.rows.map(\.isBookmarked) == [true, false])
-            await observation.cancelAndWait()
+        await secondLaunch.observingBookmarks {
+            #expect(secondLaunch.hearts == [true, false], "the first row's heart is on after the relaunch")
         }
     }
 
     @Test func customerUnlikesAListing_seesItClearedAfterRelaunch() async {
-        await withMainSerialExecutor {
-            let store = InMemoryBookmarkStore()
-            let (firstLaunch, _) = makeApp(client: online, bookmarkStore: store)
-            await firstLaunch.load()
-            firstLaunch.toggleBookmark(id: house.model.id)
-            await clock.advance(by: ListingsViewModel.toggleDebounce)
-            await Task.megaYield()
-            firstLaunch.toggleBookmark(id: house.model.id)
-            await clock.advance(by: ListingsViewModel.toggleDebounce)
-            await Task.megaYield()
-            let (secondLaunch, _) = makeApp(client: online, bookmarkStore: store)
-            await secondLaunch.load()
-            let observation = Task { await secondLaunch.observeBookmarks() }
+        let firstLaunch = launch(online)
+        await firstLaunch.listings.load()
+        await firstLaunch.like(house.model)
+        await firstLaunch.unlike(house.model)
+        let secondLaunch = launch(online, sharing: firstLaunch.stores)
+        await secondLaunch.listings.load()
 
-            await Task.megaYield()
-
-            #expect(secondLaunch.rows.map(\.isBookmarked) == [false, false])
-            await observation.cancelAndWait()
+        await secondLaunch.observingBookmarks {
+            #expect(secondLaunch.hearts == [false, false], "no heart is on after the relaunch")
         }
     }
 
     @Test func customerLikesAListingAndSavingFails_seesTheHeartRevertedAndAnAlert() async {
-        await withMainSerialExecutor {
-            let (listings, app) = makeApp(client: online, bookmarkStore: FailingBookmarkStore())
-            await listings.load()
+        let app = launch(online, sharing: AcceptanceApp.Stores(bookmarks: FailingBookmarkStore()))
+        await app.listings.load()
 
-            listings.toggleBookmark(id: house.model.id)
-            await clock.advance(by: ListingsViewModel.toggleDebounce)
-            await Task.megaYield()
+        await app.like(house.model)
 
-            #expect(listings.rows.map(\.isBookmarked) == [false, false])
-            #expect(app.router.alert == .error(ListingsViewModel.Message.bookmarkNotSaved))
-        }
+        #expect(app.hearts == [false, false], "the first row's heart is off again")
+        #expect(app.router.alert == .error(ListingsViewModel.Message.bookmarkNotSaved), "the router holds the not-saved alert")
     }
 
     // MARK: - Narrative 2, offline customer
 
     @Test func offlineCustomer_seesTheListingsCachedByAnEarlierVisit() async {
-        let sharedStore = InMemoryListingsStore()
-        let (onlineListings, _) = makeApp(client: online, listingsStore: sharedStore)
-        await onlineListings.load()
-        let (offlineListings, _) = makeApp(client: .offline, listingsStore: sharedStore)
+        let onlineLaunch = launch(online)
+        await onlineLaunch.listings.load()
+        let offlineListings = launch(.offline, sharing: onlineLaunch.stores).listings
+        let onlineListings = onlineLaunch.listings
 
         await offlineListings.load()
 
@@ -189,7 +172,7 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func offlineCustomer_seesTheErrorWithRetryWhenTheCacheIsSevenDaysOld() async {
-        let (listings, _) = makeApp(client: .offline, listingsStore: InMemoryListingsStore(cache: expiredCache))
+        let listings = launch(.offline, sharing: AcceptanceApp.Stores(listings: InMemoryListingsStore(cache: expiredCache))).listings
 
         await listings.load()
 
@@ -198,7 +181,7 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func offlineCustomer_seesTheErrorWithRetryWhenThereIsNoCache() async {
-        let (listings, _) = makeApp(client: .offline)
+        let listings = launch(.offline).listings
 
         await listings.load()
 
@@ -207,12 +190,11 @@ struct ListingsAcceptanceTests {
     }
 
     @Test func appLaunch_deletesAnExpiredCache() async throws {
-        let store = InMemoryListingsStore(cache: expiredCache)
-        let (_, app) = makeApp(client: .offline, listingsStore: store)
+        let app = launch(.offline, sharing: AcceptanceApp.Stores(listings: InMemoryListingsStore(cache: expiredCache)))
 
-        await app.validateCache()
+        await app.composition.validateCache()
 
-        #expect(try await store.retrieve() == nil)
+        #expect(try await app.stores.listings.retrieve() == nil, "the expired cache is gone from the store")
     }
 
     // MARK: - Helpers
@@ -263,20 +245,8 @@ struct ListingsAcceptanceTests {
         "CHF\u{00A0}" + number.replacingOccurrences(of: "'", with: deCH.groupingSeparator ?? "'")
     }
 
-    private func makeApp(
-        client: HTTPClientStub,
-        listingsStore: InMemoryListingsStore = InMemoryListingsStore(),
-        bookmarkStore: BookmarkStore = InMemoryBookmarkStore()
-    ) -> (listings: ListingsViewModel, app: AppComposition) {
-        let app = AppComposition(
-            httpClient: client,
-            listingsStore: listingsStore,
-            bookmarkStore: bookmarkStore,
-            currentDate: { [today] in today.value },
-            locale: deCH,
-            clock: clock
-        )
-        return (app.makeListingsViewModel(), app)
+    private func launch(_ client: HTTPClientStub, sharing stores: AcceptanceApp.Stores = AcceptanceApp.Stores()) -> AcceptanceApp {
+        AcceptanceApp(client: client, stores: stores, today: today, locale: deCH, clock: clock)
     }
 }
 

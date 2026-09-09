@@ -16,84 +16,61 @@ struct BookmarksAcceptanceTests {
     // MARK: - Narrative 2, the Saved tab
 
     @Test func customerOpensSaved_seesEveryLikedListingNewestFirst() async {
-        await withMainSerialExecutor {
-            let older = makeBookmark(id: "1", title: "Haus", savedAt: now.adding(seconds: -60))
-            let newer = makeBookmark(id: "2", title: "Chalet", savedAt: now)
-            let (saved, _) = makeApp(client: .offline, bookmarks: [older, newer])
-            let observation = Task { await saved.observe() }
+        let older = makeBookmark(id: "1", title: "Haus", savedAt: now.adding(seconds: -60))
+        let newer = makeBookmark(id: "2", title: "Chalet", savedAt: now)
+        let app = launch(.offline, bookmarks: [older, newer])
 
-            await Task.megaYield()
-
-            #expect(saved.rows == [
+        await app.observingBookmarks {
+            #expect(app.saved.rows == [
                 BookmarkRowMapper.map(newer, locale: deCH),
                 BookmarkRowMapper.map(older, locale: deCH),
-            ])
-            await observation.cancelAndWait()
+            ], "the Saved tab lists the newer bookmark first")
         }
     }
 
     @Test func customerOpensSavedWithNoLikes_seesNothingToShow() async {
-        await withMainSerialExecutor {
-            let (saved, _) = makeApp(client: .offline)
-            let observation = Task { await saved.observe() }
+        let app = launch(.offline)
 
-            await Task.megaYield()
-
-            #expect(saved.rows == [])
-            await observation.cancelAndWait()
+        await app.observingBookmarks {
+            #expect(app.saved.rows == [], "the Saved tab has no rows")
         }
     }
 
     @Test func customerLikesOnListings_seesItAppearOnSaved() async {
-        await withMainSerialExecutor {
-            let (saved, app) = makeApp(client: online)
-            let listings = app.makeListingsViewModel()
-            await listings.load()
-            let observation = Task { await saved.observe() }
-            await Task.megaYield()
+        let app = launch(online)
+        await app.listings.load()
 
-            listings.toggleBookmark(id: house.model.id)
-            await clock.advance(by: ListingsViewModel.toggleDebounce)
-            await Task.megaYield()
+        await app.observingBookmarks {
+            await app.like(house.model)
 
-            #expect(saved.rows.map(\.id) == [house.model.id])
-            await observation.cancelAndWait()
+            #expect(app.savedIDs == [house.model.id], "the liked listing is the only row on the Saved tab")
         }
     }
 
     // MARK: - Narrative 3, removing on Saved
 
     @Test func customerRemovesOnSaved_seesTheRowLeaveAndTheHeartClearOnListings() async {
-        await withMainSerialExecutor {
-            let (saved, app) = makeApp(client: online, bookmarks: [Bookmark(listing: house.model, savedAt: now)])
-            let listings = app.makeListingsViewModel()
-            await listings.load()
-            let savedObservation = Task { await saved.observe() }
-            let listingsObservation = Task { await listings.observeBookmarks() }
+        let app = launch(online, bookmarks: [Bookmark(listing: house.model, savedAt: now)])
+        await app.listings.load()
+
+        await app.observingBookmarks {
+            await app.saved.remove(id: house.model.id)
             await Task.megaYield()
 
-            await saved.remove(id: house.model.id)
-            await Task.megaYield()
-
-            #expect(saved.rows == [])
-            #expect(listings.rows.map(\.isBookmarked) == [false, false])
-            await savedObservation.cancelAndWait()
-            await listingsObservation.cancelAndWait()
+            #expect(app.saved.rows == [], "the Saved tab has no rows after the removal")
+            #expect(app.hearts == [false, false], "no heart is on on the Listings tab")
         }
     }
 
     @Test func customerRemovesOnSavedAndItFails_seesTheRowBackAndAnAlert() async {
-        await withMainSerialExecutor {
-            let bookmark = makeBookmark(id: "1")
-            let (saved, app) = makeApp(client: .offline, bookmarkStore: FailingBookmarkStore(bookmarks: [bookmark]))
-            let observation = Task { await saved.observe() }
-            await Task.megaYield()
+        let bookmark = makeBookmark(id: "1")
+        let app = launch(.offline, sharing: AcceptanceApp.Stores(bookmarks: FailingBookmarkStore(bookmarks: [bookmark])))
 
-            await saved.remove(id: "1")
+        await app.observingBookmarks {
+            await app.saved.remove(id: "1")
 
-            #expect(saved.rows.map(\.id) == ["1"])
-            #expect(app.router.alert == .error(BookmarksViewModel.Message.removeFailed))
-            await observation.cancelAndWait()
+            #expect(app.savedIDs == ["1"], "the row is back on the Saved tab")
+            #expect(app.router.alert == .error(BookmarksViewModel.Message.removeFailed), "the router holds the not-removed alert")
         }
     }
 
@@ -110,20 +87,13 @@ struct BookmarksAcceptanceTests {
         HTTPClientStub([listingsURL: [.success(makeItemsJSON([house.json, flat.json]))]])
     }
 
-    private func makeApp(
-        client: HTTPClientStub,
+    private func launch(
+        _ client: HTTPClientStub,
         bookmarks: [Bookmark] = [],
-        bookmarkStore: BookmarkStore? = nil
-    ) -> (saved: BookmarksViewModel, app: AppComposition) {
-        let app = AppComposition(
-            httpClient: client,
-            listingsStore: InMemoryListingsStore(),
-            bookmarkStore: bookmarkStore ?? InMemoryBookmarkStore(bookmarks: bookmarks.map(LocalBookmark.init(bookmark:))),
-            currentDate: { [now] in now },
-            locale: deCH,
-            clock: clock
-        )
-        return (app.makeBookmarksViewModel(), app)
+        sharing stores: AcceptanceApp.Stores? = nil
+    ) -> AcceptanceApp {
+        let stores = stores ?? AcceptanceApp.Stores(bookmarks: InMemoryBookmarkStore(bookmarks: bookmarks.map(LocalBookmark.init(bookmark:))))
+        return AcceptanceApp(client: client, stores: stores, today: LockIsolated(now), locale: deCH, clock: clock)
     }
 }
 

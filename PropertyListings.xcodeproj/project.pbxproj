@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		07E6F91B11F10A271A14B236 /* ListingsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 234D85778C9EBD2884E87568 /* ListingsFeature */; };
+		0DE52FD41F4449FAEC8A24CC /* AcceptanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889AE8F88A4E469E96572 /* AcceptanceApp.swift */; };
 		14FE093BD8720ED0CFE3864A /* PropertyListingsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191461208EF00FD0D076FAD4 /* PropertyListingsApp.swift */; };
 		1DF9E00E361AB9D18DC8ABDC /* ListingsTestValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */; };
 		1FCB78CF4B07E846591D3394 /* FailingBookmarkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D2B0BD28DDA930E8B219D /* FailingBookmarkStore.swift */; };
@@ -99,6 +100,7 @@
 		9E753C0F9A1542F253A685F2 /* SharedPresentation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SharedPresentation; path = Modules/Shared/SharedPresentation; sourceTree = SOURCE_ROOT; };
 		9F2F24AD3B93BE0C62F1CFE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AB886E855D873487E6E130AD /* PropertyListingsUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PropertyListingsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB9889AE8F88A4E469E96572 /* AcceptanceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptanceApp.swift; sourceTree = "<group>"; };
 		BCE4C182B5F5207442631DB0 /* ListingsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsServiceTests.swift; sourceTree = "<group>"; };
 		C2FB02D48B3BA2410D26F32F /* PropertyListingsEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PropertyListingsEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5C061002CFC6973AC8B49A7 /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 		DF2ECE2C084856B0BF64CFC5 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BB9889AE8F88A4E469E96572 /* AcceptanceApp.swift */,
 				252D2B0BD28DDA930E8B219D /* FailingBookmarkStore.swift */,
 				D761F6E685539D94DBF5C850 /* HTTPClientStub.swift */,
 				DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */,
@@ -527,6 +530,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DE52FD41F4449FAEC8A24CC /* AcceptanceApp.swift in Sources */,
 				D8CA0FCA26149BC6E38752D8 /* AppRouterTests.swift in Sources */,
 				65F961DA9A0C256383B57FF1 /* BookmarksAcceptanceTests.swift in Sources */,
 				1FCB78CF4B07E846591D3394 /* FailingBookmarkStore.swift in Sources */,
