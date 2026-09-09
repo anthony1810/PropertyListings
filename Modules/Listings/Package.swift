@@ -41,7 +41,7 @@ let package = Package(
             ],
             resources: [.process("Resources")]
         ),
-        .testTarget(name: "ListingsUITests", dependencies: ["ListingsUI", "TestSupport"]),
+        .testTarget(name: "ListingsUITests", dependencies: ["ListingsUI", "ListingsTestSupport", "TestSupport"]),
         .target(name: "ListingsTestSupport", dependencies: ["ListingsFeature"]),
         .testTarget(
             name: "ListingsAPITests",

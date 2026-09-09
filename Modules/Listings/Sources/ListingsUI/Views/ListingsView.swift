@@ -89,9 +89,9 @@ private extension ListingsView {
         .listRowBackground(Color.clear)
         .listRowInsets(
             EdgeInsets(
-                top: DSSpacing.s,
+                top: DSSpacing.m,
                 leading: DSSpacing.m,
-                bottom: DSSpacing.s,
+                bottom: DSSpacing.m,
                 trailing: DSSpacing.m
             )
         )
