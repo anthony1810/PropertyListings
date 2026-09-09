@@ -1,3 +1,4 @@
+import BookmarksPersistence
 import Foundation
 import ListingsAPI
 import ListingsCache
@@ -107,6 +108,72 @@ struct ListingsAcceptanceTests {
         #expect(app.router.alert == .error(ListingsViewModel.Message.listingsFailed))
     }
 
+    // MARK: - Narrative 3, liking a listing
+
+    @Test func customerLikesAListing_seesTheHeartFilledAtOnce() async {
+        let (listings, _) = makeApp(client: online)
+        await listings.load()
+
+        listings.toggleBookmark(id: house.model.id)
+
+        #expect(listings.rows.map(\.isBookmarked) == [true, false])
+    }
+
+    @Test func customerLikesAListing_seesItStillLikedAfterRelaunch() async {
+        await withMainSerialExecutor {
+            let store = InMemoryBookmarkStore()
+            let (firstLaunch, _) = makeApp(client: online, bookmarkStore: store)
+            await firstLaunch.load()
+            firstLaunch.toggleBookmark(id: house.model.id)
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+            let (secondLaunch, _) = makeApp(client: online, bookmarkStore: store)
+            await secondLaunch.load()
+            let observation = Task { await secondLaunch.observeBookmarks() }
+
+            await Task.megaYield()
+
+            #expect(secondLaunch.rows.map(\.isBookmarked) == [true, false])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func customerUnlikesAListing_seesItClearedAfterRelaunch() async {
+        await withMainSerialExecutor {
+            let store = InMemoryBookmarkStore()
+            let (firstLaunch, _) = makeApp(client: online, bookmarkStore: store)
+            await firstLaunch.load()
+            firstLaunch.toggleBookmark(id: house.model.id)
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+            firstLaunch.toggleBookmark(id: house.model.id)
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+            let (secondLaunch, _) = makeApp(client: online, bookmarkStore: store)
+            await secondLaunch.load()
+            let observation = Task { await secondLaunch.observeBookmarks() }
+
+            await Task.megaYield()
+
+            #expect(secondLaunch.rows.map(\.isBookmarked) == [false, false])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func customerLikesAListingAndSavingFails_seesTheHeartRevertedAndAnAlert() async {
+        await withMainSerialExecutor {
+            let (listings, app) = makeApp(client: online, bookmarkStore: FailingBookmarkStore())
+            await listings.load()
+
+            listings.toggleBookmark(id: house.model.id)
+            await clock.advance(by: ListingsViewModel.toggleDebounce)
+            await Task.megaYield()
+
+            #expect(listings.rows.map(\.isBookmarked) == [false, false])
+            #expect(app.router.alert == .error(ListingsViewModel.Message.bookmarkNotSaved))
+        }
+    }
+
     // MARK: - Narrative 2, offline customer
 
     @Test func offlineCustomer_seesTheListingsCachedByAnEarlierVisit() async {
@@ -152,6 +219,7 @@ struct ListingsAcceptanceTests {
 
     private let now: Date
     private let today: LockIsolated<Date>
+    private let clock = TestClock()
     private let deCH = Locale(identifier: "de_CH")
     private let listingsURL = ListingsEndpoint.page(from: 0, size: 5).url(baseURL: ServiceURLs.listings)
     private let house = makeRemoteListing(
@@ -197,13 +265,16 @@ struct ListingsAcceptanceTests {
 
     private func makeApp(
         client: HTTPClientStub,
-        listingsStore: InMemoryListingsStore = InMemoryListingsStore()
+        listingsStore: InMemoryListingsStore = InMemoryListingsStore(),
+        bookmarkStore: BookmarkStore = InMemoryBookmarkStore()
     ) -> (listings: ListingsViewModel, app: AppComposition) {
         let app = AppComposition(
             httpClient: client,
             listingsStore: listingsStore,
+            bookmarkStore: bookmarkStore,
             currentDate: { [today] in today.value },
-            locale: deCH
+            locale: deCH,
+            clock: clock
         )
         return (app.makeListingsViewModel(), app)
     }

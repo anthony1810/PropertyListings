@@ -14,6 +14,8 @@ settings:
 packages:
   Listings:
     path: Modules/Listings
+  Bookmarks:
+    path: Modules/Bookmarks
   HTTPClient:
     path: Modules/Shared/HTTPClient
   TestSupport:
@@ -54,6 +56,10 @@ targets:
         product: ListingsPresentation
       - package: Listings
         product: ListingsUI
+      - package: Bookmarks
+        product: BookmarksFeature
+      - package: Bookmarks
+        product: BookmarksPersistence
       - package: DesignSystem
         product: DesignSystem
       - package: SharedPresentation
@@ -73,6 +79,8 @@ targets:
       - target: PropertyListings
       - package: Listings
         product: ListingsTestSupport
+      - package: Bookmarks
+        product: BookmarksTestSupport
       - package: TestSupport
         product: TestSupport
   PropertyListingsUITests:

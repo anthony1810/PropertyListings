@@ -31,8 +31,23 @@ final class ListingsUITests: XCTestCase {
         XCTAssertTrue(showsRetry)
     }
 
+    func test_listingsTab_keepsALikeAcrossRelaunch() {
+        let firstLaunch = launch(reset: true)
+        let like = firstLaunch.buttons["listing.like.\(firstListingID).off"]
+        XCTAssertTrue(like.waitForExistence(timeout: 15))
+        like.tap()
+        XCTAssertTrue(firstLaunch.buttons["listing.like.\(firstListingID).on"].waitForExistence(timeout: 5))
+        firstLaunch.terminate()
+        let secondLaunch = launch(reset: false)
+
+        let stillLiked = secondLaunch.buttons["listing.like.\(firstListingID).on"].waitForExistence(timeout: 15)
+
+        XCTAssertTrue(stillLiked)
+    }
+
     // MARK: - Helpers
 
+    private let firstListingID = "104123262"
     private let firstListingTitle = "Luxuriöses Einfamilienhaus mit Pool - Musterinserat"
 
     private func launch(reset: Bool, offline: Bool = false) -> XCUIApplication {
