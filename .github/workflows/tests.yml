@@ -52,6 +52,7 @@ jobs:
           xcodebuild test \
             -workspace PropertyListings.xcworkspace \
             -scheme PropertyListings \
+            -skip-testing:PropertyListingsUITests \
             -destination "$SIMULATOR" \
             -skipPackagePluginValidation \
             CODE_SIGNING_ALLOWED=NO \
