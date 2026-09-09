@@ -77,6 +77,24 @@ Given the customer has listings on screen
   And the app shows an alert
 ```
 
+**Addition.** Paging, five listings per request.
+
+```
+Given the customer has connectivity
+  And the remote reports more listings than the page it returned
+ When the customer scrolls to the end of the list
+ Then the app appends the next page of listings
+  And stops asking once the remote reports no further page
+```
+
+```
+Given the customer has connectivity
+  And the customer scrolls to the end of the list
+ When the request for the next page fails
+ Then the app keeps the listings it has
+  And the app shows an alert
+```
+
 ### Narrative #2
 
 > As an offline customer
@@ -243,6 +261,8 @@ grouped by narrative, driving the real composition with stubs at the edges.
 | No price shows "Price on request" | `customerOpensListings_seesSwissPricesAndPriceOnRequest` · snapshot `content` |
 | No street shows postal code and locality | `customerOpensListings_seesTheAddressWithoutAStreetAsPostalCodeAndLocality` · snapshot `content` |
 | Non-200 or malformed, no cache, error with Retry | `customerOpensListings_seesTheErrorWithRetryWhenRemoteFailsAndThereIsNoCache` (parametrised) · `customerRetriesAfterAFailure_seesTheListings` · snapshot `error` |
+| Scroll to the end appends the next page | `customerScrollsToTheEnd_seesTheNextPageAppended` · `ListingsServiceTests.loadMore_appendsTheNextPageAndCachesTheUnion` |
+| Next page fails, list kept with an alert | `customerScrollsToTheEndAndItFails_keepsTheListAndSeesAnAlert` |
 | Refresh fails, fresh cache, list kept silently | `customerPullsToRefreshAndItFails_keepsTheListFromTheFreshCacheWithoutAnAlert` |
 | Refresh fails, expired cache, list kept with an alert | `customerPullsToRefreshAfterSevenDaysAndItFails_keepsTheListAndSeesAnAlert` |
 | Offline, fresh cache displayed | `offlineCustomer_seesTheListingsCachedByAnEarlierVisit` · manual airplane-mode check |

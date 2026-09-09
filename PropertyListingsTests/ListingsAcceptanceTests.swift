@@ -87,6 +87,26 @@ struct ListingsAcceptanceTests {
         #expect(app.router.alert == .error(ListingsViewModel.Message.listingsFailed))
     }
 
+    @Test func customerScrollsToTheEnd_seesTheNextPageAppended() async {
+        let (listings, _) = makeApp(client: twoPages)
+        await listings.load()
+
+        await listings.loadMore()
+
+        #expect(listings.rows.map(\.title) == ["Haus", "Maison", "Chalet"])
+        #expect(listings.canLoadMore == false)
+    }
+
+    @Test func customerScrollsToTheEndAndItFails_keepsTheListAndSeesAnAlert() async {
+        let (listings, app) = makeApp(client: HTTPClientStub([firstPageURL: [.success(firstPageJSON)]]))
+        await listings.load()
+
+        await listings.loadMore()
+
+        #expect(listings.rows.map(\.title) == ["Haus", "Maison"])
+        #expect(app.router.alert == .error(ListingsViewModel.Message.listingsFailed))
+    }
+
     // MARK: - Narrative 2, offline customer
 
     @Test func offlineCustomer_seesTheListingsCachedByAnEarlierVisit() async {
@@ -151,7 +171,17 @@ struct ListingsAcceptanceTests {
         locality: "La Brévine"
     )
 
+    private let chalet = makeRemoteListing(id: "3", title: "Chalet")
+    private let firstPageURL = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: ServiceURLs.listings)
+    private let secondPageURL = ListingsEndpoint.page(from: 2, size: ListingsService.pageSize).url(baseURL: ServiceURLs.listings)
+
     private var listingsJSON: Data { makeItemsJSON([house.json, flat.json]) }
+    private var firstPageJSON: Data { makeItemsJSON([house.json, flat.json], from: 0, size: 2, total: 3, maxFrom: 2) }
+    private var secondPageJSON: Data { makeItemsJSON([chalet.json], from: 2, size: 2, total: 3, maxFrom: 2) }
+
+    private var twoPages: HTTPClientStub {
+        HTTPClientStub([firstPageURL: [.success(firstPageJSON)], secondPageURL: [.success(secondPageJSON)]])
+    }
 
     private var online: HTTPClientStub {
         HTTPClientStub([listingsURL: [.success(listingsJSON)]])
