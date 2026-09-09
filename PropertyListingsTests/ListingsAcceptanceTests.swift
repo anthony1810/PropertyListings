@@ -34,7 +34,7 @@ struct ListingsAcceptanceTests {
 
         await listings.load()
 
-        #expect(listings.rows.map(\.priceText) == [chf("9'999'999"), PriceFormatter.onRequest])
+        #expect(listings.rows.map(\.priceText) == [chf("9'999'999"), PriceFormatter.onRequest(deCH)])
     }
 
     @Test func customerOpensListings_seesTheAddressWithoutAStreetAsPostalCodeAndLocality() async {
