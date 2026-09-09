@@ -7,6 +7,7 @@ let package = Package(
     platforms: [.iOS(.v18), .macOS(.v15)],
     products: [
         .library(name: "SettingsFeature", targets: ["SettingsFeature"]),
+        .library(name: "SettingsPersistence", targets: ["SettingsPersistence"]),
         .library(name: "SettingsTestSupport", targets: ["SettingsTestSupport"]),
     ],
     dependencies: [
@@ -14,6 +15,11 @@ let package = Package(
     ],
     targets: [
         .target(name: "SettingsFeature"),
+        .target(name: "SettingsPersistence", dependencies: ["SettingsFeature"]),
+        .testTarget(
+            name: "SettingsPersistenceTests",
+            dependencies: ["SettingsPersistence", "SettingsTestSupport", "TestSupport"]
+        ),
         .target(name: "SettingsTestSupport", dependencies: ["SettingsFeature"]),
     ],
     swiftLanguageModes: [.v6]
