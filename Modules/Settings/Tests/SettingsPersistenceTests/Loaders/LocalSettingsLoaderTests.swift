@@ -73,6 +73,115 @@ import TestSupport
         }
     }
 
+    // MARK: - Observe
+
+    @Test func observe_replaysTheCurrentSettingsOnSubscribe() async {
+        await withMainSerialExecutor {
+            let (sut, store) = makeSUT()
+            let stored = makeSettingsPair(appearance: .dark, language: .french)
+            store.retrievalStub.complete(with: .success(stored.local))
+            let received = LockIsolated<[Settings]>([])
+
+            let observation = Task {
+                for await settings in sut.observe() {
+                    received.withValue { $0.append(settings) }
+                }
+            }
+            await Task.megaYield()
+
+            #expect(received.value == [stored.model])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func observe_replaysTheDefaultWhenTheStoreIsEmpty() async {
+        await withMainSerialExecutor {
+            let (sut, store) = makeSUT(defaultSettings: makeSettings(language: .italian))
+            store.retrievalStub.complete(with: .success(nil))
+            let received = LockIsolated<[Settings]>([])
+
+            let observation = Task {
+                for await settings in sut.observe() {
+                    received.withValue { $0.append(settings) }
+                }
+            }
+            await Task.megaYield()
+
+            #expect(received.value == [makeSettings(language: .italian)])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func observe_yieldsTheNewSettingsAfterSave() async throws {
+        try await withMainSerialExecutor {
+            let (sut, store) = makeSUT()
+            let chosen = makeSettingsPair(appearance: .light, language: .german)
+            let received = LockIsolated<[Settings]>([])
+            let observation = Task {
+                for await settings in sut.observe() {
+                    received.withValue { $0.append(settings) }
+                }
+            }
+            await Task.megaYield()
+            store.retrievalStub.complete(with: .success(chosen.local))
+
+            try await sut.save(chosen.model)
+            await Task.megaYield()
+
+            #expect(received.value == [makeSettings(), chosen.model])
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func observe_reachesEverySubscriber() async throws {
+        try await withMainSerialExecutor {
+            let (sut, store) = makeSUT()
+            let chosen = makeSettingsPair(appearance: .dark)
+            let first = LockIsolated<[Settings]>([])
+            let second = LockIsolated<[Settings]>([])
+            let firstObservation = Task {
+                for await settings in sut.observe() {
+                    first.withValue { $0.append(settings) }
+                }
+            }
+            let secondObservation = Task {
+                for await settings in sut.observe() {
+                    second.withValue { $0.append(settings) }
+                }
+            }
+            await Task.megaYield()
+            store.retrievalStub.complete(with: .success(chosen.local))
+
+            try await sut.save(chosen.model)
+            await Task.megaYield()
+
+            #expect(first.value == [makeSettings(), chosen.model])
+            #expect(second.value == [makeSettings(), chosen.model])
+            await firstObservation.cancelAndWait()
+            await secondObservation.cancelAndWait()
+        }
+    }
+
+    @Test func observe_stopsYieldingAfterCancellation() async throws {
+        try await withMainSerialExecutor {
+            let (sut, store) = makeSUT()
+            let received = LockIsolated<[Settings]>([])
+            let observation = Task {
+                for await settings in sut.observe() {
+                    received.withValue { $0.append(settings) }
+                }
+            }
+            await Task.megaYield()
+            await observation.cancelAndWait()
+            store.retrievalStub.complete(with: .success(makeSettingsPair(appearance: .dark).local))
+
+            try await sut.save(makeSettingsPair(appearance: .dark).model)
+            await Task.megaYield()
+
+            #expect(received.value == [makeSettings()])
+        }
+    }
+
     // MARK: - Helpers
 
     private let leakTrackers = LockIsolated<[MemoryLeakTracker]>([])
