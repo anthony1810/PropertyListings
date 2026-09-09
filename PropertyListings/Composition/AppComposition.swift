@@ -35,6 +35,11 @@ final class AppComposition {
         ImagePipeline.configure()
     }
 
+    convenience init(httpClient: HTTPClient) {
+        self.init()
+        self.httpClient = httpClient
+    }
+
     convenience init(
         httpClient: HTTPClient,
         listingsStore: ListingsStore,
@@ -82,10 +87,11 @@ extension AppComposition {
 
 // MARK: - Storage
 
-private extension AppComposition {
-    static func storeURL(named fileName: String) -> URL {
-        let directory = URL.applicationSupportDirectory.appending(path: "PropertyListings", directoryHint: .isDirectory)
-        try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        return directory.appending(path: fileName)
+extension AppComposition {
+    static let storageDirectory = URL.applicationSupportDirectory.appending(path: "PropertyListings", directoryHint: .isDirectory)
+
+    private static func storeURL(named fileName: String) -> URL {
+        try? FileManager.default.createDirectory(at: storageDirectory, withIntermediateDirectories: true)
+        return storageDirectory.appending(path: fileName)
     }
 }

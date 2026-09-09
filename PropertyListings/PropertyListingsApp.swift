@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct PropertyListingsApp: App {
-    @State private var composition = AppComposition()
+    @State private var composition = AppComposition.launch()
 
     var body: some Scene {
         WindowGroup {

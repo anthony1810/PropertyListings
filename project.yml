@@ -75,6 +75,15 @@ targets:
         product: ListingsTestSupport
       - package: TestSupport
         product: TestSupport
+  PropertyListingsUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [PropertyListingsUITests]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: PropertyListings
   PropertyListingsEndToEndTests:
     type: bundle.unit-test
     platform: macOS
@@ -97,11 +106,12 @@ schemes:
       targets:
         PropertyListings: all
         PropertyListingsTests: [test]
+        PropertyListingsUITests: [test]
     run:
       config: Debug
     test:
       config: Debug
-      targets: [PropertyListingsTests]
+      targets: [PropertyListingsTests, PropertyListingsUITests]
   PropertyListingsEndToEndTests:
     build:
       targets:
