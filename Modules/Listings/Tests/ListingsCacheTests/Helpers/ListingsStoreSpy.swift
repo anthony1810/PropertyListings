@@ -9,41 +9,42 @@ final class ListingsStoreSpy: ListingsStore, Sendable {
         case deleteCachedListings
     }
 
+    let retrievalStub = Stub<CachedListings?>()
+    let insertionStub = Stub<Void>(.success(()))
+    let deletionStub = Stub<Void>(.success(()))
+
     private let _receivedMessages = LockIsolated<[Message]>([])
-    private let _retrievalResult = LockIsolated<Result<CachedListings?, Error>?>(nil)
-    private let _insertionResult = LockIsolated<Result<Void, Error>?>(.success(()))
-    private let _deletionResult = LockIsolated<Result<Void, Error>?>(.success(()))
 
     var receivedMessages: [Message] { _receivedMessages.value }
 
     func completeRetrieval(with cached: CachedListings?) {
-        _retrievalResult.setValue(.success(cached))
+        retrievalStub.complete(with: .success(cached))
     }
 
     func completeRetrieval(with error: Error) {
-        _retrievalResult.setValue(.failure(error))
+        retrievalStub.complete(with: .failure(error))
     }
 
     func completeInsertion(with error: Error) {
-        _insertionResult.setValue(.failure(error))
+        insertionStub.complete(with: .failure(error))
     }
 
     func completeDeletion(with error: Error) {
-        _deletionResult.setValue(.failure(error))
+        deletionStub.complete(with: .failure(error))
     }
 
     func retrieve() async throws -> CachedListings? {
         _receivedMessages.withValue { $0.append(.retrieve) }
-        return try _retrievalResult.value.evaluate()
+        return try await retrievalStub.call()
     }
 
     func insert(_ listings: [LocalListing], timestamp: Date) async throws {
         _receivedMessages.withValue { $0.append(.insert(listings, timestamp)) }
-        try _insertionResult.value.evaluate()
+        try await insertionStub.call()
     }
 
     func deleteCachedListings() async throws {
         _receivedMessages.withValue { $0.append(.deleteCachedListings) }
-        try _deletionResult.value.evaluate()
+        try await deletionStub.call()
     }
 }

@@ -12,60 +12,36 @@ final class ListingsLoaderSpy: Sendable {
         case notify(String)
     }
 
+    let loadListingsStub = Stub<Paginated<Listing>>()
+    let loadMoreStub = Stub<[Listing]>()
+    let saveBookmarkStub = Stub<Void>(.success(()))
+    let removeBookmarkStub = Stub<Void>(.success(()))
+
     private let _receivedMessages = LockIsolated<[Message]>([])
-    private let _listingsResult = LockIsolated<Result<Paginated<Listing>, Error>?>(nil)
-    private let _loadMoreHold = LockIsolated<AsyncStream<Void>?>(nil)
-    private let _loadMoreRelease = LockIsolated<AsyncStream<Void>.Continuation?>(nil)
     private let _onLoadListings = LockIsolated<(@MainActor @Sendable () -> Void)?>(nil)
-    private let _loadHold = LockIsolated<AsyncStream<Void>?>(nil)
-    private let _loadRelease = LockIsolated<AsyncStream<Void>.Continuation?>(nil)
     private let bookmarkedIDs = AsyncStream<Set<String>>.makeStream()
-    private let _saveResult = LockIsolated<Result<Void, Error>?>(.success(()))
-    private let _removeResult = LockIsolated<Result<Void, Error>?>(.success(()))
 
     var receivedMessages: [Message] { _receivedMessages.value }
 
     func completeListings(with result: Result<[Listing], Error>) {
-        _listingsResult.setValue(result.map { Paginated(items: $0) })
+        loadListingsStub.complete(with: result.map { Paginated(items: $0) })
     }
 
     func completeListings(with items: [Listing], thenLoadMore nextItems: Result<[Listing], Error>) {
-        _listingsResult.setValue(.success(Paginated(items: items) { [weak self] in
+        loadMoreStub.complete(with: nextItems)
+        loadListingsStub.complete(with: .success(Paginated(items: items) { [weak self] in
             guard let self else { throw SpyError.resultNotSet }
-            
             _receivedMessages.withValue { $0.append(.loadMore) }
-            
-            if let hold = _loadMoreHold.value {
-                _loadMoreHold.setValue(nil)
-                for await _ in hold {}
-            }
-            
-            return Paginated(items: items + (try nextItems.get()))
+            return Paginated(items: items + (try await loadMoreStub.call()))
         }))
-    }
-
-    func holdNextLoadListings() {
-        let (stream, continuation) = AsyncStream<Void>.makeStream()
-        _loadHold.setValue(stream)
-        _loadRelease.setValue(continuation)
-    }
-
-    func releaseLoadListings() {
-        _loadRelease.value?.finish()
-    }
-
-    func holdNextLoadMore() {
-        let (stream, continuation) = AsyncStream<Void>.makeStream()
-        _loadMoreHold.setValue(stream)
-        _loadMoreRelease.setValue(continuation)
-    }
-
-    func releaseLoadMore() {
-        _loadMoreRelease.value?.finish()
     }
 
     func onNextLoadListings(_ observe: @escaping @MainActor @Sendable () -> Void) {
         _onLoadListings.setValue(observe)
+    }
+
+    func emitBookmarkedIDs(_ ids: Set<String>) {
+        bookmarkedIDs.continuation.yield(ids)
     }
 
     @Sendable func loadListings() async throws -> Paginated<Listing> {
@@ -74,23 +50,7 @@ final class ListingsLoaderSpy: Sendable {
             _onLoadListings.setValue(nil)
             await observe()
         }
-        if let hold = _loadHold.value {
-            _loadHold.setValue(nil)
-            for await _ in hold {}
-        }
-        return try _listingsResult.value.evaluate()
-    }
-
-    func completeSaveBookmark(with error: Error) {
-        _saveResult.setValue(.failure(error))
-    }
-
-    func completeRemoveBookmark(with error: Error) {
-        _removeResult.setValue(.failure(error))
-    }
-
-    func emitBookmarkedIDs(_ ids: Set<String>) {
-        bookmarkedIDs.continuation.yield(ids)
+        return try await loadListingsStub.call()
     }
 
     @Sendable func observeBookmarkedIDs() -> any AsyncSequence<Set<String>, Never> {
@@ -100,12 +60,12 @@ final class ListingsLoaderSpy: Sendable {
 
     @Sendable func saveBookmark(_ listing: Listing) async throws {
         _receivedMessages.withValue { $0.append(.saveBookmark(listing)) }
-        try _saveResult.value.evaluate()
+        try await saveBookmarkStub.call()
     }
 
     @Sendable func removeBookmark(_ id: Listing.ID) async throws {
         _receivedMessages.withValue { $0.append(.removeBookmark(id)) }
-        try _removeResult.value.evaluate()
+        try await removeBookmarkStub.call()
     }
 
     @MainActor func notify(_ message: String) {

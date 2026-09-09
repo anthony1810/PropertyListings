@@ -89,13 +89,13 @@ import TestSupport
         await withMainSerialExecutor {
             let (sut, spy, _) = makeSUT()
             spy.completeListings(with: .success([makeListing(id: "a")]))
-            spy.holdNextLoadListings()
+            let gate = spy.loadListingsStub.holdNext()
             let first = Task { await sut.load() }
             await Task.megaYield()
 
             await sut.load()
 
-            spy.releaseLoadListings()
+            gate.open()
             await first.value
             #expect(sut.rows.map(\.id) == ["a"])
             #expect(spy.receivedMessages == [.loadListings])
@@ -150,14 +150,14 @@ import TestSupport
             let (sut, spy, _) = makeSUT()
             spy.completeListings(with: [makeListing(id: "a")], thenLoadMore: .success([makeListing(id: "b")]))
             await sut.load()
-            spy.holdNextLoadMore()
+            let gate = spy.loadMoreStub.holdNext()
             let first = Task { await sut.loadMore() }
             await Task.megaYield()
 
             #expect(sut.isLoadingMore == true)
             await sut.loadMore()
 
-            spy.releaseLoadMore()
+            gate.open()
             await first.value
             #expect(sut.isLoadingMore == false)
             #expect(sut.rows.map(\.id) == ["a", "b"])
@@ -345,7 +345,7 @@ import TestSupport
             let listing = makeListing(id: "a")
             spy.completeListings(with: .success([listing]))
             await sut.load()
-            spy.completeSaveBookmark(with: anyNSError())
+            spy.saveBookmarkStub.complete(with: .failure(anyNSError()))
 
             sut.toggleBookmark(id: "a")
 
@@ -369,7 +369,7 @@ import TestSupport
             await Task.megaYield()
             spy.emitBookmarkedIDs(["a"])
             await Task.megaYield()
-            spy.completeRemoveBookmark(with: anyNSError())
+            spy.removeBookmarkStub.complete(with: .failure(anyNSError()))
 
             sut.toggleBookmark(id: "a")
 
