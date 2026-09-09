@@ -52,7 +52,7 @@ struct ListingsAcceptanceTests {
         await listings.load()
 
         #expect(listings.rows == [])
-        #expect(listings.loadFailureMessage == ListingsViewModel.Message.listingsFailed)
+        #expect(listings.loadFailureMessage == ListingsViewModel.Message.listingsFailed(deCH))
     }
 
     @Test func customerRetriesAfterAFailure_seesTheListings() async {
@@ -87,7 +87,7 @@ struct ListingsAcceptanceTests {
 
         #expect(listings.rows.map(\.title) == ["Haus", "Maison"])
         #expect(listings.loadFailureMessage == nil)
-        #expect(app.router.alert == .error(ListingsViewModel.Message.listingsFailed))
+        #expect(app.router.alert == .error(ListingsViewModel.Message.listingsFailed(deCH)))
     }
 
     @Test func customerScrollsToTheEnd_seesTheNextPageAppended() async {
@@ -108,7 +108,7 @@ struct ListingsAcceptanceTests {
         await listings.loadMore()
 
         #expect(listings.rows.map(\.title) == ["Haus", "Maison"])
-        #expect(app.router.alert == .error(ListingsViewModel.Message.listingsFailed))
+        #expect(app.router.alert == .error(ListingsViewModel.Message.listingsFailed(deCH)))
     }
 
     // MARK: - Narrative 3, liking a listing
@@ -154,7 +154,7 @@ struct ListingsAcceptanceTests {
         await app.like(house.model)
 
         #expect(app.hearts == [false, false], "the first row's heart is off again")
-        #expect(app.router.alert == .error(ListingsViewModel.Message.bookmarkNotSaved), "the router holds the not-saved alert")
+        #expect(app.router.alert == .error(ListingsViewModel.Message.bookmarkNotSaved(deCH)), "the router holds the not-saved alert")
     }
 
     // MARK: - Narrative 2, offline customer
@@ -177,7 +177,7 @@ struct ListingsAcceptanceTests {
         await listings.load()
 
         #expect(listings.rows == [])
-        #expect(listings.loadFailureMessage == ListingsViewModel.Message.listingsFailed)
+        #expect(listings.loadFailureMessage == ListingsViewModel.Message.listingsFailed(deCH))
     }
 
     @Test func offlineCustomer_seesTheErrorWithRetryWhenThereIsNoCache() async {
@@ -186,7 +186,7 @@ struct ListingsAcceptanceTests {
         await listings.load()
 
         #expect(listings.rows == [])
-        #expect(listings.loadFailureMessage == ListingsViewModel.Message.listingsFailed)
+        #expect(listings.loadFailureMessage == ListingsViewModel.Message.listingsFailed(deCH))
     }
 
     @Test func appLaunch_deletesAnExpiredCache() async throws {
