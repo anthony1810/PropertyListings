@@ -11,33 +11,39 @@ public struct ErrorStateView: View {
 
     public var body: some View {
         ContentUnavailableView {
-            Label(DesignSystemStrings.errorTitle, systemImage: "wifi.exclamationmark")
+            Label {
+                DesignSystemStrings.errorTitle
+            } icon: {
+                Image(systemName: "wifi.exclamationmark")
+            }
         } description: {
             Text(message)
         } actions: {
-            Button(DesignSystemStrings.errorRetry, action: retry)
-                .buttonStyle(.borderedProminent)
+            Button(action: retry) {
+                DesignSystemStrings.errorRetry
+            }
+            .buttonStyle(.borderedProminent)
         }
     }
 }
 
 public struct EmptyStateView: View {
     public struct Action {
-        let title: String
+        let title: Text
         let handler: () -> Void
 
-        public init(title: String, handler: @escaping () -> Void) {
+        public init(title: Text, handler: @escaping () -> Void) {
             self.title = title
             self.handler = handler
         }
     }
 
-    private let title: String
-    private let hint: String
+    private let title: Text
+    private let hint: Text
     private let systemImage: String
     private let action: Action?
 
-    public init(title: String, hint: String, systemImage: String, action: Action? = nil) {
+    public init(title: Text, hint: Text, systemImage: String, action: Action? = nil) {
         self.title = title
         self.hint = hint
         self.systemImage = systemImage
@@ -46,13 +52,19 @@ public struct EmptyStateView: View {
 
     public var body: some View {
         ContentUnavailableView {
-            Label(title, systemImage: systemImage)
+            Label {
+                title
+            } icon: {
+                Image(systemName: systemImage)
+            }
         } description: {
-            Text(hint)
+            hint
         } actions: {
             if let action {
-                Button(action.title, action: action.handler)
-                    .buttonStyle(.borderedProminent)
+                Button(action: action.handler) {
+                    action.title
+                }
+                .buttonStyle(.borderedProminent)
             }
         }
     }
@@ -85,8 +97,8 @@ public struct SkeletonRow: View {
 
 #Preview("EmptyStateView") {
     EmptyStateView(
-        title: "No saved listings yet",
-        hint: "Tap the heart on a listing to keep it here.",
+        title: Text(verbatim: "No saved listings yet"),
+        hint: Text(verbatim: "Tap the heart on a listing to keep it here."),
         systemImage: "heart"
     )
 }

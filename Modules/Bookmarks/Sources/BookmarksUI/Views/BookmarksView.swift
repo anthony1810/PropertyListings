@@ -67,7 +67,11 @@ private extension BookmarksView {
             Button(role: .destructive) {
                 Task { await viewModel.remove(id: row.id) }
             } label: {
-                Label(BookmarksUIStrings.remove, systemImage: "trash")
+                Label {
+                    BookmarksUIStrings.remove
+                } icon: {
+                    Image(systemName: "trash")
+                }
             }
         }
         .listRowSeparator(.hidden)

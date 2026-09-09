@@ -1,14 +1,14 @@
-import Foundation
+import SwiftUI
 
 public enum BookmarksUIStrings {
-    public static var title: String { localized("bookmarks.title") }
-    public static var emptyTitle: String { localized("bookmarks.empty.title") }
-    public static var emptyHint: String { localized("bookmarks.empty.hint") }
-    public static var browse: String { localized("bookmarks.empty.browse") }
-    public static var remove: String { localized("bookmarks.remove") }
+    public static var title: Text { localized("bookmarks.title") }
+    public static var emptyTitle: Text { localized("bookmarks.empty.title") }
+    public static var emptyHint: Text { localized("bookmarks.empty.hint") }
+    public static var browse: Text { localized("bookmarks.empty.browse") }
+    public static var remove: Text { localized("bookmarks.remove") }
 
-    private static func localized(_ key: String.LocalizationValue) -> String {
-        String(localized: key, bundle: BookmarksUIResources.bundle)
+    private static func localized(_ key: LocalizedStringKey) -> Text {
+        Text(key, bundle: BookmarksUIResources.bundle)
     }
 }
 
