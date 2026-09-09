@@ -1,0 +1,67 @@
+<svg viewBox="0 0 1060 780" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L8,5 L0,10" fill="none" stroke="#8b949e" stroke-width="1.6"/></marker></defs>
+<style>.t{font-size:15px;font-weight:600;fill:#fff}.s{font-size:13px;font-weight:600;fill:#e6edf3}.d{font-size:11.5px;fill:#8b949e}.g{font-size:12px;font-weight:600;fill:#8b949e}</style>
+<rect x="0" y="0" width="1060" height="780" fill="#0d1117"/>
+<text x="24" y="34" class="t">Two workflows, both on every pull request to main and every push to main</text>
+<rect x="24" y="52" width="1012" height="384" rx="10" fill="none" stroke="#30363d" stroke-dasharray="5 4"/>
+<text x="40" y="74" class="g">tests.yml · badge Tests · required for merge</text>
+<rect x="40" y="206" width="190" height="96" rx="9" fill="#161b22" stroke="#8b949e" stroke-width="1.6"/>
+<text x="54" y="230" class="s" fill="#8b949e">Trigger</text>
+<text x="54" y="250" class="d">pull request to main</text>
+<text x="54" y="266" class="d">push to main</text>
+<text x="54" y="282" class="d">macOS 26, Xcode 26.3</text>
+<rect x="276" y="90" width="400" height="96" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="290" y="114" class="s" fill="#3fb950">host-packages</text>
+<text x="290" y="134" class="d">swift test on the Mac, no simulator</text>
+<text x="290" y="150" class="d">matrix: TestSupport, HTTPClient</text>
+<text x="290" y="166" class="d">seconds each</text>
+<line x1="230" y1="254" x2="272" y2="138" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<line x1="680" y1="138" x2="712" y2="254" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<rect x="276" y="206" width="400" height="96" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
+<text x="290" y="230" class="s" fill="#d2a8ff">simulator-packages</text>
+<text x="290" y="250" class="d">xcodebuild test, iPhone 17 simulator</text>
+<text x="290" y="266" class="d">matrix: SharedPresentation, DesignSystem, Listings</text>
+<text x="290" y="282" class="d">catalogs, locale formatting, snapshots</text>
+<line x1="230" y1="254" x2="272" y2="254" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<line x1="680" y1="254" x2="712" y2="254" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<rect x="276" y="322" width="400" height="96" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="290" y="346" class="s" fill="#f78166">app</text>
+<text x="290" y="366" class="d">Scripts/architecture-guard.sh first</text>
+<text x="290" y="382" class="d">PropertyListings scheme, UI tests skipped</text>
+<text x="290" y="398" class="d">unit and acceptance tests on the simulator</text>
+<line x1="230" y1="254" x2="272" y2="370" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<line x1="680" y1="370" x2="712" y2="254" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<rect x="716" y="206" width="170" height="96" rx="9" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
+<text x="730" y="230" class="s" fill="#e3b341">all-green</text>
+<text x="730" y="250" class="d">needs every job</text>
+<text x="730" y="266" class="d">required check on main</text>
+<text x="730" y="282" class="d">one name to protect</text>
+<rect x="920" y="206" width="100" height="96" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
+<text x="934" y="230" class="s" fill="#58a6ff">merge</text>
+<text x="934" y="250" class="d">PR only</text>
+<text x="934" y="266" class="d">merge commit</text>
+<line x1="890" y1="254" x2="916" y2="254" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<rect x="24" y="452" width="1012" height="268" rx="10" fill="none" stroke="#30363d" stroke-dasharray="5 4"/>
+<text x="40" y="474" class="g">live.yml · badge Live · informational, needs the network, never blocks a merge</text>
+<rect x="40" y="548" width="190" height="96" rx="9" fill="#161b22" stroke="#8b949e" stroke-width="1.6"/>
+<text x="54" y="572" class="s" fill="#8b949e">Trigger</text>
+<text x="54" y="592" class="d">pull request to main</text>
+<text x="54" y="608" class="d">push to main</text>
+<text x="54" y="624" class="d">same runners</text>
+<rect x="276" y="490" width="400" height="96" rx="9" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
+<text x="290" y="514" class="s" fill="#e3b341">end-to-end</text>
+<text x="290" y="534" class="d">PropertyListingsEndToEndTests on the Mac</text>
+<text x="290" y="550" class="d">endpoint, client and mapper against the live server</text>
+<text x="290" y="566" class="d">two seconds</text>
+<rect x="276" y="606" width="400" height="96" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="290" y="630" class="s" fill="#f78166">ui-tests</text>
+<text x="290" y="650" class="d">PropertyListingsUITests on the simulator</text>
+<text x="290" y="666" class="d">launch arguments: reset, offline</text>
+<text x="290" y="682" class="d">three scenarios, about twenty seconds</text>
+<line x1="230" y1="596" x2="272" y2="538" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<line x1="230" y1="596" x2="272" y2="654" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
+<text x="700" y="530" class="d">Each job reports its own status on the pull request</text>
+<text x="700" y="546" class="d">and on the Live badge. The ruleset does not require</text>
+<text x="700" y="562" class="d">either, so a flaky third party server cannot block a merge.</text>
+<text x="24" y="756" class="d">A pre-build phase runs the same architecture guard on every Xcode build, so most violations never reach CI.</text>
+</svg>

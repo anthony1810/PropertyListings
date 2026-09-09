@@ -19,7 +19,7 @@
 
 <!-- Composition root -->
 <rect x="36" y="62" width="960" height="124" rx="10" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
-<text x="52" y="86" class="s" fill="#e3b341">App — Composition Root (the ONLY place concretes meet)</text>
+<text x="52" y="86" class="s" fill="#e3b341">App: Composition Root (the ONLY place concretes meet)</text>
 <text x="52" y="106" class="d">ListingsService (ED FeedService shape): loadRemoteListings = ListingsEndpoint.get.url(baseURL:) → httpClient.get(from:) → ListingsMapper.map</text>
 <text x="52" y="122" class="d">loadAndCacheRemoteListings = the cache DECORATOR (load, then try? local.save) · loadRemoteListingsWithLocalFallback = the fallback COMPOSITE</text>
 <text x="52" y="138" class="d">covered by ListingsAcceptanceTests: HTTPClientStub.online / .offline + InMemoryListingsStore + InMemoryBookmarkStore, through the real view models</text>
@@ -34,7 +34,7 @@
 <text x="62" y="264" class="s" fill="#f78166">ListingsUI</text>
 <text x="62" y="282" class="d">ListingsView = thin binder · .task { load } · .task { observeBookmarks }</text>
 <text x="62" y="298" class="d">rows render DesignSystem.ListingCard (image · price tag · title · address · heart)</text>
-<text x="62" y="314" class="d">loading / content / empty / error · accessibility ids for Maestro · snapshot-tested</text>
+<text x="62" y="314" class="d">loading / content / empty / error · accessibility ids for the UI tests · snapshot-tested</text>
 <text x="62" y="330" class="d">the only Listings target that may import SwiftUI (arch-guarded)</text>
 
 <rect x="50" y="360" width="432" height="100" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
@@ -74,7 +74,7 @@
 <text x="542" y="264" class="s" fill="#f78166">BookmarksUI</text>
 <text x="542" y="282" class="d">BookmarksView = the Saved tab · .task { observe } · rows render ListingCard</text>
 <text x="542" y="298" class="d">unbookmark: heart tap and swipe-to-remove · empty state "No saved listings yet"</text>
-<text x="542" y="314" class="d">accessibility ids for Maestro · snapshot-tested content / empty, light + dark</text>
+<text x="542" y="314" class="d">accessibility ids for the UI tests · snapshot-tested content / empty, light + dark</text>
 <text x="542" y="330" class="d">the only Bookmarks target that may import SwiftUI (arch-guarded)</text>
 
 <rect x="530" y="360" width="452" height="100" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
@@ -151,7 +151,7 @@
 
 <!-- Test strip -->
 <rect x="36" y="1142" width="960" height="30" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="52" y="1162" class="d">EndToEnd — real GET, own scheme · Acceptance — online / offline / no cache / expired · Snapshot @3x · Maestro — 9 rows · like survives relaunch · Saved tab unbookmarks</text>
+<text x="52" y="1162" class="d">EndToEnd: real GET, own scheme · Acceptance: online / offline / no cache / expired · Snapshot @3x · Maestro: 9 rows · like survives relaunch · Saved tab unbookmarks</text>
 
 <!-- ============ EXTERNAL ============ -->
 <rect x="1140" y="206" width="344" height="214" rx="12" fill="#161b22" stroke="#bc8cff" stroke-width="1.6"/>
@@ -191,7 +191,7 @@
 <text x="1036" y="112" class="lbl">URL bound HERE, at the root</text>
 
 <path d="M 996 940 C 1080 940, 1090 470, 1140 350" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#a)"/>
-<text x="1046" y="640" class="lbl" text-anchor="middle" transform="rotate(-86 1046 640)">get(from: url) — the url comes from the root</text>
+<text x="1046" y="640" class="lbl" text-anchor="middle" transform="rotate(-86 1046 640)">get(from: url): the url comes from the root</text>
 
 <path d="M 996 970 C 1060 970, 1080 610, 1140 535" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#a)"/>
 <text x="1096" y="800" class="lbl" text-anchor="middle" transform="rotate(-74 1096 800)">image pipeline</text>

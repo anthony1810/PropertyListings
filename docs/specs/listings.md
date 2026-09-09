@@ -257,7 +257,7 @@ grouped by narrative, driving the real composition with stubs at the edges.
 
 | Scenario | Proven by |
 |---|---|
-| Online, latest listings displayed and cached | `customerOpensListings_seesTheLatestListingsFromRemote` · `ListingsServiceTests.loadListings_cachesRemoteListingsWithTimestampWhenOnline` · Maestro `01-list-shows-listings` |
+| Online, latest listings displayed and cached | `customerOpensListings_seesTheLatestListingsFromRemote` · `ListingsServiceTests.loadListings_cachesRemoteListingsWithTimestampWhenOnline` · UI test `listingsTab_showsListingsFromTheRemote` |
 | No price shows "Price on request" | `customerOpensListings_seesSwissPricesAndPriceOnRequest` · snapshot `content` |
 | No street shows postal code and locality | `customerOpensListings_seesTheAddressWithoutAStreetAsPostalCodeAndLocality` · snapshot `content` |
 | Non-200 or malformed, no cache, error with Retry | `customerOpensListings_seesTheErrorWithRetryWhenRemoteFailsAndThereIsNoCache` (parametrised) · `customerRetriesAfterAFailure_seesTheListings` · snapshot `error` |
