@@ -9,7 +9,6 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-concurrency-extras", from: "1.3.2"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.18.0"),
         .package(url: "https://github.com/pointfreeco/swift-clocks", from: "1.0.6"),
-        .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.9.0"),
     ],
     targets: [
         .target(
@@ -18,7 +17,6 @@ let package = Package(
                 .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras"),
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
                 .product(name: "Clocks", package: "swift-clocks"),
-                .product(name: "DependenciesTestSupport", package: "swift-dependencies"),
             ]
         ),
         .testTarget(

@@ -35,3 +35,6 @@ CLAUDE.md
 
 # The workspace is the deliverable; the global gitignore on this machine would drop it
 !PropertyListings.xcworkspace/contents.xcworkspacedata
+
+# Xcode writes this when the project is opened without the workspace; the workspace is the deliverable
+PropertyListings.xcodeproj/project.xcworkspace/

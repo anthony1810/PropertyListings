@@ -44,7 +44,7 @@
 
 <!-- Composition root -->
 <rect x="36" y="62" width="960" height="124" rx="10" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
-<text x="52" y="86" class="s" fill="#e3b341">App — Composition Root (the ONLY place concretes meet)</text>
+<text x="52" y="86" class="s" fill="#e3b341">App: Composition Root (the ONLY place concretes meet)</text>
 <text x="52" y="106" class="d">ListingsService (ED FeedService shape): loadRemoteListings = ListingsEndpoint.get.url(baseURL:) → httpClient.get(from:) → ListingsMapper.map</text>
 <text x="52" y="122" class="d">loadAndCacheRemoteListings = the cache DECORATOR (load, then try? local.save) · loadRemoteListingsWithLocalFallback = the fallback COMPOSITE</text>
 <text x="52" y="138" class="d">covered by ListingsAcceptanceTests: HTTPClientStub.online / .offline + InMemoryListingsStore + InMemoryBookmarkStore, through the real view models</text>
@@ -59,7 +59,7 @@
 <text x="62" y="264" class="s" fill="#f78166">ListingsUI</text>
 <text x="62" y="282" class="d">ListingsView = thin binder · .task { load } · .task { observeBookmarks }</text>
 <text x="62" y="298" class="d">rows render DesignSystem.ListingCard (image · price tag · title · address · heart)</text>
-<text x="62" y="314" class="d">loading / content / empty / error · accessibility ids for Maestro · snapshot-tested</text>
+<text x="62" y="314" class="d">loading / content / empty / error · accessibility ids for the UI tests · snapshot-tested</text>
 <text x="62" y="330" class="d">the only Listings target that may import SwiftUI (arch-guarded)</text>
 
 <rect x="50" y="360" width="432" height="100" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
@@ -72,7 +72,7 @@
 <rect x="50" y="478" width="432" height="100" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
 <text x="62" y="500" class="s" fill="#58a6ff">ListingsFeature</text>
 <text x="62" y="518" class="d">Listing · Price(amount: Decimal, currency) · Address(street?, postalCode?, locality)</text>
-<text x="62" y="534" class="d">seams: ListingsStore (retrieve · insert · delete) · ListingsCache (save)</text>
+<text x="62" y="534" class="d">seam: ListingsCache (save), used by the root decorator · no store contract here</text>
 <text x="62" y="550" class="d">ListingsCachePolicy: pure rule, max age 7 days, validate(timestamp, against: now)</text>
 <text x="62" y="566" class="d">Foundation only · no HTTP, no files, no SwiftUI</text>
 
@@ -85,8 +85,8 @@
 
 <rect x="50" y="710" width="432" height="122" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
 <text x="62" y="732" class="s" fill="#3fb950">ListingsCache (ED "Feed Cache")</text>
-<text x="62" y="750" class="d">LocalListingsLoader(store:, currentDate:): load() · save(_:) · validateCache()</text>
-<text x="62" y="766" class="d">load() throws cacheMiss when empty or expired (deviation from ED's [])</text>
+<text x="62" y="750" class="d">LocalListing DTO · ListingsStore seam (retrieve · insert · delete) in local terms</text>
+<text x="62" y="766" class="d">LocalListingsLoader maps Listing to LocalListing · load() throws cacheMiss when empty or expired</text>
 <text x="62" y="782" class="d">Infrastructure/Codable: CodableListingsStore (actor, JSON file, atomic write)</text>
 <text x="62" y="798" class="d">Infrastructure/InMemory: InMemoryListingsStore (acceptance tests)</text>
 <text x="62" y="814" class="d">store tests run against a real temp file · this target never sees HTTP</text>
@@ -99,7 +99,7 @@
 <text x="542" y="264" class="s" fill="#f78166">BookmarksUI</text>
 <text x="542" y="282" class="d">BookmarksView = the Saved tab · .task { observe } · rows render ListingCard</text>
 <text x="542" y="298" class="d">unbookmark: heart tap and swipe-to-remove · empty state "No saved listings yet"</text>
-<text x="542" y="314" class="d">accessibility ids for Maestro · snapshot-tested content / empty, light + dark</text>
+<text x="542" y="314" class="d">accessibility ids for the UI tests · snapshot-tested content / empty, light + dark</text>
 <text x="542" y="330" class="d">the only Bookmarks target that may import SwiftUI (arch-guarded)</text>
 
 <rect x="530" y="360" width="452" height="100" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
@@ -169,14 +169,14 @@
 
 <rect x="366" y="1016" width="616" height="100" rx="8" fill="#0d1117" stroke="#30363d"/>
 <text x="378" y="1036" class="s">TestSupport (test-only)</text>
-<text x="378" y="1053" class="d">@_exported ConcurrencyExtras (LockIsolated · withMainSerialExecutor) · Clocks · DependenciesTestSupport</text>
+<text x="378" y="1053" class="d">@_exported ConcurrencyExtras (LockIsolated · withMainSerialExecutor) · Clocks</text>
 <text x="378" y="1069" class="d">MemoryLeakTracker · FixtureLoader · FixtureNaming · verifyFixtureCoverage · anyURL() · anyNSError()</text>
 <text x="378" y="1085" class="d">.iPhone17 snapshot config (402×874, displayScale 3) · precision 0.95 · perceptualPrecision 0.97</text>
 <text x="378" y="1101" class="d">HTTPClientStub.online / .offline for acceptance tests</text>
 
 <!-- Test strip -->
 <rect x="36" y="1142" width="960" height="30" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="52" y="1162" class="d">EndToEnd — real GET, own scheme · Acceptance — online / offline / no cache / expired · Snapshot @3x · Maestro — 9 rows · like survives relaunch · Saved tab unbookmarks</text>
+<text x="52" y="1162" class="d">EndToEnd: real GET, own scheme · Acceptance: online / offline / no cache / expired · Snapshot @3x · Maestro: 9 rows · like survives relaunch · Saved tab unbookmarks</text>
 
 <!-- ============ EXTERNAL ============ -->
 <rect x="1140" y="206" width="344" height="214" rx="12" fill="#161b22" stroke="#bc8cff" stroke-width="1.6"/>
@@ -201,7 +201,7 @@
 <rect x="1140" y="640" width="344" height="118" rx="12" fill="#161b22" stroke="#bc8cff" stroke-width="1.6"/>
 <text x="1156" y="668" class="s" fill="#bc8cff">Point-Free stack (test targets only)</text>
 <text x="1156" y="690" class="d">swift-concurrency-extras · swift-snapshot-testing</text>
-<text x="1156" y="707" class="d">swift-clocks · swift-dependencies</text>
+<text x="1156" y="707" class="d">swift-clocks</text>
 <text x="1156" y="728" class="d">the same set OnDeck uses · reached only through</text>
 <text x="1156" y="745" class="d">TestSupport, never from a Sources/ target</text>
 
@@ -216,7 +216,7 @@
 <text x="1036" y="112" class="lbl">URL bound HERE, at the root</text>
 
 <path d="M 996 940 C 1080 940, 1090 470, 1140 350" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#a)"/>
-<text x="1046" y="640" class="lbl" text-anchor="middle" transform="rotate(-86 1046 640)">get(from: url) — the url comes from the root</text>
+<text x="1046" y="640" class="lbl" text-anchor="middle" transform="rotate(-86 1046 640)">get(from: url): the url comes from the root</text>
 
 <path d="M 996 970 C 1060 970, 1080 610, 1140 535" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#a)"/>
 <text x="1096" y="800" class="lbl" text-anchor="middle" transform="rotate(-74 1096 800)">image pipeline</text>

@@ -1,0 +1,937 @@
+{
+    "from": 0,
+    "size": 100,
+    "total": 9,
+    "results": [
+    {
+        "id": "104123262",
+        "remoteViewing": false,
+        "listingType": {
+        "type": "TOP"
+    },
+        "listerBranding": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png",
+        "legalName": "SMG Swiss Marketplace Group AG",
+        "name": "Homegate",
+        "address": {
+        "locality": "Zürich",
+        "country": "CH",
+        "region": "ZH",
+        "street": "Werdstrasse 21",
+        "postalCode": "8004"
+    },
+        "adActive": true,
+        "isQualityPartner": false,
+        "isPremiumBranding": true,
+        "profilePageUrlKeyword": "smg-swiss-marketplace-group-ag"
+    },
+        "listing": {
+        "id": "104123262",
+        "offerType": "BUY",
+        "categories": [
+        "HOUSE",
+        "SINGLE_HOUSE"
+        ],
+        "prices": {
+        "currency": "CHF",
+        "buy": {
+        "area": "ALL",
+        "price": 9999999,
+        "interval": "ONETIME"
+    }
+    },
+        "address": {
+        "country": "CH",
+        "locality": "La Brévine",
+        "postalCode": "2406",
+        "region": "NE",
+        "street": "Musterstrasse 999",
+        "geoCoordinates": {
+        "latitude": 46.980351942307,
+        "longitude": 6.606871481365
+    }
+    },
+        "characteristics": {
+        "numberOfRooms": 9.5,
+        "livingSpace": 560,
+        "lotSize": 1691,
+        "totalFloorSpace": 996
+    },
+        "localization": {
+        "primary": "de",
+        "de": {
+        "attachments": [
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/104123262/image/6b53db714891bfe2321cc3a6d4af76e1.jpg",
+            "file": "201705241056461331496.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/104123262/image/328c41c0c0805299f5c28d680fbac4d9.jpg",
+            "file": "201705241056598207255.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/104123262/image/2333f298be7cc3609daaaf2e39e91bf9.jpg",
+            "file": "201705241056543197873.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/104123262/image/8944c80cb8afb8d5d579ca4faf7dbbb4.jpg",
+            "file": "201709182235035435737.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/104123262/image/bbb5b2fb8a1cf58ce690e0cfca23d266.jpg",
+            "file": "201705241056505004370.jpg"
+        },
+        {
+            "type": "DOCUMENT",
+            "url": "https://media2.homegate.ch/listings/heia/104123262/document/8d844358c73b10cc50c322591a1405c4.pdf",
+            "file": "202009141303411175201.pdf"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/104123262/image/9ed8163e3a9252f7eed28d5212bc1b11.jpg",
+            "file": "201709182234496788792.jpg"
+        }
+        ],
+        "text": {
+        "title": "Luxuriöses Einfamilienhaus mit Pool - Musterinserat"
+    },
+        "urls": [
+        {
+            "type": "VIRTUAL_TOUR"
+        },
+        {
+            "type": "YOUTUBE"
+        }
+        ]
+    }
+    },
+        "lister": {
+        "phone": "+41 44 711 86 67",
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png"
+    }
+    }
+    },
+    {
+        "id": "3001118202",
+        "remoteViewing": false,
+        "listingType": {
+        "type": "TOP"
+    },
+        "listing": {
+        "id": "3001118202",
+        "offerType": "BUY",
+        "categories": [
+        "HOUSE",
+        "CHALET"
+        ],
+        "prices": {
+        "rent": {},
+        "currency": "CHF",
+        "buy": {
+        "price": 9999999
+    }
+    },
+        "address": {
+        "country": "CH",
+        "locality": "La Brévine",
+        "postalCode": "2406",
+        "region": "NE",
+        "street": "Musterstrasse 999",
+        "geoCoordinates": {
+        "latitude": 46.980351942307,
+        "longitude": 6.606871481365
+    }
+    },
+        "characteristics": {
+        "numberOfRooms": 9.5,
+        "livingSpace": 560,
+        "lotSize": 1691,
+        "totalFloorSpace": 996
+    },
+        "localization": {
+        "primary": "de",
+        "de": {
+        "attachments": [
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/hgonif/3001118202/image/98d48ffb80f47e03e03de3cbcf6e7f14.jpg",
+            "file": "a197c04ddc.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/hgonif/3001118202/image/29666fc528b0ceac4cabbd9a7ff5653a.jpg",
+            "file": "6e71f7bec8.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/hgonif/3001118202/image/5501a2cdbdc164a5bf9b5f304e2e8d2d.png",
+            "file": "24a18fe027.png"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/hgonif/3001118202/image/d70fb0c91cb2cb41e86dd5d5784b0276.jpg",
+            "file": "ed1add0bd1.jpg"
+        },
+        {
+            "type": "DOCUMENT",
+            "url": "https://media2.homegate.ch/listings/hgonif/3001118202/document/0975516fea79cbce165aa3a867405836.pdf",
+            "file": "Vacation.pdf"
+        }
+        ],
+        "text": {
+        "title": "Haus an sonniger Aussichtslage"
+    },
+        "urls": []
+    }
+    },
+        "lister": {}
+    }
+    },
+    {
+        "id": "3001737958",
+        "remoteViewing": false,
+        "listingType": {
+        "type": "BASIC"
+    },
+        "listerBranding": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png",
+        "legalName": "SMG Swiss Marketplace Group AG",
+        "name": "Homegate",
+        "address": {
+        "locality": "Zürich",
+        "country": "CH",
+        "region": "ZH",
+        "street": "Werdstrasse 21",
+        "postalCode": "8004"
+    },
+        "adActive": true,
+        "isQualityPartner": false,
+        "isPremiumBranding": true,
+        "profilePageUrlKeyword": "smg-swiss-marketplace-group-ag"
+    },
+        "listing": {
+        "id": "3001737958",
+        "offerType": "BUY",
+        "categories": [
+        "HOUSE",
+        "SINGLE_HOUSE"
+        ],
+        "prices": {
+        "currency": "CHF",
+        "buy": {
+        "area": "ALL",
+        "price": 3000000,
+        "interval": "ONETIME"
+    }
+    },
+        "address": {
+        "country": "CH",
+        "locality": "La Brévine",
+        "postalCode": "2406",
+        "region": "NE",
+        "street": "Rue Jardin 9000",
+        "geoCoordinates": {
+        "latitude": 46.980351942307,
+        "longitude": 6.606871481365
+    }
+    },
+        "characteristics": {
+        "numberOfRooms": 7,
+        "livingSpace": 360,
+        "lotSize": 690,
+        "totalFloorSpace": 600
+    },
+        "localization": {
+        "primary": "de",
+        "de": {
+        "attachments": [
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001737958/image/ea1c1a44b154f4cd4ec7095cc5a581e1.jpg",
+            "file": "201710101428327728234.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001737958/image/f6589861ad513b1e641903308d553ac3.jpg",
+            "file": "201710101429176807188.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001737958/image/d978be3499bfe094fa325c70af58c984.jpg",
+            "file": "201710040942446527220.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001737958/image/3deeb74ad1d023b142dbd6a3ac4ec41e.jpg",
+            "file": "201710040943075272938.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001737958/image/266054081d41c57d085362fc57687af9.jpg",
+            "file": "201710040943031212756.jpg"
+        },
+        {
+            "type": "DOCUMENT",
+            "url": "https://media2.homegate.ch/listings/heia/3001737958/document/983a16a57ecc6a0ac0865236cc52b67c.pdf",
+            "file": "201206200918004587508.pdf"
+        }
+        ],
+        "text": {
+        "title": "Maison moderne - Annonce exemplaire"
+    },
+        "urls": [
+        {
+            "type": "VIRTUAL_TOUR"
+        },
+        {
+            "type": "YOUTUBE"
+        }
+        ]
+    }
+    },
+        "lister": {
+        "phone": "+41 44 711 86 67",
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png"
+    }
+    }
+    },
+    {
+        "id": "3001911910",
+        "remoteViewing": false,
+        "listingType": {
+        "type": "BASIC"
+    },
+        "listerBranding": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png",
+        "legalName": "Bruno AEG",
+        "name": "AEGFE",
+        "address": {
+        "locality": "Zurich",
+        "country": "CH",
+        "street": "Konradstrasse",
+        "postalCode": "8005"
+    },
+        "adActive": true,
+        "isQualityPartner": false,
+        "isPremiumBranding": true,
+        "profilePageUrlKeyword": "smg-swiss-marketplace-group-ag"
+    },
+        "listing": {
+        "id": "3001911910",
+        "offerType": "BUY",
+        "categories": [
+        "HOUSE",
+        "SINGLE_HOUSE"
+        ],
+        "prices": {
+        "currency": "CHF",
+        "buy": {
+        "area": "ALL",
+        "price": 3100000,
+        "interval": "ONETIME"
+    }
+    },
+        "address": {
+        "country": "CH",
+        "locality": "La Brévine",
+        "postalCode": "2406",
+        "region": "NE",
+        "street": "Rue Jardin 69",
+        "geoCoordinates": {
+        "latitude": 46.980351942307,
+        "longitude": 6.606871481365
+    }
+    },
+        "characteristics": {
+        "numberOfRooms": 7,
+        "livingSpace": 360,
+        "lotSize": 690,
+        "totalFloorSpace": 600
+    },
+        "localization": {
+        "primary": "de",
+        "de": {
+        "attachments": [
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001911910/image/ea1c1a44b154f4cd4ec7095cc5a581e1.jpg",
+            "file": "201710101428327728234.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001911910/image/4a3cb3a03a3e2fad2a35bf6308ab0218.jpg",
+            "file": "201710101429176807188.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001911910/image/4343f9822b82d745b2527701727df839.jpg",
+            "file": "201710040942446527220.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001911910/image/40b9a184bb69c95da87abee22c806e29.jpg",
+            "file": "201710040943075272938.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001911910/image/4392c7e067500d55acdb0df2cefdffe9.jpg",
+            "file": "201710040943031212756.jpg"
+        },
+        {
+            "type": "DOCUMENT",
+            "url": "https://media2.homegate.ch/listings/heia/3001911910/document/983a16a57ecc6a0ac0865236cc52b67c.pdf",
+            "file": "201206200918004587508.pdf"
+        }
+        ],
+        "text": {
+        "title": "Maison moderne - Annonce exemplaire"
+    },
+        "urls": [
+        {
+            "type": "VIRTUAL_TOUR"
+        },
+        {
+            "type": "YOUTUBE"
+        }
+        ]
+    }
+    },
+        "lister": {
+        "phone": "+41 77 984 31 73",
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png"
+    }
+    }
+    },
+    {
+        "id": "3001738027",
+        "remoteViewing": false,
+        "listingType": {
+        "type": "BASIC"
+    },
+        "listerBranding": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png",
+        "legalName": "SMG Swiss Marketplace Group AG",
+        "name": "Homegate",
+        "address": {
+        "locality": "Zürich",
+        "country": "CH",
+        "region": "ZH",
+        "street": "Werdstrasse 21",
+        "postalCode": "8004"
+    },
+        "adActive": true,
+        "isQualityPartner": false,
+        "isPremiumBranding": true,
+        "profilePageUrlKeyword": "smg-swiss-marketplace-group-ag"
+    },
+        "listing": {
+        "id": "3001738027",
+        "offerType": "BUY",
+        "categories": [
+        "HOUSE",
+        "SINGLE_HOUSE"
+        ],
+        "prices": {
+        "currency": "CHF",
+        "buy": {
+        "area": "ALL",
+        "price": 9999999,
+        "interval": "ONETIME"
+    }
+    },
+        "address": {
+        "country": "CH",
+        "locality": "La Brévine",
+        "postalCode": "2406",
+        "region": "NE",
+        "street": "Musterstrasse 9999",
+        "geoCoordinates": {
+        "latitude": 46.980351942307,
+        "longitude": 6.606871481365
+    }
+    },
+        "characteristics": {
+        "numberOfRooms": 9.5,
+        "livingSpace": 560,
+        "lotSize": 1691,
+        "totalFloorSpace": 996
+    },
+        "localization": {
+        "primary": "de",
+        "de": {
+        "attachments": [
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001738027/image/6b53db714891bfe2321cc3a6d4af76e1.jpg",
+            "file": "201705241056461331496.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001738027/image/328c41c0c0805299f5c28d680fbac4d9.jpg",
+            "file": "201705241056598207255.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001738027/image/2333f298be7cc3609daaaf2e39e91bf9.jpg",
+            "file": "201705241056543197873.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001738027/image/8944c80cb8afb8d5d579ca4faf7dbbb4.jpg",
+            "file": "201709182235035435737.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001738027/image/bbb5b2fb8a1cf58ce690e0cfca23d266.jpg",
+            "file": "201705241056505004370.jpg"
+        },
+        {
+            "type": "DOCUMENT",
+            "url": "https://media2.homegate.ch/listings/heia/3001738027/document/8d844358c73b10cc50c322591a1405c4.pdf",
+            "file": "202009141303411175201.pdf"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001738027/image/9ed8163e3a9252f7eed28d5212bc1b11.jpg",
+            "file": "201709182234496788792.jpg"
+        }
+        ],
+        "text": {
+        "title": "Luxuriöses Einfamilienhaus mit Pool - Musterinserat"
+    },
+        "urls": []
+    }
+    },
+        "lister": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png"
+    }
+    }
+    },
+    {
+        "id": "3001688318",
+        "remoteViewing": false,
+        "listingType": {
+        "type": "BASIC"
+    },
+        "listerBranding": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png",
+        "legalName": "SMG Swiss Marketplace Group AG",
+        "name": "Homegate",
+        "address": {
+        "locality": "Zürich",
+        "country": "CH",
+        "region": "ZH",
+        "street": "Werdstrasse 21",
+        "postalCode": "8004"
+    },
+        "adActive": true,
+        "isQualityPartner": false,
+        "isPremiumBranding": true,
+        "profilePageUrlKeyword": "smg-swiss-marketplace-group-ag"
+    },
+        "listing": {
+        "id": "3001688318",
+        "offerType": "BUY",
+        "categories": [
+        "HOUSE",
+        "MULTIPLE_DWELLING"
+        ],
+        "prices": {
+        "currency": "CHF",
+        "buy": {
+        "area": "ALL",
+        "price": 9999999,
+        "interval": "ONETIME"
+    }
+    },
+        "address": {
+        "country": "CH",
+        "locality": "La Brévine",
+        "postalCode": "2406",
+        "region": "NE",
+        "street": "Musterstrasse 999",
+        "geoCoordinates": {
+        "latitude": 46.980351942307,
+        "longitude": 6.606871481365
+    }
+    },
+        "characteristics": {
+        "livingSpace": 560,
+        "lotSize": 1691,
+        "totalFloorSpace": 996
+    },
+        "localization": {
+        "primary": "de",
+        "de": {
+        "attachments": [
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001688318/image/a9aac78803329691da76a8d3e15337db.jpg",
+            "file": "201705241056461331496.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001688318/image/885e7701f2b6e2b9372ca5f88cdc5a2f.jpg",
+            "file": "201709182234496788792.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001688318/image/b7030a1153608817508683b979fb9752.jpg",
+            "file": "201705241056543197873.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001688318/image/bbb5b2fb8a1cf58ce690e0cfca23d266.jpg",
+            "file": "201705241056505004370.jpg"
+        },
+        {
+            "type": "DOCUMENT",
+            "url": "https://media2.homegate.ch/listings/heia/3001688318/document/8d844358c73b10cc50c322591a1405c4.pdf",
+            "file": "202009141303411175201.pdf"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001688318/image/f42f1c6550d215ffa3380beb5ddeb957.jpg",
+            "file": "201709182235035435737.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3001688318/image/e67641cb83c9081535bb95a0b7ffe265.jpg",
+            "file": "201705241056598207255.jpg"
+        }
+        ],
+        "text": {
+        "title": "Luxuriöses Einfamilienhaus mit Pool - Musterinserat"
+    },
+        "urls": [
+        {
+            "type": "VIRTUAL_TOUR"
+        },
+        {
+            "type": "YOUTUBE"
+        }
+        ]
+    }
+    },
+        "lister": {
+        "phone": "+41 44 711 86 67",
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png"
+    }
+    }
+    },
+    {
+        "id": "3001697853",
+        "remoteViewing": false,
+        "listingType": {
+        "type": "BASIC"
+    },
+        "listerBranding": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v2.png",
+        "legalName": "SMG Swiss Marketplace Group AG",
+        "adActive": true,
+        "isQualityPartner": false,
+        "isPremiumBranding": true,
+        "profilePageUrlKeyword": "smg-swiss-marketplace-group-ag"
+    },
+        "listing": {
+        "id": "3001697853",
+        "offerType": "BUY",
+        "categories": [
+        "HOUSE",
+        "CASTLE"
+        ],
+        "prices": {
+        "rent": {},
+        "currency": "CHF",
+        "buy": {
+        "price": 999999999999999
+    }
+    },
+        "address": {
+        "country": "CH",
+        "locality": "La Brévine",
+        "postalCode": "2406",
+        "region": "NE",
+        "geoCoordinates": {
+        "latitude": 46.956461942301,
+        "longitude": 6.549421481363
+    }
+    },
+        "characteristics": {
+        "numberOfRooms": 20
+    },
+        "localization": {
+        "primary": "de",
+        "de": {
+        "attachments": [
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heiasub3/3001697853/image/dbbad78b2e834742a70b6c35a0478e2c.jpg",
+            "file": "92b2e50d9c.jpg"
+        }
+        ],
+        "text": {
+        "title": "Test Homegate"
+    },
+        "urls": [
+        {
+            "type": "VIRTUAL_TOUR"
+        },
+        {
+            "type": "YOUTUBE"
+        }
+        ]
+    }
+    },
+        "lister": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v2.png"
+    }
+    }
+    },
+    {
+        "id": "3002090762",
+        "remoteViewing": false,
+        "listingType": {
+        "type": "STANDARD"
+    },
+        "listerBranding": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_b585_v1.jpg",
+        "legalName": "Bien en Viager",
+        "address": {
+        "locality": "Petit-Lancy",
+        "country": "CH",
+        "street": "Chemin des recluses 8",
+        "postalCode": "1213"
+    },
+        "adActive": false,
+        "isQualityPartner": false,
+        "isPremiumBranding": false,
+        "profilePageUrlKeyword": "bien-en-viager"
+    },
+        "listing": {
+        "id": "3002090762",
+        "offerType": "BUY",
+        "categories": [
+        "HOUSE",
+        "SINGLE_HOUSE"
+        ],
+        "prices": {
+        "currency": "CHF",
+        "buy": {
+        "area": "ALL",
+        "price": 430000
+    }
+    },
+        "address": {
+        "country": "CH",
+        "locality": "La Brévine",
+        "postalCode": "2406",
+        "region": "NE",
+        "geoCoordinates": {
+        "latitude": 46.980351942307,
+        "longitude": 6.606871481365
+    }
+    },
+        "characteristics": {
+        "numberOfRooms": 8.5,
+        "livingSpace": 300,
+        "lotSize": 646,
+        "totalFloorSpace": 380
+    },
+        "localization": {
+        "primary": "de",
+        "de": {
+        "attachments": [
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/39e8aa0d414f50bdc0faf9eb03aa6e7e.jpg",
+            "file": "a13ee100d622a65dc47432bcde70534dd7b7f6660a5f70123e6ce07d6a2e84a8b87fc10a343c40f02c6d9d1868eeeadf119562195bf3ffd8e983e69e0231c484.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/695534a603ee8489ba1a042337469074.jpg",
+            "file": "10097eada7d56b8a9662cc1f78189dfe8e1f6f70a4f8e3d5acb59c654b288eabd36dfa07bde8c105b4e60aaa9e1677065ede7e03682397d2ad58474bc3b90e46.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/16ef9ed7626bc3a9ffb4418c381159a8.jpg",
+            "file": "5fc8411bab4e614c1f7b92c56e8e7e7b5f8dcadf72dc22737b6075330fe64661641072b449fbddc95c741291b04e9a77f0efccbda7f13853d11db675ffaae22c.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/500e6caf596626ace58115dcdefe1938.jpg",
+            "file": "d488e01feb45d4f44131e7b607d8178e5ae7fdff5edea80427838ec635dd36f8618e852165b23db2dfcc6fba2cd03e5d2860b1946c933bad81705d227b23b3e8.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/e3b008ec244ace1937221048ece9718a.jpg",
+            "file": "f5816ea6289c9d74b75a92132b8684725fa3251c51611a44af069c6a3e98d17fad5bced1a3a54157b9e7d4c4ba3d78cc2df9cc23e70ac5223db54450b8bd3711.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/50e104f1940a52d1999e17e43e8b9f86.jpg",
+            "file": "10354853bb725ee475ef754dd354ca9fa37dc2806ae4696f6087bd5501e9ad91f558dbd6d50ab0008834c60a885b7e8ba5cb91b43578c66d9bcaed480824e123.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/05763fe5970abae4003c0994ff22d381.jpg",
+            "file": "8070d7e3a4530fda60c929f6c80186530d38dafd4ae820ca47e3a68b3d0498a5ecf828516918576cf39cbcca6256615f554634d3f48b1f7b7d762b463da2446a.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/ef670217e873f50adf35add262ce27ec.jpg",
+            "file": "6617a0ce0f33fe746f3fd9a1c027b3b4e59b25155183c9bfb426834455cbd4cc48044300167705f485cf18cebd113d3259559f351d2ecd8b59fffecc4a65c920.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/063171c873e553fbedcd98f9e8ecd2a9.jpg",
+            "file": "9c786b2068ca274ed3f5ca066a9c413e9fb7a9b57376623ba51bb16a2cfffc3c445b8c497c6a07939da686c98333f6622fa8a0f2e8ce6849f6032271fde8e7bb.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/15f97c4681a540de1afd0aacad78b93c.jpg",
+            "file": "db6d1d45b5b0e44c53e24ba762bbe798f7fb844b1c8e69b183010f15daa2fda4793fd7c80036bb09ab77cce70d30388bce7ba42c0c52494fd1f42d4cda2752bb.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/b0955d2c0b0982f95ff48f63ac1a6b45.jpg",
+            "file": "11d32e4d12e27c68758c32f0b81e63470ff5891447d089dde8511447d0236801efae41d65a0894141509ec469c86fc04cc0337a0469ea8c2dfb9a43cc6fa7c2d.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/b585/3002090762/image/b86a46e0fd755f21fec8c34c7d0efb72.jpg",
+            "file": "bd3afbad04e8ce66bbbb6305670ae08cebebe158fad07bc8c90ee22ba35bea4d9530a400eb782fafe446dd955f13e95d65bd5e5fd9acc9b7ecd0435e0c95a882.jpg"
+        }
+        ],
+        "text": {
+        "title": "Grande maison en viager occupé sans rente"
+    },
+        "urls": []
+    }
+    },
+        "lister": {
+        "phone": "022 575 66 66",
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_b585_v1.jpg"
+    }
+    }
+    },
+    {
+        "id": "3002119429",
+        "remoteViewing": false,
+        "listingType": {
+        "type": "STANDARD"
+    },
+        "listerBranding": {
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png",
+        "legalName": "SMG Swiss Marketplace Group AG",
+        "name": "Homegate",
+        "address": {
+        "locality": "Zürich",
+        "country": "CH",
+        "region": "ZH",
+        "street": "Werdstrasse 21",
+        "postalCode": "8004"
+    },
+        "adActive": true,
+        "isQualityPartner": false,
+        "isPremiumBranding": true,
+        "profilePageUrlKeyword": "smg-swiss-marketplace-group-ag"
+    },
+        "listing": {
+        "id": "3002119429",
+        "offerType": "BUY",
+        "categories": [
+        "HOUSE",
+        "MULTIPLE_DWELLING"
+        ],
+        "prices": {
+        "currency": "CHF",
+        "buy": {
+        "area": "ALL",
+        "price": 9999999,
+        "interval": "ONETIME"
+    }
+    },
+        "address": {
+        "country": "CH",
+        "locality": "La Brévine",
+        "postalCode": "2406",
+        "region": "NE",
+        "street": "Musterstrasse 999",
+        "geoCoordinates": {
+        "latitude": 46.980351942307,
+        "longitude": 6.606871481365
+    }
+    },
+        "characteristics": {
+        "livingSpace": 560,
+        "lotSize": 1691,
+        "totalFloorSpace": 996
+    },
+        "localization": {
+        "primary": "de",
+        "de": {
+        "attachments": [
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3002119429/image/a9aac78803329691da76a8d3e15337db.jpg",
+            "file": "201705241056461331496.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3002119429/image/885e7701f2b6e2b9372ca5f88cdc5a2f.jpg",
+            "file": "201709182234496788792.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3002119429/image/b7030a1153608817508683b979fb9752.jpg",
+            "file": "201705241056543197873.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3002119429/image/bbb5b2fb8a1cf58ce690e0cfca23d266.jpg",
+            "file": "201705241056505004370.jpg"
+        },
+        {
+            "type": "DOCUMENT",
+            "url": "https://media2.homegate.ch/listings/heia/3002119429/document/8d844358c73b10cc50c322591a1405c4.pdf",
+            "file": "202009141303411175201.pdf"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3002119429/image/f42f1c6550d215ffa3380beb5ddeb957.jpg",
+            "file": "201709182235035435737.jpg"
+        },
+        {
+            "type": "IMAGE",
+            "url": "https://media2.homegate.ch/listings/heia/3002119429/image/e67641cb83c9081535bb95a0b7ffe265.jpg",
+            "file": "201705241056598207255.jpg"
+        }
+        ],
+        "text": {
+        "title": "Luxuriöses Einfamilienhaus mit Pool - Musterinserat"
+    },
+        "urls": [
+        {
+            "type": "VIRTUAL_TOUR"
+        },
+        {
+            "type": "YOUTUBE"
+        }
+        ]
+    }
+    },
+        "lister": {
+        "phone": "+41 44 711 86 67",
+        "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_heia_v1.png"
+    }
+    }
+    }
+    ],
+    "maxFrom": 0
+}

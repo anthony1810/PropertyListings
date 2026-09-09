@@ -1,5 +1,16 @@
 # Listings Feature Specs
 
+## Requirements from the brief
+
+| Brief | Requirement | Where it is covered |
+|---|---|---|
+| Task 1 | Display a list of real estate listings from `GET /properties` | Narrative #1, scenario 1 |
+| Task 1 | Each item shows the first image, the title, the price and the address | Narrative #1, scenario 1 |
+| Task 1 | Layout is free | Design brief and Figma file |
+| Remarks | Compiles and runs on iOS 18.0 with Xcode 26, SwiftUI for the UI | Project settings, CI |
+
+Scenarios are tagged **Brief** when the brief asks for them and **Addition** when they are ours.
+
 ## Story: Customer requests to see property listings
 
 ### Narrative #1
@@ -10,6 +21,8 @@
 
 #### Scenarios (acceptance criteria)
 
+**Brief, Task 1.**
+
 ```
 Given the customer has connectivity
  When the customer opens the Listings tab
@@ -18,12 +31,16 @@ Given the customer has connectivity
   And the app replaces the cache with the new listings
 ```
 
+**Addition.** The payload has listings without a price.
+
 ```
 Given the customer has connectivity
   And a listing has no price
  When the listings are displayed
  Then that row shows "Price on request"
 ```
+
+**Addition.** The payload has listings without a street.
 
 ```
 Given the customer has connectivity
@@ -32,12 +49,50 @@ Given the customer has connectivity
  Then that row shows the postal code and locality only
 ```
 
+**Addition.** Error handling.
+
 ```
 Given the customer has connectivity
   And the remote responds with anything other than 200 or with malformed data
   And there is no valid cache
  When the customer opens the Listings tab
  Then the app shows an error state with a Retry action
+```
+
+**Addition.** Refreshing.
+
+```
+Given the customer has listings on screen
+  And the cache is less than seven days old
+ When the customer pulls to refresh and the remote fails
+ Then the app keeps showing the listings
+  And no alert is shown
+```
+
+```
+Given the customer has listings on screen
+  And the cache is seven days old or more
+ When the customer pulls to refresh and the remote fails
+ Then the app keeps showing the listings
+  And the app shows an alert
+```
+
+**Addition.** Paging, five listings per request.
+
+```
+Given the customer has connectivity
+  And the remote reports more listings than the page it returned
+ When the customer scrolls to the end of the list
+ Then the app appends the next page of listings
+  And stops asking once the remote reports no further page
+```
+
+```
+Given the customer has connectivity
+  And the customer scrolls to the end of the list
+ When the request for the next page fails
+ Then the app keeps the listings it has
+  And the app shows an alert
 ```
 
 ### Narrative #2
@@ -48,6 +103,8 @@ Given the customer has connectivity
 
 #### Scenarios (acceptance criteria)
 
+**Addition.** Offline support.
+
 ```
 Given the customer has no connectivity
   And there is a cached version of the listings
@@ -55,6 +112,8 @@ Given the customer has no connectivity
  When the customer opens the Listings tab
  Then the app displays the cached listings
 ```
+
+**Addition.**
 
 ```
 Given the customer has no connectivity
@@ -64,12 +123,16 @@ Given the customer has no connectivity
  Then the app shows an error state with a Retry action
 ```
 
+**Addition.**
+
 ```
 Given the customer has no connectivity
   And the cache is empty
  When the customer opens the Listings tab
  Then the app shows an error state with a Retry action
 ```
+
+**Addition.**
 
 ```
 Given the app launches
@@ -194,11 +257,15 @@ grouped by narrative, driving the real composition with stubs at the edges.
 
 | Scenario | Proven by |
 |---|---|
-| Online, latest listings displayed and cached | `customerOpensListings_seesLatestListingsFromRemote` · `ListingsServiceTests.load_deliversRemoteListingsAndCachesThem_whenOnline` · Maestro `01-list-shows-listings` |
-| No price shows "Price on request" | `customerOpensListings_listingWithoutPrice_seesPriceOnRequest` · snapshot `content` |
-| No street shows postal code and locality | `customerOpensListings_listingWithoutStreet_seesPostalCodeAndLocalityOnly` · snapshot `content` |
-| Non-200 or malformed, no cache, error with Retry | `customerOpensListings_remoteFailsAndNoCache_seesErrorWithRetry` (parametrised) · `customerRetriesAfterAFailure_seesListings` · snapshot `error` |
-| Offline, fresh cache displayed | `offlineCustomer_seesCachedListings_whenCacheIsFresh` · manual airplane-mode check |
-| Offline, expired cache, error with Retry | `offlineCustomer_seesErrorWithRetry_whenCacheIsSevenDaysOld` |
-| Offline, empty cache, error with Retry | `offlineCustomer_seesErrorWithRetry_whenCacheIsEmpty` |
-| Launch deletes an expired cache | `appLaunch_deletesExpiredCache` |
+| Online, latest listings displayed and cached | `customerOpensListings_seesTheLatestListingsFromRemote` · `ListingsServiceTests.loadListings_cachesRemoteListingsWithTimestampWhenOnline` · UI test `listingsTab_showsListingsFromTheRemote` |
+| No price shows "Price on request" | `customerOpensListings_seesSwissPricesAndPriceOnRequest` · snapshot `content` |
+| No street shows postal code and locality | `customerOpensListings_seesTheAddressWithoutAStreetAsPostalCodeAndLocality` · snapshot `content` |
+| Non-200 or malformed, no cache, error with Retry | `customerOpensListings_seesTheErrorWithRetryWhenRemoteFailsAndThereIsNoCache` (parametrised) · `customerRetriesAfterAFailure_seesTheListings` · snapshot `error` |
+| Scroll to the end appends the next page | `customerScrollsToTheEnd_seesTheNextPageAppended` · `ListingsServiceTests.loadMore_appendsTheNextPageAndCachesTheUnion` |
+| Next page fails, list kept with an alert | `customerScrollsToTheEndAndItFails_keepsTheListAndSeesAnAlert` |
+| Refresh fails, fresh cache, list kept silently | `customerPullsToRefreshAndItFails_keepsTheListFromTheFreshCacheWithoutAnAlert` |
+| Refresh fails, expired cache, list kept with an alert | `customerPullsToRefreshAfterSevenDaysAndItFails_keepsTheListAndSeesAnAlert` |
+| Offline, fresh cache displayed | `offlineCustomer_seesTheListingsCachedByAnEarlierVisit` · manual airplane-mode check |
+| Offline, expired cache, error with Retry | `offlineCustomer_seesTheErrorWithRetryWhenTheCacheIsSevenDaysOld` |
+| Offline, empty cache, error with Retry | `offlineCustomer_seesTheErrorWithRetryWhenThereIsNoCache` |
+| Launch deletes an expired cache | `appLaunch_deletesAnExpiredCache` |

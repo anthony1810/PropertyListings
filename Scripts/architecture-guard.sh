@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 fail=0
-say() { echo "guard: $1"; fail=1; }
+say() { echo "error: guard: $1"; fail=1; }
 sources() { grep -rlE "$1" "${@:2}" --include='*.swift' --exclude-dir=.build 2>/dev/null | grep -v '/Tests/' || true; }
 
 # 1. SwiftUI and UIKit only in the UI targets and the app
@@ -28,7 +28,11 @@ for h in $hosts; do
   grep -qx "$h" <<< "$allowed" || say "host named outside ServiceURLs + end-to-end test: $h"
 done
 
-# 6. Cache and API never meet
+# 6. Test support modules are linked by test bundles only
+bad=$(sources '^import [A-Za-z]*TestSupport$' Modules PropertyListings | grep -v '/Sources/[A-Za-z]*TestSupport/' || true)
+[ -z "$bad" ] || say "test support imported by production code: $bad"
+
+# 7. Cache and API never meet
 [ -z "$(sources '^import ListingsAPI'   Modules/Listings/Sources/ListingsCache)" ] || say "ListingsCache imports ListingsAPI"
 [ -z "$(sources '^import ListingsCache' Modules/Listings/Sources/ListingsAPI)"   ] || say "ListingsAPI imports ListingsCache"
 

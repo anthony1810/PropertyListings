@@ -19,7 +19,7 @@
 
 <!-- Composition root -->
 <rect x="36" y="62" width="988" height="70" rx="10" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
-<text x="52" y="86" class="s" fill="#e3b341">App — Composition Root</text>
+<text x="52" y="86" class="s" fill="#e3b341">App: Composition Root</text>
 <text x="52" y="106" class="d">the only place concretes meet: binds endpoint → HTTP client → mapper, cache decorator, local fallback, both view models</text>
 <text x="52" y="122" class="d">AppRouter owns tabs and alerts, feature views stay dumb · depends on every target below · owns the only service URL · adapts one vertical's model to the other's</text>
 
@@ -116,6 +116,6 @@
 
 <!-- Test strip -->
 <rect x="36" y="672" width="988" height="24" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="52" y="689" class="d">Tests: unit per target · acceptance through the root · end-to-end against the real endpoint · snapshot · Maestro on iOS 18.2</text>
+<text x="52" y="689" class="d">Tests: unit per target · acceptance through the root · end-to-end against the real endpoint · snapshot · UI tests on iOS 18.2</text>
 <text x="1024" y="712" class="lbl" text-anchor="end">Horizontal-within-vertical slicing, from "iOS Modular Architecture: From Monolith to Hybrid Approaches" by Anthony Tran</text>
 </svg>

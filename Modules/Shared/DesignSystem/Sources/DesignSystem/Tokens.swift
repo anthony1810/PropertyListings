@@ -24,7 +24,7 @@ public enum DSRadius {
 }
 
 public enum DSFont {
-    public static let title = Font.system(.headline, design: .rounded, weight: .semibold)
-    public static let price = Font.system(.subheadline, design: .rounded, weight: .bold)
+    public static let title = Font.system(.headline, weight: .semibold)
+    public static let price = Font.system(.subheadline, weight: .bold)
     public static let caption = Font.system(.footnote)
 }

@@ -23,7 +23,9 @@ import TestSupport
     @Test func getFromURL_failsOnRequestError() async {
         URLProtocolStub.stub(data: nil, response: nil, error: anyNSError())
 
-        await #expect(throws: Error.self) { try await makeSUT().get(from: anyURL()) }
+        await #expect(throws: Error.self) {
+            try await makeSUT().get(from: anyURL())
+        }
     }
 
     @Test func getFromURL_failsOnNonHTTPURLResponse() async {

@@ -1,0 +1,42 @@
+name: Live
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+  SIMULATOR: platform=iOS Simulator,name=iPhone 17,OS=latest
+
+jobs:
+  end-to-end:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          set -o pipefail
+          xcodebuild test \
+            -workspace PropertyListings.xcworkspace \
+            -scheme PropertyListingsEndToEndTests \
+            -destination 'platform=macOS' \
+            -skipPackagePluginValidation \
+          | xcbeautify
+
+  ui-tests:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v5
+      - name: Wait for CoreSimulator to list devices
+        run: xcrun simctl list devices available | grep -q "iPhone 17"
+      - run: |
+          set -o pipefail
+          xcodebuild test \
+            -workspace PropertyListings.xcworkspace \
+            -scheme PropertyListings \
+            -only-testing:PropertyListingsUITests \
+            -destination "$SIMULATOR" \
+            -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO \
+          | xcbeautify

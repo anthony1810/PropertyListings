@@ -21,6 +21,34 @@
                ReferencedContainer = "container:PropertyListings.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F15BDB0793E742FF73944C50"
+               BuildableName = "PropertyListingsTests.xctest"
+               BlueprintName = "PropertyListingsTests"
+               ReferencedContainer = "container:PropertyListings.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D3B425C8374520E16BFC5E6D"
+               BuildableName = "PropertyListingsUITests.xctest"
+               BlueprintName = "PropertyListingsUITests"
+               ReferencedContainer = "container:PropertyListings.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -39,7 +67,31 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F15BDB0793E742FF73944C50"
+               BuildableName = "PropertyListingsTests.xctest"
+               BlueprintName = "PropertyListingsTests"
+               ReferencedContainer = "container:PropertyListings.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D3B425C8374520E16BFC5E6D"
+               BuildableName = "PropertyListingsUITests.xctest"
+               BlueprintName = "PropertyListingsUITests"
+               ReferencedContainer = "container:PropertyListings.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

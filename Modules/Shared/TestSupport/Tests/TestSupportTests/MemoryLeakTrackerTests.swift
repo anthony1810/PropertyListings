@@ -21,7 +21,9 @@ import Testing
 @Suite struct OptionalResultEvaluateTests {
     @Test func evaluate_throwsWhenNoResultWasSet() {
         let result: Result<Int, Error>? = nil
-        #expect(throws: SpyError.self) { try result.evaluate() }
+        #expect(throws: SpyError.self) {
+            try result.evaluate()
+        }
     }
 
     @Test func evaluate_returnsTheSuccessValue() throws {
@@ -31,7 +33,9 @@ import Testing
 
     @Test func evaluate_rethrowsTheFailure() {
         let result: Result<Int, Error>? = .failure(anyNSError())
-        #expect(throws: NSError.self) { try result.evaluate() }
+        #expect(throws: NSError.self) {
+            try result.evaluate()
+        }
     }
 }
 
