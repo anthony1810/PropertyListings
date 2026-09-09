@@ -22,7 +22,11 @@ let package = Package(
             name: "BookmarksPersistenceTests",
             dependencies: ["BookmarksPersistence", "BookmarksTestSupport", "TestSupport"]
         ),
-        .target(name: "BookmarksPresentation", dependencies: ["BookmarksFeature", "SharedPresentation"]),
+        .target(
+            name: "BookmarksPresentation",
+            dependencies: ["BookmarksFeature", "SharedPresentation"],
+            resources: [.process("Resources")]
+        ),
         .testTarget(
             name: "BookmarksPresentationTests",
             dependencies: ["BookmarksPresentation", "BookmarksTestSupport", "TestSupport"]
