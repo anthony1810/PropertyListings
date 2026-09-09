@@ -3,6 +3,7 @@ public enum AccessibilityID {
     public static let loading = "listings.loading"
     public static let empty = "listings.empty"
     public static let error = "listings.error"
+    public static let loadMore = "listings.loadMore"
 
     public static func row(_ id: String) -> String {
         "listing.row.\(id)"

@@ -58,40 +58,63 @@ private extension ListingsView {
     static var skeletonRowCount: Int { 3 }
 
     var list: some View {
-        List(viewModel.rows) { row in
-            ListingCard(
-                model: ListingCard.Model(
-                    imageURL: row.imageURL,
-                    title: row.title,
-                    priceText: row.priceText,
-                    addressText: row.addressText,
-                    isLiked: row.isBookmarked
-                ),
-                likeIdentifier: AccessibilityID.like(row.id, isOn: row.isBookmarked),
-                onLike: { viewModel.toggleBookmark(id: row.id) }
-            )
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier(AccessibilityID.row(row.id))
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-            .listRowInsets(
-                EdgeInsets(
-                    top: DSSpacing.s,
-                    leading: DSSpacing.m,
-                    bottom: DSSpacing.s,
-                    trailing: DSSpacing.m
-                )
-            )
+        List {
+            ForEach(viewModel.rows) { row in
+                listingRow(row)
+            }
+            if viewModel.canLoadMore {
+                loadMoreFooter
+            }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .accessibilityIdentifier(AccessibilityID.list)
+    }
+
+    func listingRow(_ row: ListingRow) -> some View {
+        ListingCard(
+            model: ListingCard.Model(
+                imageURL: row.imageURL,
+                title: row.title,
+                priceText: row.priceText,
+                addressText: row.addressText,
+                isLiked: row.isBookmarked
+            ),
+            likeIdentifier: AccessibilityID.like(row.id, isOn: row.isBookmarked),
+            onLike: { viewModel.toggleBookmark(id: row.id) }
+        )
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(AccessibilityID.row(row.id))
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+        .listRowInsets(
+            EdgeInsets(
+                top: DSSpacing.s,
+                leading: DSSpacing.m,
+                bottom: DSSpacing.s,
+                trailing: DSSpacing.m
+            )
+        )
+    }
+
+    var loadMoreFooter: some View {
+        ProgressView()
+            .frame(maxWidth: .infinity)
+            .padding(DSSpacing.m)
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .accessibilityIdentifier(AccessibilityID.loadMore)
+            .task(id: viewModel.rows.count) { await viewModel.loadMore() }
     }
 }
 
 #if DEBUG
 #Preview("Content") {
     NavigationStack { ListingsView(viewModel: .preview()) }
+}
+
+#Preview("Loading more") {
+    NavigationStack { ListingsView(viewModel: .previewLoadingMore()) }
 }
 
 #Preview("Loading") {

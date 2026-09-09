@@ -15,6 +15,15 @@ extension ListingsViewModel {
         preview(loadListings: { try await Task.sleep(for: .seconds(60)); return Paginated(items: []) })
     }
 
+    static func previewLoadingMore() -> ListingsViewModel {
+        preview(loadListings: {
+            Paginated(items: Listing.previews) {
+                try await Task.sleep(for: .seconds(60))
+                return Paginated(items: Listing.previews)
+            }
+        })
+    }
+
     static func previewFailing() -> ListingsViewModel {
         preview(loadListings: { throw PreviewError() })
     }
