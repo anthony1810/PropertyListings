@@ -54,6 +54,25 @@ import TestSupport
         }
     }
 
+    // MARK: - Remove
+
+    @Test func remove_deletesByID() async throws {
+        let (sut, store) = makeSUT()
+
+        try await sut.remove(id: "a")
+
+        #expect(store.receivedMessages == [.delete("a")])
+    }
+
+    @Test func remove_failsOnDeletionError() async {
+        let (sut, store) = makeSUT()
+        store.deletionStub.complete(with: .failure(anyNSError()))
+
+        await #expect(throws: Error.self) {
+            try await sut.remove(id: "a")
+        }
+    }
+
     // MARK: - Helpers
 
     private let now = Date()

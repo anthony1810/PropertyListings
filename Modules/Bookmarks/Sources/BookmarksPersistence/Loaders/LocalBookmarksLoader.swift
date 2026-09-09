@@ -17,6 +17,10 @@ public actor LocalBookmarksLoader {
     public func save(_ bookmark: Bookmark) async throws {
         try await store.insert(Self.local(from: bookmark))
     }
+
+    public func remove(id: Bookmark.ID) async throws {
+        try await store.delete(id: id)
+    }
 }
 
 // MARK: - Local to domain
