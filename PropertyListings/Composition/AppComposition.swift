@@ -69,7 +69,7 @@ extension AppComposition {
         let bookmarkedIDs = bookmarkedIDs
         let router = router
         return ListingsViewModel(
-            loadListings: { try await service.loadListings().items },
+            loadListings: { try await service.loadListings() },
             observeBookmarkedIDs: { bookmarkedIDs.observe() },
             saveBookmark: { await bookmarkedIDs.insert($0.id) },
             removeBookmark: { await bookmarkedIDs.remove($0) },

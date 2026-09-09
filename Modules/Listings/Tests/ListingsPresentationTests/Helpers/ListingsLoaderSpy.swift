@@ -5,6 +5,7 @@ import TestSupport
 final class ListingsLoaderSpy: Sendable {
     enum Message: Equatable {
         case loadListings
+        case loadMore
         case observeBookmarkedIDs
         case saveBookmark(Listing)
         case removeBookmark(Listing.ID)
@@ -12,7 +13,9 @@ final class ListingsLoaderSpy: Sendable {
     }
 
     private let _receivedMessages = LockIsolated<[Message]>([])
-    private let _listingsResult = LockIsolated<Result<[Listing], Error>?>(nil)
+    private let _listingsResult = LockIsolated<Result<Paginated<Listing>, Error>?>(nil)
+    private let _loadMoreHold = LockIsolated<AsyncStream<Void>?>(nil)
+    private let _loadMoreRelease = LockIsolated<AsyncStream<Void>.Continuation?>(nil)
     private let _onLoadListings = LockIsolated<(@MainActor @Sendable () -> Void)?>(nil)
     private let bookmarkedIDs = AsyncStream<Set<String>>.makeStream()
     private let _saveResult = LockIsolated<Result<Void, Error>?>(.success(()))
@@ -21,14 +24,39 @@ final class ListingsLoaderSpy: Sendable {
     var receivedMessages: [Message] { _receivedMessages.value }
 
     func completeListings(with result: Result<[Listing], Error>) {
-        _listingsResult.setValue(result)
+        _listingsResult.setValue(result.map { Paginated(items: $0) })
+    }
+
+    func completeListings(with items: [Listing], thenLoadMore nextItems: Result<[Listing], Error>) {
+        _listingsResult.setValue(.success(Paginated(items: items) { [weak self] in
+            guard let self else { throw SpyError.resultNotSet }
+            
+            _receivedMessages.withValue { $0.append(.loadMore) }
+            
+            if let hold = _loadMoreHold.value {
+                _loadMoreHold.setValue(nil)
+                for await _ in hold {}
+            }
+            
+            return Paginated(items: items + (try nextItems.get()))
+        }))
+    }
+
+    func holdNextLoadMore() {
+        let (stream, continuation) = AsyncStream<Void>.makeStream()
+        _loadMoreHold.setValue(stream)
+        _loadMoreRelease.setValue(continuation)
+    }
+
+    func releaseLoadMore() {
+        _loadMoreRelease.value?.finish()
     }
 
     func onNextLoadListings(_ observe: @escaping @MainActor @Sendable () -> Void) {
         _onLoadListings.setValue(observe)
     }
 
-    @Sendable func loadListings() async throws -> [Listing] {
+    @Sendable func loadListings() async throws -> Paginated<Listing> {
         _receivedMessages.withValue { $0.append(.loadListings) }
         if let observe = _onLoadListings.value {
             _onLoadListings.setValue(nil)

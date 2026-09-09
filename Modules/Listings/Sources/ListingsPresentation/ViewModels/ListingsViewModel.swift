@@ -19,14 +19,16 @@ public final class ListingsViewModel {
 
     public private(set) var rows: [ListingRow] = []
     public private(set) var isLoading = false
+    public private(set) var isLoadingMore = false
     public private(set) var loadFailureMessage: String?
 
-    private var listings: [Listing] = []
+    private var page = Paginated<Listing>(items: [])
+    private var listings: [Listing] { page.items }
     private var bookmarkedIDs: Set<Listing.ID> = []
     private var pendingToggles: [Listing.ID: Task<Void, Never>] = [:]
     private var toggleBaselines: [Listing.ID: Bool] = [:]
 
-    private let loadListings: @Sendable () async throws -> [Listing]
+    private let loadListings: @Sendable () async throws -> Paginated<Listing>
     private let observeBookmarkedIDs: @Sendable () -> any AsyncSequence<Set<Listing.ID>, Never>
     private let saveBookmark: @Sendable (Listing) async throws -> Void
     private let removeBookmark: @Sendable (Listing.ID) async throws -> Void
@@ -35,7 +37,7 @@ public final class ListingsViewModel {
     private let clock: any Clock<Duration>
 
     public init(
-        loadListings: @Sendable @escaping () async throws -> [Listing],
+        loadListings: @Sendable @escaping () async throws -> Paginated<Listing>,
         observeBookmarkedIDs: @Sendable @escaping () -> any AsyncSequence<Set<Listing.ID>, Never>,
         saveBookmark: @Sendable @escaping (Listing) async throws -> Void,
         removeBookmark: @Sendable @escaping (Listing.ID) async throws -> Void,
@@ -50,6 +52,22 @@ public final class ListingsViewModel {
         self.notify = notify
         self.locale = locale
         self.clock = clock
+    }
+
+    public var canLoadMore: Bool {
+        page.loadMore != nil
+    }
+
+    public func loadMore() async {
+        guard let loadMore = page.loadMore, !isLoadingMore else { return }
+        isLoadingMore = true
+        defer { isLoadingMore = false }
+        do {
+            page = try await loadMore()
+            rebuildRows()
+        } catch {
+            notify(Message.listingsFailed)
+        }
     }
 
     public func toggleBookmark(id: Listing.ID) {
@@ -78,7 +96,7 @@ public final class ListingsViewModel {
         isLoading = true
         defer { isLoading = false }
         do {
-            listings = try await loadListings()
+            page = try await loadListings()
             loadFailureMessage = nil
             rebuildRows()
         } catch {

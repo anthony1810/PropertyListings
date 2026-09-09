@@ -85,6 +85,81 @@ import TestSupport
         #expect(sut.rows.map(\.id) == ["a"])
     }
 
+    // MARK: - Load more
+
+    @Test func load_reportsWhetherMoreCanBeLoaded() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: [makeListing(id: "a")], thenLoadMore: .success([makeListing(id: "b")]))
+
+        await sut.load()
+
+        #expect(sut.canLoadMore == true)
+    }
+
+    @Test func load_reportsNoMoreToLoadOnASinglePage() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: .success([makeListing(id: "a")]))
+
+        await sut.load()
+
+        #expect(sut.canLoadMore == false)
+    }
+
+    @Test func loadMore_appendsTheNextPageAndReportsTheEnd() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: [makeListing(id: "a")], thenLoadMore: .success([makeListing(id: "b")]))
+        await sut.load()
+
+        await sut.loadMore()
+
+        #expect(sut.rows.map(\.id) == ["a", "b"])
+        #expect(sut.canLoadMore == false)
+        #expect(spy.receivedMessages == [.loadListings, .loadMore])
+    }
+
+    @Test func loadMore_doesNothingWhenThereIsNoNextPage() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: .success([makeListing(id: "a")]))
+        await sut.load()
+
+        await sut.loadMore()
+
+        #expect(sut.rows.map(\.id) == ["a"])
+        #expect(spy.receivedMessages == [.loadListings])
+    }
+
+    @Test func loadMore_isLoadingMoreWhileTheLoaderRunsAndIgnoresASecondCall() async {
+        await withMainSerialExecutor {
+            let (sut, spy, _) = makeSUT()
+            spy.completeListings(with: [makeListing(id: "a")], thenLoadMore: .success([makeListing(id: "b")]))
+            await sut.load()
+            spy.holdNextLoadMore()
+            let first = Task { await sut.loadMore() }
+            await Task.megaYield()
+
+            #expect(sut.isLoadingMore == true)
+            await sut.loadMore()
+
+            spy.releaseLoadMore()
+            await first.value
+            #expect(sut.isLoadingMore == false)
+            #expect(sut.rows.map(\.id) == ["a", "b"])
+            #expect(spy.receivedMessages == [.loadListings, .loadMore])
+        }
+    }
+
+    @Test func loadMore_keepsTheRowsAndNotifiesWhenItFails() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: [makeListing(id: "a")], thenLoadMore: .failure(anyNSError()))
+        await sut.load()
+
+        await sut.loadMore()
+
+        #expect(sut.rows.map(\.id) == ["a"])
+        #expect(sut.canLoadMore == true)
+        #expect(spy.receivedMessages == [.loadListings, .loadMore, .notify(ListingsViewModel.Message.listingsFailed)])
+    }
+
     // MARK: - Observe bookmarks
 
     @Test func observeBookmarks_subscribesToBookmarkedIDs() async {
