@@ -8,9 +8,11 @@ let package = Package(
     products: [
         .library(name: "SettingsFeature", targets: ["SettingsFeature"]),
         .library(name: "SettingsPersistence", targets: ["SettingsPersistence"]),
+        .library(name: "SettingsPresentation", targets: ["SettingsPresentation"]),
         .library(name: "SettingsTestSupport", targets: ["SettingsTestSupport"]),
     ],
     dependencies: [
+        .package(path: "../Shared/SharedPresentation"),
         .package(path: "../Shared/TestSupport"),
     ],
     targets: [
@@ -19,6 +21,15 @@ let package = Package(
         .testTarget(
             name: "SettingsPersistenceTests",
             dependencies: ["SettingsPersistence", "SettingsTestSupport", "TestSupport"]
+        ),
+        .target(
+            name: "SettingsPresentation",
+            dependencies: ["SettingsFeature", "SharedPresentation"],
+            resources: [.process("Resources")]
+        ),
+        .testTarget(
+            name: "SettingsPresentationTests",
+            dependencies: ["SettingsPresentation", "SettingsTestSupport", "TestSupport"]
         ),
         .target(name: "SettingsTestSupport", dependencies: ["SettingsFeature"]),
     ],

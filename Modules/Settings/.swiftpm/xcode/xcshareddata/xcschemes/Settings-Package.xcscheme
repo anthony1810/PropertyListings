@@ -11,12 +11,18 @@
          <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">
             <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="SettingsPersistence" BuildableName="SettingsPersistence" BlueprintName="SettingsPersistence" ReferencedContainer="container:"/>
          </BuildActionEntry>
+         <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">
+            <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="SettingsPresentation" BuildableName="SettingsPresentation" BlueprintName="SettingsPresentation" ReferencedContainer="container:"/>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES">
       <Testables>
          <TestableReference skipped="NO">
             <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="SettingsPersistenceTests" BuildableName="SettingsPersistenceTests" BlueprintName="SettingsPersistenceTests" ReferencedContainer="container:"/>
+         </TestableReference>
+         <TestableReference skipped="NO">
+            <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="SettingsPresentationTests" BuildableName="SettingsPresentationTests" BlueprintName="SettingsPresentationTests" ReferencedContainer="container:"/>
          </TestableReference>
       </Testables>
    </TestAction>
