@@ -93,6 +93,7 @@ public final class ListingsViewModel {
     }
 
     public func load() async {
+        guard !isLoading else { return }
         isLoading = true
         defer { isLoading = false }
         do {

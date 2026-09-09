@@ -85,6 +85,23 @@ import TestSupport
         #expect(sut.rows.map(\.id) == ["a"])
     }
 
+    @Test func load_ignoresASecondCallWhileOneIsInFlight() async {
+        await withMainSerialExecutor {
+            let (sut, spy, _) = makeSUT()
+            spy.completeListings(with: .success([makeListing(id: "a")]))
+            spy.holdNextLoadListings()
+            let first = Task { await sut.load() }
+            await Task.megaYield()
+
+            await sut.load()
+
+            spy.releaseLoadListings()
+            await first.value
+            #expect(sut.rows.map(\.id) == ["a"])
+            #expect(spy.receivedMessages == [.loadListings])
+        }
+    }
+
     // MARK: - Load more
 
     @Test func load_reportsWhetherMoreCanBeLoaded() async {

@@ -17,6 +17,8 @@ final class ListingsLoaderSpy: Sendable {
     private let _loadMoreHold = LockIsolated<AsyncStream<Void>?>(nil)
     private let _loadMoreRelease = LockIsolated<AsyncStream<Void>.Continuation?>(nil)
     private let _onLoadListings = LockIsolated<(@MainActor @Sendable () -> Void)?>(nil)
+    private let _loadHold = LockIsolated<AsyncStream<Void>?>(nil)
+    private let _loadRelease = LockIsolated<AsyncStream<Void>.Continuation?>(nil)
     private let bookmarkedIDs = AsyncStream<Set<String>>.makeStream()
     private let _saveResult = LockIsolated<Result<Void, Error>?>(.success(()))
     private let _removeResult = LockIsolated<Result<Void, Error>?>(.success(()))
@@ -42,6 +44,16 @@ final class ListingsLoaderSpy: Sendable {
         }))
     }
 
+    func holdNextLoadListings() {
+        let (stream, continuation) = AsyncStream<Void>.makeStream()
+        _loadHold.setValue(stream)
+        _loadRelease.setValue(continuation)
+    }
+
+    func releaseLoadListings() {
+        _loadRelease.value?.finish()
+    }
+
     func holdNextLoadMore() {
         let (stream, continuation) = AsyncStream<Void>.makeStream()
         _loadMoreHold.setValue(stream)
@@ -61,6 +73,10 @@ final class ListingsLoaderSpy: Sendable {
         if let observe = _onLoadListings.value {
             _onLoadListings.setValue(nil)
             await observe()
+        }
+        if let hold = _loadHold.value {
+            _loadHold.setValue(nil)
+            for await _ in hold {}
         }
         return try _listingsResult.value.evaluate()
     }
