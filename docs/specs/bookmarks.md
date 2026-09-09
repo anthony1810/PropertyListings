@@ -189,7 +189,8 @@ relaunch is a second composition over the same store.
 | Like survives kill and relaunch | `customerLikesAListing_seesItStillLikedAfterRelaunch` · UI test `listingsTab_keepsALikeAcrossRelaunch` |
 | Tap again clears and stays cleared after relaunch | `customerUnlikesAListing_seesItClearedAfterRelaunch` |
 | Save failure reverts with an alert | `customerLikesAListingAndSavingFails_seesTheHeartRevertedAndAnAlert` |
-| Saved lists everything newest first, offline | `customerOpensSaved_seesEveryLikeNewestFirst_withoutConnectivity` · snapshot `content` |
-| Saved empty state | `customerOpensSaved_withNoLikes_seesNothingToShow` · snapshot `empty` |
-| Remove on Saved clears the heart on Listings | `customerRemovesOnSaved_rowLeavesAndHeartClearsOnListings` · UI test `savedTab_unbookmarkingClearsTheHeartOnListings` |
-| Remove failure brings the row back | `removingFails_rowComesBackWithAMessage` |
+| Saved lists everything newest first, offline | `customerOpensSaved_seesEveryLikedListingNewestFirst` · snapshot `content` |
+| Saved empty state | `customerOpensSavedWithNoLikes_seesNothingToShow` · snapshot `empty` |
+| A like on Listings appears on Saved | `customerLikesOnListings_seesItAppearOnSaved` |
+| Remove on Saved clears the heart on Listings | `customerRemovesOnSaved_seesTheRowLeaveAndTheHeartClearOnListings` · UI test `savedTab_unbookmarkingClearsTheHeartOnListings` |
+| Remove failure brings the row back | `customerRemovesOnSavedAndItFails_seesTheRowBackAndAnAlert` |
