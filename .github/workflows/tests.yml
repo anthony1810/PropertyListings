@@ -47,6 +47,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: Scripts/architecture-guard.sh
+      - name: Wait for CoreSimulator to list devices
+        run: xcrun simctl list devices available | grep -q "iPhone 17"
       - run: |
           set -o pipefail
           xcodebuild test \

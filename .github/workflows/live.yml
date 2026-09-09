@@ -28,6 +28,8 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
+      - name: Wait for CoreSimulator to list devices
+        run: xcrun simctl list devices available | grep -q "iPhone 17"
       - run: |
           set -o pipefail
           xcodebuild test \
