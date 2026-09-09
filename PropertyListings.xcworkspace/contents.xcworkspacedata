@@ -8,6 +8,9 @@
       location = "group:Modules"
       name = "Modules">
       <FileRef
+         location = "group:Bookmarks">
+      </FileRef>
+      <FileRef
          location = "group:Listings">
       </FileRef>
       <Group
