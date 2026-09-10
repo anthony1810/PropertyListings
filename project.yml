@@ -27,14 +27,16 @@ packages:
     path: Modules/Shared/DesignSystem
   SharedPresentation:
     path: Modules/Shared/SharedPresentation
-targets:
-  PropertyListings:
+targetTemplates:
+  BrandApp:
     type: application
     platform: iOS
-    sources: [PropertyListings, Brands/PropertyListings]
+    sources:
+      - PropertyListings
+      - Brands/${brand}
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.anthony.propertylistings
+        PRODUCT_BUNDLE_IDENTIFIER: com.anthony.${bundleName}
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         ENABLE_USER_SCRIPT_SANDBOXING: NO
@@ -43,9 +45,9 @@ targets:
         script: '"$SRCROOT/Scripts/architecture-guard.sh"'
         basedOnDependencyAnalysis: false
     info:
-      path: Brands/PropertyListings/Info.plist
+      path: Brands/${brand}/Info.plist
       properties:
-        CFBundleDisplayName: PropertyListings
+        CFBundleDisplayName: ${brand}
         UILaunchScreen:
           UIColorName: LaunchBackground
           UIImageName: LaunchMark
@@ -85,6 +87,17 @@ targets:
         product: HTTPClient
       - package: HTTPClient
         product: HTTPClientLive
+targets:
+  PropertyListings:
+    templates: [BrandApp]
+    templateAttributes:
+      brand: PropertyListings
+      bundleName: propertylistings
+  Lakeside:
+    templates: [BrandApp]
+    templateAttributes:
+      brand: Lakeside
+      bundleName: lakeside
   PropertyListingsTests:
     type: bundle.unit-test
     platform: iOS
@@ -139,6 +152,12 @@ schemes:
     test:
       config: Debug
       targets: [PropertyListingsTests, PropertyListingsUITests]
+  Lakeside:
+    build:
+      targets:
+        Lakeside: all
+    run:
+      config: Debug
   PropertyListingsEndToEndTests:
     build:
       targets:
