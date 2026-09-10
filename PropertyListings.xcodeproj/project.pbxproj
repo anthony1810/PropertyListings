@@ -119,7 +119,7 @@
 		9E753C0F9A1542F253A685F2 /* SharedPresentation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SharedPresentation; path = Modules/Shared/SharedPresentation; sourceTree = SOURCE_ROOT; };
 		A81028421D3DD7891F7DD937 /* BrandConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandConfiguration.swift; sourceTree = "<group>"; };
 		AB886E855D873487E6E130AD /* PropertyListingsUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PropertyListingsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B8EFB4D7AC64682FD26D07B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B67BAD04564C6F87A6B01273 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BB9889AE8F88A4E469E96572 /* AcceptanceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptanceApp.swift; sourceTree = "<group>"; };
 		BCE4C182B5F5207442631DB0 /* ListingsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsServiceTests.swift; sourceTree = "<group>"; };
 		C2FB02D48B3BA2410D26F32F /* PropertyListingsEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PropertyListingsEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				CF683814C0BBC97EB4A37BC4 /* Brand.swift */,
+				B67BAD04564C6F87A6B01273 /* Info.plist */,
 			);
 			path = PropertyListings;
 			sourceTree = "<group>";
@@ -341,7 +342,6 @@
 			children = (
 				341791FBF78E1523BD2B75B8 /* AppStrings.swift */,
 				88415DBDA99B7A9915BEC988 /* Assets.xcassets */,
-				B8EFB4D7AC64682FD26D07B6 /* Info.plist */,
 				82070D5A912A1DAC3FE34668 /* Localizable.xcstrings */,
 			);
 			path = Resources;
@@ -628,7 +628,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = PropertyListings/Resources/Info.plist;
+				INFOPLIST_FILE = Brands/PropertyListings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -681,7 +681,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = PropertyListings/Resources/Info.plist;
+				INFOPLIST_FILE = Brands/PropertyListings/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

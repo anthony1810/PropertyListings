@@ -43,7 +43,7 @@ targets:
         script: '"$SRCROOT/Scripts/architecture-guard.sh"'
         basedOnDependencyAnalysis: false
     info:
-      path: PropertyListings/Resources/Info.plist
+      path: Brands/PropertyListings/Info.plist
       properties:
         CFBundleDisplayName: PropertyListings
         UILaunchScreen:
