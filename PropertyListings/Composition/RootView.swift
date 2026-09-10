@@ -1,3 +1,4 @@
+import SettingsFeature
 import SettingsPresentation
 import SwiftUI
 
@@ -12,25 +13,27 @@ struct RootView: View {
         _router = Bindable(composition.router)
     }
 
+    private var language: AppLanguage { settings.settings.language }
+
     var body: some View {
         TabView(selection: $router.selectedTab) {
             Tab(value: .listings) {
-                NavigationStack { composition.makeListingsView() }
+                NavigationStack { composition.makeListingsView() }.id(language)
             } label: {
                 Label { AppStrings.listingsTab } icon: { Image(systemName: "house") }
             }
             Tab(value: .saved) {
-                NavigationStack { composition.makeBookmarksView() }
+                NavigationStack { composition.makeBookmarksView() }.id(language)
             } label: {
                 Label { AppStrings.savedTab } icon: { Image(systemName: "heart") }
             }
             Tab(value: .settings) {
-                NavigationStack { composition.makeSettingsView() }
+                NavigationStack { composition.makeSettingsView() }.id(language)
             } label: {
                 Label { AppStrings.settingsTab } icon: { Image(systemName: "slider.horizontal.3") }
             }
         }
-        .environment(\.locale, composition.locale(for: settings.settings.language))
+        .environment(\.locale, composition.locale(for: language))
         .preferredColorScheme(settings.settings.appearance.colorScheme)
         .alert(
             AppStrings.errorTitle,

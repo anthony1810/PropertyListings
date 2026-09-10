@@ -25,7 +25,11 @@ extension XCUIApplication {
     }
 
     var listingsTab: ListingsTab {
-        tabBars.buttons["Listings"].selectIfNeeded()
+        listingsTab(labelled: "Listings")
+    }
+
+    func listingsTab(labelled label: String) -> ListingsTab {
+        tabBars.buttons[label].selectIfNeeded()
         return ListingsTab(app: self)
     }
 

@@ -16,6 +16,10 @@ struct ListingsTab {
         app.buttons["listing.like.\(listing.id).off"].appears()
     }
 
+    func isShowingTitle(_ title: String) -> Bool {
+        app.navigationBars[title].appears()
+    }
+
     var isShowingErrorWithRetry: Bool {
         app.descendants(matching: .any)["listings.error"].appears() && app.buttons["Retry"].exists
     }
