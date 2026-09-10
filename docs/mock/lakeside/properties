@@ -1,0 +1,397 @@
+{
+  "from": 0,
+  "size": 8,
+  "total": 8,
+  "maxFrom": 0,
+  "results": [
+    {
+      "id": "LK-1001",
+      "listing": {
+        "id": "LK-1001",
+        "offerType": "BUY",
+        "categories": [
+          "HOUSE",
+          "VILLA"
+        ],
+        "prices": {
+          "currency": "CHF",
+          "buy": {
+            "area": "ALL",
+            "price": 6850000,
+            "interval": "ONETIME"
+          }
+        },
+        "address": {
+          "country": "CH",
+          "locality": "Küsnacht",
+          "postalCode": "8700",
+          "region": "ZH",
+          "street": "Seestrasse 118",
+          "geoCoordinates": {
+            "latitude": 47.3186,
+            "longitude": 8.5843
+          }
+        },
+        "characteristics": {
+          "numberOfRooms": 7.5,
+          "livingSpace": 320
+        },
+        "localization": {
+          "primary": "en",
+          "en": {
+            "attachments": [
+              {
+                "type": "IMAGE",
+                "url": "https://picsum.photos/id/1018/1200/800",
+                "file": "LK-1001.jpg"
+              }
+            ],
+            "text": {
+              "title": "Waterfront villa with private jetty"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "LK-1002",
+      "listing": {
+        "id": "LK-1002",
+        "offerType": "BUY",
+        "categories": [
+          "APARTMENT"
+        ],
+        "prices": {
+          "currency": "CHF",
+          "buy": {
+            "area": "ALL",
+            "price": 2390000,
+            "interval": "ONETIME"
+          }
+        },
+        "address": {
+          "country": "CH",
+          "locality": "Montreux",
+          "postalCode": "1820",
+          "region": "VD",
+          "street": "Rue du Lac 14",
+          "geoCoordinates": {
+            "latitude": 46.4312,
+            "longitude": 6.9107
+          }
+        },
+        "characteristics": {
+          "numberOfRooms": 4.5,
+          "livingSpace": 138
+        },
+        "localization": {
+          "primary": "en",
+          "en": {
+            "attachments": [
+              {
+                "type": "IMAGE",
+                "url": "https://picsum.photos/id/1019/1200/800",
+                "file": "LK-1002.jpg"
+              }
+            ],
+            "text": {
+              "title": "Sunlit apartment above Lake Geneva"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "LK-1003",
+      "listing": {
+        "id": "LK-1003",
+        "offerType": "RENT",
+        "categories": [
+          "APARTMENT",
+          "LOFT"
+        ],
+        "prices": {
+          "currency": "CHF",
+          "rent": {
+            "area": "ALL",
+            "price": 4200,
+            "interval": "MONTH"
+          }
+        },
+        "address": {
+          "country": "CH",
+          "locality": "Weggis",
+          "postalCode": "6353",
+          "region": "LU",
+          "street": "Seestrasse 47",
+          "geoCoordinates": {
+            "latitude": 47.0322,
+            "longitude": 8.4322
+          }
+        },
+        "characteristics": {
+          "numberOfRooms": 3.5,
+          "livingSpace": 112
+        },
+        "localization": {
+          "primary": "en",
+          "en": {
+            "attachments": [
+              {
+                "type": "IMAGE",
+                "url": "https://picsum.photos/id/1036/1200/800",
+                "file": "LK-1003.jpg"
+              }
+            ],
+            "text": {
+              "title": "Boathouse loft on Lake Lucerne"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "LK-1004",
+      "listing": {
+        "id": "LK-1004",
+        "offerType": "BUY",
+        "categories": [
+          "HOUSE",
+          "SINGLE_HOUSE"
+        ],
+        "prices": {
+          "currency": "CHF",
+          "buy": {
+            "area": "ALL",
+            "price": 1980000,
+            "interval": "ONETIME"
+          }
+        },
+        "address": {
+          "country": "CH",
+          "locality": "Spiez",
+          "postalCode": "3700",
+          "region": "BE",
+          "street": "Seestrasse 22",
+          "geoCoordinates": {
+            "latitude": 46.6883,
+            "longitude": 7.6797
+          }
+        },
+        "characteristics": {
+          "numberOfRooms": 6.5,
+          "livingSpace": 210
+        },
+        "localization": {
+          "primary": "en",
+          "en": {
+            "attachments": [
+              {
+                "type": "IMAGE",
+                "url": "https://picsum.photos/id/1015/1200/800",
+                "file": "LK-1004.jpg"
+              }
+            ],
+            "text": {
+              "title": "Family home steps from the Thun lakeshore"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "LK-1005",
+      "listing": {
+        "id": "LK-1005",
+        "offerType": "BUY",
+        "categories": [
+          "APARTMENT",
+          "PENTHOUSE"
+        ],
+        "prices": {
+          "currency": "CHF",
+          "buy": {
+            "area": "ALL",
+            "price": 3750000,
+            "interval": "ONETIME"
+          }
+        },
+        "address": {
+          "country": "CH",
+          "locality": "Morcote",
+          "postalCode": "6922",
+          "region": "TI",
+          "street": "Via Cantonale 9",
+          "geoCoordinates": {
+            "latitude": 45.9236,
+            "longitude": 8.9178
+          }
+        },
+        "characteristics": {
+          "numberOfRooms": 5.5,
+          "livingSpace": 186
+        },
+        "localization": {
+          "primary": "en",
+          "en": {
+            "attachments": [
+              {
+                "type": "IMAGE",
+                "url": "https://picsum.photos/id/1043/1200/800",
+                "file": "LK-1005.jpg"
+              }
+            ],
+            "text": {
+              "title": "Penthouse with Lake Lugano panorama"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "LK-1006",
+      "listing": {
+        "id": "LK-1006",
+        "offerType": "BUY",
+        "categories": [
+          "HOUSE"
+        ],
+        "prices": {
+          "currency": "CHF",
+          "buy": {
+            "area": "ALL",
+            "price": 1250000,
+            "interval": "ONETIME"
+          }
+        },
+        "address": {
+          "country": "CH",
+          "locality": "Rorschach",
+          "postalCode": "9400",
+          "region": "SG",
+          "street": "Hafenstrasse 3",
+          "geoCoordinates": {
+            "latitude": 47.4779,
+            "longitude": 9.4922
+          }
+        },
+        "characteristics": {
+          "numberOfRooms": 4.5,
+          "livingSpace": 124
+        },
+        "localization": {
+          "primary": "en",
+          "en": {
+            "attachments": [
+              {
+                "type": "IMAGE",
+                "url": "https://picsum.photos/id/1053/1200/800",
+                "file": "LK-1006.jpg"
+              }
+            ],
+            "text": {
+              "title": "Renovated fisherman's cottage on Lake Constance"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "LK-1007",
+      "listing": {
+        "id": "LK-1007",
+        "offerType": "RENT",
+        "categories": [
+          "APARTMENT"
+        ],
+        "prices": {
+          "currency": "CHF",
+          "rent": {
+            "area": "ALL",
+            "price": 3100,
+            "interval": "MONTH"
+          }
+        },
+        "address": {
+          "country": "CH",
+          "locality": "Ascona",
+          "postalCode": "6612",
+          "region": "TI",
+          "street": "Via Collegio 5",
+          "geoCoordinates": {
+            "latitude": 46.1548,
+            "longitude": 8.7708
+          }
+        },
+        "characteristics": {
+          "numberOfRooms": 3.5,
+          "livingSpace": 98
+        },
+        "localization": {
+          "primary": "en",
+          "en": {
+            "attachments": [
+              {
+                "type": "IMAGE",
+                "url": "https://picsum.photos/id/1057/1200/800",
+                "file": "LK-1007.jpg"
+              }
+            ],
+            "text": {
+              "title": "Garden apartment on Lake Maggiore"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "LK-1008",
+      "listing": {
+        "id": "LK-1008",
+        "offerType": "BUY",
+        "categories": [
+          "HOUSE",
+          "CHALET"
+        ],
+        "prices": {
+          "currency": "CHF",
+          "buy": {
+            "area": "ALL",
+            "price": 1640000,
+            "interval": "ONETIME"
+          }
+        },
+        "address": {
+          "country": "CH",
+          "locality": "Neuchâtel",
+          "postalCode": "2000",
+          "region": "NE",
+          "street": "Chemin des Vignes 8",
+          "geoCoordinates": {
+            "latitude": 46.99,
+            "longitude": 6.9293
+          }
+        },
+        "characteristics": {
+          "numberOfRooms": 5.5,
+          "livingSpace": 164
+        },
+        "localization": {
+          "primary": "en",
+          "en": {
+            "attachments": [
+              {
+                "type": "IMAGE",
+                "url": "https://picsum.photos/id/1044/1200/800",
+                "file": "LK-1008.jpg"
+              }
+            ],
+            "text": {
+              "title": "Chalet overlooking Lake Neuchâtel"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
