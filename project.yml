@@ -11,6 +11,7 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
     IPHONEOS_DEPLOYMENT_TARGET: "18.0"
     CODE_SIGN_STYLE: Automatic
+    LM_SKIP_METADATA_EXTRACTION: YES
 packages:
   Listings:
     path: Modules/Listings

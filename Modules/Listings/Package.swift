@@ -37,6 +37,7 @@ let package = Package(
             name: "ListingsUI",
             dependencies: [
                 "ListingsPresentation",
+                "SharedPresentation",
                 .product(name: "DesignSystem", package: "DesignSystem", condition: .when(platforms: [.iOS])),
             ],
             resources: [.process("Resources")]

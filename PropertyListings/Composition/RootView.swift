@@ -18,17 +18,17 @@ struct RootView: View {
     var body: some View {
         TabView(selection: $router.selectedTab) {
             Tab(value: .listings) {
-                NavigationStack { composition.makeListingsView() }.id(language)
+                NavigationStack { composition.makeListingsView() }
             } label: {
                 Label { AppStrings.listingsTab } icon: { Image(systemName: "house") }
             }
             Tab(value: .saved) {
-                NavigationStack { composition.makeBookmarksView() }.id(language)
+                NavigationStack { composition.makeBookmarksView() }
             } label: {
                 Label { AppStrings.savedTab } icon: { Image(systemName: "heart") }
             }
             Tab(value: .settings) {
-                NavigationStack { composition.makeSettingsView() }.id(language)
+                NavigationStack { composition.makeSettingsView() }
             } label: {
                 Label { AppStrings.settingsTab } icon: { Image(systemName: "slider.horizontal.3") }
             }
