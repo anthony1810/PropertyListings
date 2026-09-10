@@ -40,10 +40,12 @@ targets:
         script: '"$SRCROOT/Scripts/architecture-guard.sh"'
         basedOnDependencyAnalysis: false
     info:
-      path: PropertyListings/Info.plist
+      path: PropertyListings/Resources/Info.plist
       properties:
         CFBundleDisplayName: PropertyListings
-        UILaunchScreen: {}
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+          UIImageName: LaunchMark
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
     dependencies:
       - package: Listings
