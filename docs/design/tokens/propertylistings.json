@@ -1,0 +1,56 @@
+{
+  "brand": "PropertyListings",
+  "source": "Figma collection Brand, mode PropertyListings, exported 10 September 2026",
+  "colors": {
+    "surface": {
+      "light": "#FFFFFF",
+      "dark": "#121417"
+    },
+    "surfaceElevated": {
+      "light": "#F2F3F6",
+      "dark": "#1C2027"
+    },
+    "textPrimary": {
+      "light": "#171B24",
+      "dark": "#E7EAF0"
+    },
+    "textSecondary": {
+      "light": "#626B7A",
+      "dark": "#97A0B0"
+    },
+    "accent": {
+      "light": "#2946C4",
+      "dark": "#8EA3FF"
+    },
+    "like": {
+      "light": "#D83A56",
+      "dark": "#FF6B81"
+    },
+    "onImage": {
+      "light": "#FFFFFF",
+      "dark": "#FFFFFF"
+    }
+  },
+  "radius": {
+    "m": 12,
+    "l": 20
+  },
+  "typeface": "Inter, standing in for SF Pro",
+  "mark": "house-fill (Phosphor, MIT)",
+  "languages": {
+    "default": "device",
+    "offered": [
+      "de",
+      "fr",
+      "it",
+      "en"
+    ]
+  },
+  "wording": {},
+  "tabIcons": {
+    "listings": "house",
+    "saved": "heart",
+    "settings": "slider.horizontal.3",
+    "source": "SF Symbols"
+  }
+}
