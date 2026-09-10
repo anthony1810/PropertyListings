@@ -30,9 +30,10 @@ that crosses a module boundary.
 | 2 | Listings, Bookmarks and Settings never import each other. | Each feature knows nothing about the others, so they can be composed and reused anywhere without coupling. |
 | 3 | Kingfisher may only be imported inside DesignSystem. | One place to swap the image pipeline. |
 | 4 | HTTPClient may only be imported by the composition root and its own live module, never by a feature. | The API layer of a feature stays agnostic of how the request is made, Alamofire or URLSession alike. |
-| 5 | The backend host is named in one file, `ServiceURLs`, plus the end to end test. | One file to change when the backend environment changes. |
+| 5 | The backend host is named in one file, the brand's `Brand.swift`, plus the end to end test. | One file to change when the backend environment changes, and a second brand is a second file, not a search. |
 | 6 | A TestSupport module may only be linked by a test bundle. | Test doubles never ship. |
 | 7 | ListingsAPI and ListingsCache never import each other. | The two infrastructure layers know nothing about each other, so when either one has to go, the other stays intact. |
+| 8 | A feature package never names a brand: `CurrentBrand` and `BrandConfiguration` exist only in the composition root and the `Brands/` folders. | Features are built once and linked by every brand. The brand is decided in one place, the root, and a feature that knew its brand could not be reused by the next one. |
 
 ## Module map
 

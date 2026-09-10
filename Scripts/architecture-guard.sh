@@ -25,11 +25,11 @@ bad=$(sources '^import Kingfisher' Modules PropertyListings | grep -v 'Modules/S
 bad=$(sources '^import HTTPClient$' Modules | grep -v 'Modules/Shared/HTTPClient/Sources/' || true)
 [ -z "$bad" ] || say "HTTPClient imported inside a feature module: $bad"
 
-# 5. The host is named once in sources, plus the end-to-end test
-hosts=$(grep -rl 'apiary-mock' Modules PropertyListings PropertyListingsEndToEndTests --include='*.swift' --exclude-dir=.build 2>/dev/null | sort || true)
-allowed=$'PropertyListings/Configuration/ServiceURLs.swift\nPropertyListingsEndToEndTests/ListingsAPIEndToEndTests.swift'
+# 5. The sample backend host is named in the brand file that uses it, plus the end-to-end test
+hosts=$(grep -rl 'apiary-mock' Modules PropertyListings Brands PropertyListingsEndToEndTests --include='*.swift' --exclude-dir=.build 2>/dev/null | sort || true)
+allowed=$'Brands/PropertyListings/Brand.swift\nPropertyListingsEndToEndTests/ListingsAPIEndToEndTests.swift'
 for h in $hosts; do
-  grep -qx "$h" <<< "$allowed" || say "host named outside ServiceURLs + end-to-end test: $h"
+  grep -qx "$h" <<< "$allowed" || say "host named outside a brand file + end-to-end test: $h"
 done
 
 # 6. Test support modules are linked by test bundles only
@@ -39,6 +39,10 @@ bad=$(sources '^import [A-Za-z]*TestSupport$' Modules PropertyListings | grep -v
 # 7. Cache and API never meet
 [ -z "$(sources '^import ListingsAPI'   Modules/Listings/Sources/ListingsCache)" ] || say "ListingsCache imports ListingsAPI"
 [ -z "$(sources '^import ListingsCache' Modules/Listings/Sources/ListingsAPI)"   ] || say "ListingsAPI imports ListingsCache"
+
+# 8. A feature package never names a brand
+bad=$(sources 'CurrentBrand|BrandConfiguration' Modules)
+[ -z "$bad" ] || say "brand referenced inside a feature module: $bad"
 
 [ $fail -eq 0 ] && echo "guard: ok"
 exit $fail
