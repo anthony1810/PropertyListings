@@ -18,6 +18,7 @@ import SettingsUI
 @MainActor
 final class AppComposition {
     let router = AppRouter()
+    private let brand: BrandConfiguration
 
     // MARK: - Edges
 
@@ -35,7 +36,7 @@ final class AppComposition {
     private lazy var listingsService = ListingsService(
         httpClient: httpClient,
         store: listingsStore,
-        baseURL: ServiceURLs.listings,
+        baseURL: brand.listingsHost,
         currentDate: currentDate
     )
     private lazy var bookmarks = LocalBookmarksLoader(store: bookmarkStore)
@@ -49,16 +50,18 @@ final class AppComposition {
 
     // MARK: - Init
 
-    init() {
+    init(brand: BrandConfiguration) {
+        self.brand = brand
         ImagePipeline.configure()
     }
 
-    convenience init(httpClient: HTTPClient) {
-        self.init()
+    convenience init(brand: BrandConfiguration, httpClient: HTTPClient) {
+        self.init(brand: brand)
         self.httpClient = httpClient
     }
 
     convenience init(
+        brand: BrandConfiguration,
         httpClient: HTTPClient,
         listingsStore: ListingsStore,
         bookmarkStore: BookmarkStore,
@@ -68,7 +71,7 @@ final class AppComposition {
         locale: Locale,
         clock: any Clock<Duration> = ContinuousClock()
     ) {
-        self.init()
+        self.init(brand: brand)
         self.httpClient = httpClient
         self.listingsStore = listingsStore
         self.bookmarkStore = bookmarkStore

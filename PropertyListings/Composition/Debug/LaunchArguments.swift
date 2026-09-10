@@ -16,9 +16,9 @@ extension AppComposition {
         if let index = arguments.firstIndex(of: LaunchArguments.connectivity),
            arguments.indices.contains(index + 1),
            arguments[index + 1] == LaunchArguments.offline {
-            return AppComposition(httpClient: AlwaysFailingHTTPClient())
+            return AppComposition(brand: CurrentBrand.configuration, httpClient: AlwaysFailingHTTPClient())
         }
-        return AppComposition()
+        return AppComposition(brand: CurrentBrand.configuration)
     }
 }
 
@@ -32,7 +32,7 @@ private struct AlwaysFailingHTTPClient: HTTPClient {
 #else
 extension AppComposition {
     static func launch() -> AppComposition {
-        AppComposition()
+        AppComposition(brand: CurrentBrand.configuration)
     }
 }
 #endif

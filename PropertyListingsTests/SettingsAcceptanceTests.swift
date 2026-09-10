@@ -86,7 +86,7 @@ struct SettingsAcceptanceTests {
     private let deCH = Locale(identifier: "de_CH")
     private let frCH = Locale(identifier: "fr_CH")
     private let clock = TestClock()
-    private let listingsURL = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: ServiceURLs.listings)
+    private let listingsURL = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: makeBrand().listingsHost)
     private let house = makeRemoteListing(id: "1", title: "Haus", price: 9_999_999)
 
     private var online: HTTPClientStub {

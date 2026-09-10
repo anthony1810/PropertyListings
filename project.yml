@@ -31,7 +31,7 @@ targets:
   PropertyListings:
     type: application
     platform: iOS
-    sources: [PropertyListings]
+    sources: [PropertyListings, Brands/PropertyListings]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.anthony.propertylistings

@@ -1,5 +1,6 @@
 import BookmarksPersistence
 import Foundation
+import ListingsAPI
 import ListingsCache
 import SettingsFeature
 import SettingsPersistence
@@ -55,14 +56,32 @@ import TestSupport
         }
     }
 
+    // MARK: - Brand
+
+    @Test func listingsViewModel_loadsListingsFromTheBrandHost() async {
+        let brand = makeBrand(listingsHost: URL(string: "https://brand.example")!)
+        let listing = makeRemoteListing(title: "From the brand host")
+        let url = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: brand.listingsHost)
+        let client = HTTPClientStub([url: [.success(makeItemsJSON([listing.json]))]])
+        let sut = makeSUT(brand: brand, client: client)
+
+        await sut.listingsViewModel.load()
+
+        #expect(sut.listingsViewModel.rows.map(\.title) == ["From the brand host"])
+    }
+
     // MARK: - Helpers
 
     private let clock = TestClock()
 
-    private func makeSUT() -> AppComposition {
+    private func makeSUT(
+        brand: BrandConfiguration = makeBrand(),
+        client: HTTPClientStub = .offline
+    ) -> AppComposition {
         let now = Date()
         return AppComposition(
-            httpClient: HTTPClientStub.offline,
+            brand: brand,
+            httpClient: client,
             listingsStore: InMemoryListingsStore(),
             bookmarkStore: InMemoryBookmarkStore(),
             settingsStore: InMemorySettingsStore(),

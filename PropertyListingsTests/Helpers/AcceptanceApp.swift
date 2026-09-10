@@ -47,6 +47,7 @@ struct AcceptanceApp {
         self.stores = stores
         self.clock = clock
         composition = AppComposition(
+            brand: makeBrand(),
             httpClient: client,
             listingsStore: stores.listings,
             bookmarkStore: stores.bookmarks,
