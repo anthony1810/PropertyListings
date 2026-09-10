@@ -22,7 +22,7 @@ import TestSupport
         let view = await makeView(settings: makeSettings(appearance: .dark, language: .french))
             .environment(\.locale, Locale(identifier: "fr_CH"))
 
-        assert(view, style: .light, testName: "settingsFrench")
+        assert(view, style: .dark, testName: "settingsFrench")
     }
 
     // MARK: - Helpers
