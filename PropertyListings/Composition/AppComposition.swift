@@ -36,7 +36,9 @@ final class AppComposition {
     private lazy var listingsService = ListingsService(
         httpClient: httpClient,
         store: listingsStore,
-        baseURL: brand.listingsHost,
+        baseURL: brand.listings.host,
+        pageSize: brand.listings.pageSize,
+        cachePolicy: ListingsCachePolicy(maxAgeInDays: brand.listings.cacheMaxAgeInDays),
         currentDate: currentDate
     )
     private lazy var bookmarks = LocalBookmarksLoader(store: bookmarkStore)

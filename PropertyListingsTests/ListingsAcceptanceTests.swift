@@ -203,7 +203,7 @@ struct ListingsAcceptanceTests {
     private let today: LockIsolated<Date>
     private let clock = TestClock()
     private let deCH = Locale(identifier: "de_CH")
-    private let listingsURL = ListingsEndpoint.page(from: 0, size: 5).url(baseURL: makeBrand().listingsHost)
+    private let listingsURL = ListingsEndpoint.page(from: 0, size: makeBrand().listings.pageSize).url(baseURL: makeBrand().listings.host)
     private let house = makeRemoteListing(
         id: "1",
         title: "Haus",
@@ -222,8 +222,8 @@ struct ListingsAcceptanceTests {
     )
 
     private let chalet = makeRemoteListing(id: "3", title: "Chalet")
-    private let firstPageURL = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: makeBrand().listingsHost)
-    private let secondPageURL = ListingsEndpoint.page(from: 2, size: ListingsService.pageSize).url(baseURL: makeBrand().listingsHost)
+    private let firstPageURL = ListingsEndpoint.page(from: 0, size: makeBrand().listings.pageSize).url(baseURL: makeBrand().listings.host)
+    private let secondPageURL = ListingsEndpoint.page(from: 2, size: makeBrand().listings.pageSize).url(baseURL: makeBrand().listings.host)
 
     private var listingsJSON: Data { makeItemsJSON([house.json, flat.json]) }
     private var firstPageJSON: Data { makeItemsJSON([house.json, flat.json], from: 0, size: 2, total: 3, maxFrom: 2) }
@@ -247,11 +247,5 @@ struct ListingsAcceptanceTests {
 
     private func launch(_ client: HTTPClientStub, sharing stores: AcceptanceApp.Stores = AcceptanceApp.Stores()) -> AcceptanceApp {
         AcceptanceApp(client: client, stores: stores, today: today, locale: deCH, clock: clock)
-    }
-}
-
-private extension Date {
-    func adding(days: Int) -> Date {
-        Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
     }
 }

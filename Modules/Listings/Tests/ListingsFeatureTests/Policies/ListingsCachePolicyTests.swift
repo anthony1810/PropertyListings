@@ -4,22 +4,36 @@ import Testing
 
 @Suite struct ListingsCachePolicyTests {
     private let now = Date()
+    private let sevenDays = ListingsCachePolicy(maxAgeInDays: 7)
+    private let threeDays = ListingsCachePolicy(maxAgeInDays: 3)
 
-    @Test func validate_isTrueForCacheLessThanSevenDaysOld() {
+    @Test func validate_isTrueForCacheLessThanSevenDaysOld_withASevenDayMaxAge() {
         let timestamp = now.adding(days: -7).adding(seconds: 1)
 
-        #expect(ListingsCachePolicy.validate(timestamp, against: now) == true)
+        #expect(sevenDays.validate(timestamp, against: now) == true)
     }
 
-    @Test func validate_isFalseForCacheSevenDaysOld() {
+    @Test func validate_isFalseForCacheSevenDaysOld_withASevenDayMaxAge() {
         let timestamp = now.adding(days: -7)
 
-        #expect(ListingsCachePolicy.validate(timestamp, against: now) == false)
+        #expect(sevenDays.validate(timestamp, against: now) == false)
     }
 
-    @Test func validate_isFalseForCacheMoreThanSevenDaysOld() {
+    @Test func validate_isFalseForCacheMoreThanSevenDaysOld_withASevenDayMaxAge() {
         let timestamp = now.adding(days: -7).adding(seconds: -1)
 
-        #expect(ListingsCachePolicy.validate(timestamp, against: now) == false)
+        #expect(sevenDays.validate(timestamp, against: now) == false)
+    }
+
+    @Test func validate_isTrueForCacheLessThanThreeDaysOld_withAThreeDayMaxAge() {
+        let timestamp = now.adding(days: -3).adding(seconds: 1)
+
+        #expect(threeDays.validate(timestamp, against: now) == true)
+    }
+
+    @Test func validate_isFalseForCacheThreeDaysOld_withAThreeDayMaxAge() {
+        let timestamp = now.adding(days: -3)
+
+        #expect(threeDays.validate(timestamp, against: now) == false)
     }
 }

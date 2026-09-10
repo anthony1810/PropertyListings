@@ -28,6 +28,16 @@ struct ListingsServiceTests {
         #expect(page.loadMore != nil)
     }
 
+    @Test func loadListings_requestsPagesOfTheInjectedSize() async throws {
+        let pageOfTwoURL = ListingsEndpoint.page(from: 0, size: 2).url(baseURL: anyURL())
+        let client = HTTPClientStub([pageOfTwoURL: [.success(makeItemsJSON([house.json, flat.json]))]])
+        let sut = makeSUT(client: client, pageSize: 2)
+
+        let listings = try await sut.loadListings()
+
+        #expect(listings.items == [house.model, flat.model])
+    }
+
     @Test func loadListings_offersNoLoadMoreOnTheLastPage() async throws {
         let sut = makeSUT(client: online)
 
@@ -151,10 +161,12 @@ struct ListingsServiceTests {
 
     // MARK: - Helpers
 
+    private static let pageSize = 5
+    private static let cachePolicy = ListingsCachePolicy(maxAgeInDays: 7)
     private let now = Date()
-    private let url = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: anyURL())
-    private let firstPageURL = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: anyURL())
-    private let secondPageURL = ListingsEndpoint.page(from: 2, size: ListingsService.pageSize).url(baseURL: anyURL())
+    private let url = ListingsEndpoint.page(from: 0, size: ListingsServiceTests.pageSize).url(baseURL: anyURL())
+    private let firstPageURL = ListingsEndpoint.page(from: 0, size: ListingsServiceTests.pageSize).url(baseURL: anyURL())
+    private let secondPageURL = ListingsEndpoint.page(from: 2, size: ListingsServiceTests.pageSize).url(baseURL: anyURL())
     private let house = makeRemoteListing(id: "1", title: "Haus", price: 9_999_999)
     private let flat = makeRemoteListing(id: "2", title: "Maison", price: nil, street: nil)
     private let chalet = makeRemoteListing(id: "3", title: "Chalet")
@@ -189,23 +201,16 @@ struct ListingsServiceTests {
 
     private func makeSUT(
         client: HTTPClientStub,
-        store: InMemoryListingsStore = InMemoryListingsStore()
+        store: InMemoryListingsStore = InMemoryListingsStore(),
+        pageSize: Int = ListingsServiceTests.pageSize
     ) -> ListingsService {
         ListingsService(
             httpClient: client,
             store: store,
             baseURL: anyURL(),
+            pageSize: pageSize,
+            cachePolicy: Self.cachePolicy,
             currentDate: { [now] in now }
         )
-    }
-}
-
-private extension Date {
-    func adding(days: Int) -> Date {
-        Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
-    }
-
-    func adding(seconds: TimeInterval) -> Date {
-        self + seconds
     }
 }

@@ -61,7 +61,7 @@ import TestSupport
     @Test func listingsViewModel_loadsListingsFromTheBrandHost() async {
         let brand = makeBrand(listingsHost: URL(string: "https://brand.example")!)
         let listing = makeRemoteListing(title: "From the brand host")
-        let url = ListingsEndpoint.page(from: 0, size: ListingsService.pageSize).url(baseURL: brand.listingsHost)
+        let url = ListingsEndpoint.page(from: 0, size: brand.listings.pageSize).url(baseURL: brand.listings.host)
         let client = HTTPClientStub([url: [.success(makeItemsJSON([listing.json]))]])
         let sut = makeSUT(brand: brand, client: client)
 
@@ -70,19 +70,43 @@ import TestSupport
         #expect(sut.listingsViewModel.rows.map(\.title) == ["From the brand host"])
     }
 
+    @Test func listingsViewModel_requestsPagesOfTheBrandPageSize() async {
+        let brand = makeBrand(listingsPageSize: 2)
+        let listing = makeRemoteListing(title: "From a page of two")
+        let url = ListingsEndpoint.page(from: 0, size: 2).url(baseURL: brand.listings.host)
+        let client = HTTPClientStub([url: [.success(makeItemsJSON([listing.json]))]])
+        let sut = makeSUT(brand: brand, client: client)
+
+        await sut.listingsViewModel.load()
+
+        #expect(sut.listingsViewModel.rows.map(\.title) == ["From a page of two"])
+    }
+
+    @Test func listingsViewModel_showsCachedListingsWithinTheBrandCacheAge() async {
+        let brand = makeBrand(listingsCacheMaxAgeInDays: 30)
+        let listing = makeRemoteListing(title: "Cached ten days ago")
+        let cache = CachedListings(listings: [listing.local], timestamp: now.adding(days: -10))
+        let sut = makeSUT(brand: brand, listingsStore: InMemoryListingsStore(cache: cache))
+
+        await sut.listingsViewModel.load()
+
+        #expect(sut.listingsViewModel.rows.map(\.title) == ["Cached ten days ago"])
+    }
+
     // MARK: - Helpers
 
+    private let now = Date()
     private let clock = TestClock()
 
     private func makeSUT(
         brand: BrandConfiguration = makeBrand(),
-        client: HTTPClientStub = .offline
+        client: HTTPClientStub = .offline,
+        listingsStore: InMemoryListingsStore = InMemoryListingsStore()
     ) -> AppComposition {
-        let now = Date()
-        return AppComposition(
+        AppComposition(
             brand: brand,
             httpClient: client,
-            listingsStore: InMemoryListingsStore(),
+            listingsStore: listingsStore,
             bookmarkStore: InMemoryBookmarkStore(),
             settingsStore: InMemorySettingsStore(),
             defaultSettings: Settings(appearance: .system, language: .german),

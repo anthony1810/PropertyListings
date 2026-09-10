@@ -5,21 +5,27 @@ import ListingsCache
 import ListingsFeature
 
 struct ListingsService: Sendable {
-    static let pageSize = 5
-
     private let httpClient: HTTPClient
     private let baseURL: URL
+    private let pageSize: Int
     private let localListings: LocalListingsLoader
 
     init(
         httpClient: HTTPClient,
         store: ListingsStore,
         baseURL: URL,
+        pageSize: Int,
+        cachePolicy: ListingsCachePolicy,
         currentDate: @escaping @Sendable () -> Date
     ) {
         self.httpClient = httpClient
         self.baseURL = baseURL
-        self.localListings = LocalListingsLoader(store: store, currentDate: currentDate)
+        self.pageSize = pageSize
+        self.localListings = LocalListingsLoader(
+            store: store,
+            policy: cachePolicy,
+            currentDate: currentDate
+        )
     }
 
     func validateCache() async {
@@ -58,7 +64,7 @@ private extension ListingsService {
 
 private extension ListingsService {
     func loadRemotePage(from: Int) async throws -> ListingsPage {
-        let url = ListingsEndpoint.page(from: from, size: Self.pageSize).url(baseURL: baseURL)
+        let url = ListingsEndpoint.page(from: from, size: pageSize).url(baseURL: baseURL)
         let (data, response) = try await httpClient.get(from: url)
         return try ListingsMapper.map(data, from: response)
     }
