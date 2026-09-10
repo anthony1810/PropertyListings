@@ -1,0 +1,64 @@
+<svg viewBox="0 0 1060 736" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<rect x="0" y="0" width="1060" height="736" fill="#0d1117"/>
+<defs><marker id="head" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L8,5 L0,10" fill="none" stroke="#8b949e" stroke-width="1.6"/></marker></defs>
+<style>.h{font-size:15px;font-weight:600;fill:#e6edf3}.n{font-size:12.5px;font-weight:600}.n2{font-size:10.5px;font-weight:600}.d{font-size:11px;fill:#8b949e}.m{font-size:11px}</style>
+<text x="530.0" y="26" class="h" text-anchor="middle">Saved: one heart tap on Listings, and how the Saved tab learns about it</text>
+<text x="530.0" y="46" class="d" text-anchor="middle">Both tabs observe one stream from the loader, so a change on either side shows on the other at once.</text>
+<path d="M96.3,104 L96.3,720" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M240.9,104 L240.9,720" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M385.4,104 L385.4,720" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M530.0,104 L530.0,720" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M674.6,104 L674.6,720" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M819.1,104 L819.1,720" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M963.7,104 L963.7,720" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="30.0" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="96.3" y="78.0" class="n" fill="#f78166" text-anchor="middle">ListingsView</text>
+<text x="96.3" y="94.0" class="d" text-anchor="middle">ListingsUI</text>
+<rect x="174.6" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
+<text x="240.9" y="78.0" class="n" fill="#d2a8ff" text-anchor="middle">ListingsViewModel</text>
+<text x="240.9" y="94.0" class="d" text-anchor="middle">ListingsPresentation</text>
+<rect x="319.1" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
+<text x="385.4" y="78.0" class="n" fill="#e3b341" text-anchor="middle">AppComposition</text>
+<text x="385.4" y="94.0" class="d" text-anchor="middle">App root</text>
+<rect x="463.7" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="530.0" y="78.0" class="n2" fill="#3fb950" text-anchor="middle">LocalBookmarksLoader</text>
+<text x="530.0" y="94.0" class="d" text-anchor="middle">BookmarksPersistence</text>
+<rect x="608.3" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="674.6" y="78.0" class="n2" fill="#3fb950" text-anchor="middle">CodableBookmarkStore</text>
+<text x="674.6" y="94.0" class="d" text-anchor="middle">bookmarks.json</text>
+<rect x="752.9" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
+<text x="819.1" y="78.0" class="n" fill="#d2a8ff" text-anchor="middle">BookmarksViewModel</text>
+<text x="819.1" y="94.0" class="d" text-anchor="middle">BookmarksPresentation</text>
+<rect x="897.4" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="963.7" y="78.0" class="n" fill="#f78166" text-anchor="middle">BookmarksView</text>
+<text x="963.7" y="94.0" class="d" text-anchor="middle">BookmarksUI</text>
+<path d="M96.3,118 L230.9,118" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="168.6" y="112" class="m" fill="#e6edf3" text-anchor="middle">heart tap, toggleBookmark(id:)</text>
+<rect x="112.3" y="152" width="257.1" height="44" rx="6" fill="#0d1117" stroke="#d2a8ff" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="240.9" y="165" class="d" text-anchor="middle">The heart flips at once,</text>
+<text x="240.9" y="180" class="d" text-anchor="middle">300 ms debounce on the injected clock</text>
+<path d="M240.9,220 L375.4,220" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="313.1" y="214" class="m" fill="#e6edf3" text-anchor="middle">saveBookmark(Listing)</text>
+<rect x="310.4" y="254" width="150.0" height="44" rx="6" fill="#0d1117" stroke="#e3b341" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="385.4" y="267" class="d" text-anchor="middle">Listing to Bookmark,</text>
+<text x="385.4" y="282" class="d" text-anchor="middle">savedAt now</text>
+<path d="M385.4,322 L520.0,322" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="457.7" y="316" class="m" fill="#e6edf3" text-anchor="middle">save(Bookmark)</text>
+<rect x="439.3" y="356" width="181.5" height="29" rx="6" fill="#0d1117" stroke="#3fb950" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="530.0" y="369" class="d" text-anchor="middle">Bookmark to LocalBookmark</text>
+<path d="M530.0,409 L664.6,409" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="602.3" y="403" class="m" fill="#e6edf3" text-anchor="middle">insert(LocalBookmark)</text>
+<rect x="599.6" y="443" width="150.0" height="29" rx="6" fill="#0d1117" stroke="#3fb950" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="674.6" y="456" class="d" text-anchor="middle">Upsert, atomic write</text>
+<path d="M530.0,496 L250.9,496" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="385.4" y="490" class="m" fill="#8b949e" text-anchor="middle">observe() yields [Bookmark], mapped to ids</text>
+<path d="M530.0,532 L809.1,532" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="674.6" y="526" class="m" fill="#8b949e" text-anchor="middle">observe() yields [Bookmark]</text>
+<rect x="731.5" y="566" width="175.2" height="44" rx="6" fill="#0d1117" stroke="#d2a8ff" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="819.1" y="579" class="d" text-anchor="middle">Bookmark to BookmarkRow,</text>
+<text x="819.1" y="594" class="d" text-anchor="middle">newest first</text>
+<path d="M819.1,634 L953.7,634" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="891.4" y="628" class="m" fill="#8b949e" text-anchor="middle">rows</text>
+<path d="M240.9,670 L106.3,670" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="168.6" y="664" class="m" fill="#8b949e" text-anchor="middle">rows, the heart stays on</text>
+</svg>

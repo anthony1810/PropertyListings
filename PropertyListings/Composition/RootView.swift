@@ -1,35 +1,54 @@
+import SettingsFeature
+import SettingsPresentation
 import SwiftUI
 
 struct RootView: View {
     private let composition: AppComposition
+    private let settings: SettingsViewModel
     @Bindable private var router: AppRouter
 
     init(composition: AppComposition) {
         self.composition = composition
+        settings = composition.settingsViewModel
         _router = Bindable(composition.router)
     }
 
+    private var language: AppLanguage { settings.appliedSettings.language }
+
     var body: some View {
         TabView(selection: $router.selectedTab) {
-            Tab(AppStrings.listingsTab, systemImage: "house", value: .listings) {
-                NavigationStack { composition.makeListingsView() }
+            Tab(value: .listings) {
+                NavigationStack { composition.makeListingsView() }.id(language)
+            } label: {
+                Label { AppStrings.listingsTab } icon: { Image(systemName: "house") }
             }
-            Tab(AppStrings.savedTab, systemImage: "heart", value: .saved) {
-                NavigationStack { composition.makeBookmarksView() }
+            Tab(value: .saved) {
+                NavigationStack { composition.makeBookmarksView() }.id(language)
+            } label: {
+                Label { AppStrings.savedTab } icon: { Image(systemName: "heart") }
+            }
+            Tab(value: .settings) {
+                NavigationStack { composition.makeSettingsView() }.id(language)
+            } label: {
+                Label { AppStrings.settingsTab } icon: { Image(systemName: "slider.horizontal.3") }
             }
         }
+        .environment(\.locale, composition.locale(for: language))
+        .preferredColorScheme(settings.appliedSettings.appearance.colorScheme)
         .alert(
-            router.alert?.title ?? "",
+            AppStrings.errorTitle,
             isPresented: Binding(
                 get: { router.alert != nil },
                 set: { if !$0 { router.dismissAlert() } }
             ),
             presenting: router.alert
         ) { _ in
-            Button(AppStrings.ok, role: .cancel) {}
+            Button(role: .cancel, action: {}) { AppStrings.ok }
         } message: { route in
             Text(route.message)
         }
         .task { await composition.validateCache() }
+        .task { await settings.observe() }
+        .task { await composition.observeSettings() }
     }
 }

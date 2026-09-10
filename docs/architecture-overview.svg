@@ -1,121 +1,110 @@
-<svg viewBox="0 0 1060 724" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
-<defs>
-  <marker id="dep" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-    <path d="M0,0 L8,5 L0,10" fill="none" stroke="#8b949e" stroke-width="1.6"/>
-  </marker>
-</defs>
-<style>
-  .t{font-size:15px;font-weight:600;fill:#fff}
-  .s{font-size:12.5px;font-weight:600;fill:#e6edf3}
-  .d{font-size:11px;fill:#8b949e}
-  .lbl{font-size:11px;fill:#8b949e}
-</style>
-<rect x="0" y="0" width="1060" height="724" fill="#0d1117"/>
-
-<!-- ============ iOS APP ============ -->
-<rect x="16" y="16" width="1028" height="688" rx="12" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
-<text x="36" y="46" class="t">PropertyListings · iOS 18.0 · Swift 6 · one workspace · two tabs</text>
-<text x="1024" y="46" class="lbl" text-anchor="end">dashed arrow = depends on</text>
-
-<!-- Composition root -->
-<rect x="36" y="62" width="988" height="70" rx="10" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
-<text x="52" y="86" class="s" fill="#e3b341">App: Composition Root</text>
-<text x="52" y="106" class="d">the only place concretes meet: binds endpoint → HTTP client → mapper, cache decorator, local fallback, both view models</text>
-<text x="52" y="122" class="d">AppRouter owns tabs and alerts, feature views stay dumb · depends on every target below · owns the only service URL · adapts one vertical's model to the other's</text>
-
-<!-- ===== Listings vertical ===== -->
-<rect x="76" y="152" width="420" height="338" rx="10" fill="none" stroke="#30363d" stroke-dasharray="5 4"/>
-<text x="92" y="176" class="s">Listings (one package, five targets)</text>
-
-<rect x="90" y="190" width="392" height="52" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
-<text x="102" y="210" class="s" fill="#f78166">ListingsUI</text>
-<text x="102" y="230" class="d">SwiftUI. The Listings tab: list, loading, empty and error states.</text>
-
-<rect x="90" y="264" width="392" height="52" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
-<text x="102" y="284" class="s" fill="#d2a8ff">ListingsPresentation</text>
-<text x="102" y="304" class="d">@Observable view model and row mapping. No SwiftUI import.</text>
-
-<rect x="90" y="338" width="392" height="52" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
-<text x="102" y="358" class="s" fill="#58a6ff">ListingsFeature</text>
-<text x="102" y="378" class="d">Pure domain: models, seams, the cache policy. Foundation only.</text>
-
-<rect x="90" y="412" width="185" height="62" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
-<text x="102" y="432" class="s" fill="#3fb950">ListingsAPI</text>
-<text x="102" y="450" class="d">Endpoint and mapper only.</text>
-<text x="102" y="465" class="d">Never sees the HTTP client.</text>
-
-<rect x="297" y="412" width="185" height="62" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
-<text x="309" y="432" class="s" fill="#3fb950">ListingsCache</text>
-<text x="309" y="450" class="d">Local loader and a JSON file store.</text>
-<text x="309" y="465" class="d">Listings survive relaunch offline.</text>
-
-<!-- Listings intra-column imports -->
-<line x1="286" y1="242" x2="286" y2="262" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
-<line x1="286" y1="316" x2="286" y2="336" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
-<line x1="182" y1="412" x2="182" y2="392" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
-<line x1="389" y1="412" x2="389" y2="392" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
-
-<!-- ===== Bookmarks vertical ===== -->
-<rect x="564" y="152" width="420" height="338" rx="10" fill="none" stroke="#30363d" stroke-dasharray="5 4"/>
-<text x="580" y="176" class="s">Bookmarks (one package, four targets)</text>
-
-<rect x="578" y="190" width="392" height="52" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
-<text x="590" y="210" class="s" fill="#f78166">BookmarksUI</text>
-<text x="590" y="230" class="d">SwiftUI. The Saved tab: every bookmark, unbookmark by heart or swipe.</text>
-
-<rect x="578" y="264" width="392" height="52" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
-<text x="590" y="284" class="s" fill="#d2a8ff">BookmarksPresentation</text>
-<text x="590" y="304" class="d">@Observable view model over an observed stream. No SwiftUI import.</text>
-
-<rect x="578" y="338" width="392" height="52" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
-<text x="590" y="358" class="s" fill="#58a6ff">BookmarksFeature</text>
-<text x="590" y="378" class="d">Pure domain: the bookmark snapshot and the store seam.</text>
-
-<rect x="578" y="412" width="392" height="62" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
-<text x="590" y="432" class="s" fill="#3fb950">BookmarksPersistence</text>
-<text x="590" y="450" class="d">A JSON file store that replays and streams changes,</text>
-<text x="590" y="465" class="d">so both tabs stay in sync.</text>
-
-<!-- Bookmarks intra-column imports -->
-<line x1="774" y1="242" x2="774" y2="262" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
-<line x1="774" y1="316" x2="774" y2="336" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
-<line x1="774" y1="412" x2="774" y2="392" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
-
-<!-- Root imports both verticals -->
-<line x1="286" y1="132" x2="286" y2="150" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
-<line x1="774" y1="132" x2="774" y2="150" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dep)"/>
-
-<!-- ===== Shared horizontals ===== -->
-<rect x="36" y="520" width="988" height="140" rx="10" fill="#161b22" stroke="#8b949e" stroke-width="1.6"/>
-<text x="52" y="648" class="s" fill="#8b949e">Shared horizontals: implementation only, never a domain interface; no feature knows another exists</text>
-
-<rect x="52" y="532" width="226" height="84" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="64" y="554" class="s">HTTPClient</text>
-<text x="64" y="572" class="d">one method, get(from: URL)</text>
-<text x="64" y="588" class="d">knows no endpoint, no response</text>
-<text x="64" y="604" class="d">imported by the root only</text>
-
-<rect x="296" y="532" width="226" height="84" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="308" y="554" class="s">SharedPresentation</text>
-<text x="308" y="572" class="d">price and address formatting</text>
-<text x="308" y="588" class="d">used by both Presentation targets</text>
-
-<rect x="540" y="532" width="226" height="84" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="552" y="554" class="s">DesignSystem</text>
-<text x="552" y="572" class="d">tokens, card, like button, states</text>
-<text x="552" y="588" class="d">the only module importing Kingfisher</text>
-<text x="552" y="604" class="d">used by both UI targets</text>
-
-<rect x="784" y="532" width="226" height="84" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="796" y="554" class="s">TestSupport</text>
-<text x="796" y="572" class="d">spies, leak tracking, fixtures,</text>
-<text x="796" y="588" class="d">snapshot config</text>
-<text x="796" y="604" class="d">imported by test targets only</text>
-
-
-
-<!-- Test strip -->
-<rect x="36" y="672" width="988" height="24" rx="8" fill="#0d1117" stroke="#30363d"/>
-<text x="52" y="689" class="d">Tests: unit per target · acceptance through the root · end-to-end against the real endpoint · snapshot · UI tests on iOS 18.2</text>
-<text x="1024" y="712" class="lbl" text-anchor="end">Horizontal-within-vertical slicing, from "iOS Modular Architecture: From Monolith to Hybrid Approaches" by Anthony Tran</text>
+<svg viewBox="0 0 1060 816" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<rect x="0" y="0" width="1060" height="816" fill="#0d1117"/>
+<style>.h{font-size:15px;font-weight:600;fill:#e6edf3}.n{font-size:13.5px;font-weight:600}.d{font-size:11.5px;fill:#8b949e}.k{font-size:12px;font-weight:600;fill:#8b949e;letter-spacing:.04em}.t{font-size:12px;fill:#e6edf3}</style>
+<defs><marker id="dep" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L8,5 L0,10" fill="none" stroke="#8b949e" stroke-width="1.6"/></marker></defs>
+<text x="530" y="22" class="h" text-anchor="middle">PropertyListings, iOS 18.0, Swift 6, one workspace, three tabs</text>
+<text x="530" y="40" class="d" text-anchor="middle">Dashed arrow: depends on. UI on Presentation, Presentation on Feature, the data targets on Feature, every column on the root above.</text>
+<rect x="16" y="48" width="1028" height="752" rx="12" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+<rect x="36" y="60" width="988" height="70" rx="9" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
+<text x="52" y="78" class="n" fill="#e3b341">App: Composition Root</text>
+<text x="52" y="96" class="d">The only place concretes meet: endpoint to HTTP client to mapper, the cache decorator and the local fallback, three loaders, three view models built once.</text>
+<text x="52" y="112" class="d">AppRouter owns tabs and alerts. The root turns the chosen language into a Locale for every view model and the SwiftUI environment. Owns the only service URL.</text>
+<rect x="36" y="146" width="316" height="390" rx="9" fill="none" stroke="#30363d" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="48" y="168" class="n" fill="#e6edf3">Listings (one package, five targets)</text>
+<rect x="48" y="180" width="292" height="56" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="60" y="198" class="n" fill="#f78166">ListingsUI</text>
+<text x="60" y="214" class="d">SwiftUI. The Listings tab: list, loading,</text>
+<text x="60" y="229" class="d">empty and error states, in-place language.</text>
+<rect x="48" y="270" width="292" height="56" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
+<text x="60" y="288" class="n" fill="#d2a8ff">ListingsPresentation</text>
+<text x="60" y="304" class="d">@Observable view model, row mapping,</text>
+<text x="60" y="319" class="d">update(locale:). No SwiftUI import.</text>
+<rect x="48" y="360" width="292" height="56" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
+<text x="60" y="378" class="n" fill="#58a6ff">ListingsFeature</text>
+<text x="60" y="394" class="d">Pure domain: models, the cache seam,</text>
+<text x="60" y="409" class="d">the seven day policy. Foundation only.</text>
+<rect x="48" y="450" width="140" height="71" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="60" y="468" class="n" fill="#3fb950">ListingsAPI</text>
+<text x="60" y="484" class="d">Endpoint and</text>
+<text x="60" y="499" class="d">mapper, never the</text>
+<text x="60" y="514" class="d">HTTP client.</text>
+<rect x="200" y="450" width="140" height="71" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="212" y="468" class="n" fill="#3fb950">ListingsCache</text>
+<text x="212" y="484" class="d">Local loader and</text>
+<text x="212" y="499" class="d">a JSON file store,</text>
+<text x="212" y="514" class="d">offline.</text>
+<path d="M194,130 L194,144" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M194,238 L194,268" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M194,328 L194,358" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M118,448 L118,418" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M270,448 L270,418" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<rect x="372" y="146" width="316" height="390" rx="9" fill="none" stroke="#30363d" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="384" y="168" class="n" fill="#e6edf3">Bookmarks (one package, four targets)</text>
+<rect x="384" y="180" width="292" height="56" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="396" y="198" class="n" fill="#f78166">BookmarksUI</text>
+<text x="396" y="214" class="d">SwiftUI. The Saved tab: every bookmark,</text>
+<text x="396" y="229" class="d">unbookmark by heart or swipe.</text>
+<rect x="384" y="270" width="292" height="56" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
+<text x="396" y="288" class="n" fill="#d2a8ff">BookmarksPresentation</text>
+<text x="396" y="304" class="d">@Observable view model over an observed</text>
+<text x="396" y="319" class="d">stream, update(locale:). No SwiftUI import.</text>
+<rect x="384" y="360" width="292" height="56" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
+<text x="396" y="378" class="n" fill="#58a6ff">BookmarksFeature</text>
+<text x="396" y="394" class="d">Pure domain: the bookmark snapshot</text>
+<text x="396" y="409" class="d">with its own price and address.</text>
+<rect x="384" y="450" width="292" height="56" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="396" y="468" class="n" fill="#3fb950">BookmarksPersistence</text>
+<text x="396" y="484" class="d">Store seam, a JSON file store, a loader that</text>
+<text x="396" y="499" class="d">replays and streams so both tabs stay in sync.</text>
+<path d="M530,130 L530,144" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M530,238 L530,268" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M530,328 L530,358" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M530,448 L530,418" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<rect x="708" y="146" width="316" height="390" rx="9" fill="none" stroke="#30363d" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="720" y="168" class="n" fill="#e6edf3">Settings (one package, four targets)</text>
+<rect x="720" y="180" width="292" height="56" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="732" y="198" class="n" fill="#f78166">SettingsUI</text>
+<text x="732" y="214" class="d">SwiftUI. The Settings tab: appearance</text>
+<text x="732" y="229" class="d">segmented control and the language list.</text>
+<rect x="720" y="270" width="292" height="56" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
+<text x="732" y="288" class="n" fill="#d2a8ff">SettingsPresentation</text>
+<text x="732" y="304" class="d">@Observable view model, optimistic selects</text>
+<text x="732" y="319" class="d">with revert. No SwiftUI import.</text>
+<rect x="720" y="360" width="292" height="56" rx="9" fill="#161b22" stroke="#58a6ff" stroke-width="1.6"/>
+<text x="732" y="378" class="n" fill="#58a6ff">SettingsFeature</text>
+<text x="732" y="394" class="d">Pure domain: Settings, Appearance,</text>
+<text x="732" y="409" class="d">AppLanguage.</text>
+<rect x="720" y="450" width="292" height="56" rx="9" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="732" y="468" class="n" fill="#3fb950">SettingsPersistence</text>
+<text x="732" y="484" class="d">Store seam, a JSON file store, a loader with</text>
+<text x="732" y="499" class="d">a device default that replays and streams.</text>
+<path d="M866,130 L866,144" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M866,238 L866,268" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M866,328 L866,358" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<path d="M866,448 L866,418" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" fill="none" marker-end="url(#dep)"/>
+<rect x="36" y="554" width="988" height="170" rx="9" fill="#161b22" stroke="#8b949e" stroke-width="1.6"/>
+<text x="52" y="576" class="n" fill="#e6edf3">Shared horizontals: implementation only, never a domain interface; no feature knows another exists</text>
+<rect x="52" y="590" width="226" height="116" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1.6"/>
+<text x="64" y="612" class="n" fill="#e6edf3">HTTPClient</text>
+<text x="64" y="632" class="d">one method, get(from: URL)</text>
+<text x="64" y="648" class="d">knows no endpoint, no response</text>
+<text x="64" y="664" class="d">imported by the root only</text>
+<rect x="296" y="590" width="226" height="116" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1.6"/>
+<text x="308" y="612" class="n" fill="#e6edf3">SharedPresentation</text>
+<text x="308" y="632" class="d">price and address formatting</text>
+<text x="308" y="648" class="d">Bundle.localized(for:), the</text>
+<text x="308" y="664" class="d">language bundle every layer uses</text>
+<rect x="540" y="590" width="226" height="116" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1.6"/>
+<text x="552" y="612" class="n" fill="#e6edf3">DesignSystem</text>
+<text x="552" y="632" class="d">tokens, card, like button, states</text>
+<text x="552" y="648" class="d">the only Kingfisher importer</text>
+<text x="552" y="664" class="d">used by the three UI targets</text>
+<rect x="784" y="590" width="226" height="116" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1.6"/>
+<text x="796" y="612" class="n" fill="#e6edf3">TestSupport</text>
+<text x="796" y="632" class="d">Stub, Gate, leak tracker, snapshots</text>
+<text x="796" y="648" class="d">the Point-Free test stack</text>
+<text x="796" y="664" class="d">linked by test bundles only</text>
+<rect x="36" y="738" width="988" height="44" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1.6"/>
+<text x="52" y="756" class="d">Guard rules, enforced on every build: SwiftUI only in UI and the app; no import between verticals; Kingfisher only in DesignSystem; HTTPClient only at the root;</text>
+<text x="52" y="772" class="d">the host named once; test support never in production; ListingsAPI and ListingsCache never meet. Presentation and data run on the Mac host in seconds.</text>
 </svg>

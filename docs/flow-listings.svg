@@ -1,0 +1,84 @@
+<svg viewBox="0 0 1060 1105" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<rect x="0" y="0" width="1060" height="1105" fill="#0d1117"/>
+<defs><marker id="head" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L8,5 L0,10" fill="none" stroke="#8b949e" stroke-width="1.6"/></marker></defs>
+<style>.h{font-size:15px;font-weight:600;fill:#e6edf3}.n{font-size:12.5px;font-weight:600}.n2{font-size:10.5px;font-weight:600}.d{font-size:11px;fill:#8b949e}.m{font-size:11px}</style>
+<text x="530.0" y="26" class="h" text-anchor="middle">Listings: one load, online, then the same call offline</text>
+<text x="530.0" y="46" class="d" text-anchor="middle">The request goes right, the data comes back left, and every type change is a hop owned by exactly one layer.</text>
+<path d="M96.3,104 L96.3,1089" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M240.9,104 L240.9,1089" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M385.4,104 L385.4,1089" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M530.0,104 L530.0,1089" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M674.6,104 L674.6,1089" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M819.1,104 L819.1,1089" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M963.7,104 L963.7,1089" stroke="#30363d" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="30.0" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
+<text x="96.3" y="78.0" class="n" fill="#f78166" text-anchor="middle">ListingsView</text>
+<text x="96.3" y="94.0" class="d" text-anchor="middle">ListingsUI</text>
+<rect x="174.6" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
+<text x="240.9" y="78.0" class="n" fill="#d2a8ff" text-anchor="middle">ListingsViewModel</text>
+<text x="240.9" y="94.0" class="d" text-anchor="middle">ListingsPresentation</text>
+<rect x="319.1" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>
+<text x="385.4" y="78.0" class="n" fill="#e3b341" text-anchor="middle">ListingsService</text>
+<text x="385.4" y="94.0" class="d" text-anchor="middle">App root</text>
+<rect x="463.7" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="530.0" y="78.0" class="n" fill="#3fb950" text-anchor="middle">HTTPClient</text>
+<text x="530.0" y="94.0" class="d" text-anchor="middle">endpoint from ListingsAPI</text>
+<rect x="608.3" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="674.6" y="78.0" class="n" fill="#3fb950" text-anchor="middle">ListingsMapper</text>
+<text x="674.6" y="94.0" class="d" text-anchor="middle">ListingsAPI</text>
+<rect x="752.9" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="819.1" y="78.0" class="n" fill="#3fb950" text-anchor="middle">LocalListingsLoader</text>
+<text x="819.1" y="94.0" class="d" text-anchor="middle">ListingsCache</text>
+<rect x="897.4" y="60.0" width="132.6" height="44.0" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="1.6"/>
+<text x="963.7" y="78.0" class="n2" fill="#3fb950" text-anchor="middle">CodableListingsStore</text>
+<text x="963.7" y="94.0" class="d" text-anchor="middle">listings.json</text>
+<path d="M96.3,118 L230.9,118" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="168.6" y="112" class="m" fill="#e6edf3" text-anchor="middle">.task, loadIfNeeded()</text>
+<path d="M240.9,154 L375.4,154" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="313.1" y="148" class="m" fill="#e6edf3" text-anchor="middle">loadListings()</text>
+<path d="M385.4,190 L520.0,190" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="457.7" y="184" class="m" fill="#e6edf3" text-anchor="middle">get(from: page 0, size 5)</text>
+<path d="M530.0,226 L395.4,226" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="457.7" y="220" class="m" fill="#8b949e" text-anchor="middle">Data, HTTPURLResponse</text>
+<path d="M385.4,262 L664.6,262" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="530.0" y="256" class="m" fill="#e6edf3" text-anchor="middle">map(data, from: response)</text>
+<rect x="599.6" y="296" width="150.0" height="44" rx="6" fill="#0d1117" stroke="#3fb950" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="674.6" y="309" class="d" text-anchor="middle">JSON to private DTOs</text>
+<text x="674.6" y="324" class="d" text-anchor="middle">to Listing</text>
+<path d="M674.6,364 L395.4,364" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="530.0" y="358" class="m" fill="#8b949e" text-anchor="middle">ListingsPage</text>
+<path d="M385.4,400 L809.1,400" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="602.3" y="394" class="m" fill="#e6edf3" text-anchor="middle">save([Listing])</text>
+<rect x="734.7" y="434" width="168.9" height="29" rx="6" fill="#0d1117" stroke="#3fb950" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="819.1" y="447" class="d" text-anchor="middle">Listing to LocalListing</text>
+<path d="M819.1,487 L953.7,487" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="891.4" y="481" class="m" fill="#e6edf3" text-anchor="middle">insert([LocalListing], timestamp)</text>
+<rect x="826.4" y="521" width="225.6" height="44" rx="6" fill="#0d1117" stroke="#3fb950" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="939.2" y="534" class="d" text-anchor="middle">LocalListing to private Codable,</text>
+<text x="939.2" y="549" class="d" text-anchor="middle">atomic write</text>
+<path d="M385.4,589 L250.9,589" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="313.1" y="583" class="m" fill="#8b949e" text-anchor="middle">Paginated of Listing</text>
+<rect x="124.9" y="623" width="231.9" height="44" rx="6" fill="#0d1117" stroke="#d2a8ff" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="240.9" y="636" class="d" text-anchor="middle">Listing to ListingRow, formatters</text>
+<text x="240.9" y="651" class="d" text-anchor="middle">and the bookmark set</text>
+<path d="M240.9,691 L106.3,691" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="168.6" y="685" class="m" fill="#8b949e" text-anchor="middle">rows</text>
+<rect x="250.6" y="725" width="269.7" height="44" rx="6" fill="#0d1117" stroke="#e3b341" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="385.4" y="738" class="d" text-anchor="middle">Offline: get(from:) throws, the service</text>
+<text x="385.4" y="753" class="d" text-anchor="middle">falls back to the loader</text>
+<path d="M385.4,793 L809.1,793" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="602.3" y="787" class="m" fill="#e6edf3" text-anchor="middle">load()</text>
+<path d="M819.1,829 L953.7,829" stroke="#e6edf3" stroke-width="1.6" fill="none" marker-end="url(#head)"/>
+<text x="891.4" y="823" class="m" fill="#e6edf3" text-anchor="middle">retrieve()</text>
+<path d="M963.7,865 L829.1,865" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="891.4" y="859" class="m" fill="#8b949e" text-anchor="middle">CachedListings</text>
+<rect x="678.0" y="899" width="282.3" height="44" rx="6" fill="#0d1117" stroke="#3fb950" stroke-width="1.2" stroke-dasharray="3 3"/>
+<text x="819.1" y="912" class="d" text-anchor="middle">ListingsCachePolicy: expired or empty</text>
+<text x="819.1" y="927" class="d" text-anchor="middle">throws cacheMiss. LocalListing to Listing</text>
+<path d="M819.1,967 L395.4,967" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="602.3" y="961" class="m" fill="#8b949e" text-anchor="middle">[Listing]</text>
+<path d="M385.4,1003 L250.9,1003" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="313.1" y="997" class="m" fill="#8b949e" text-anchor="middle">Paginated of Listing, no next page</text>
+<path d="M240.9,1039 L106.3,1039" stroke="#8b949e" stroke-width="1.6" fill="none" stroke-dasharray="6 4" marker-end="url(#head)"/>
+<text x="168.6" y="1033" class="m" fill="#8b949e" text-anchor="middle">rows, or the error state with Retry</text>
+</svg>

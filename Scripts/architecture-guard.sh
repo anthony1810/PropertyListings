@@ -6,12 +6,16 @@ say() { echo "error: guard: $1"; fail=1; }
 sources() { grep -rlE "$1" "${@:2}" --include='*.swift' --exclude-dir=.build 2>/dev/null | grep -v '/Tests/' || true; }
 
 # 1. SwiftUI and UIKit only in the UI targets and the app
-bad=$(sources '^import (SwiftUI|UIKit)$' Modules | grep -vE '/Sources/(ListingsUI|BookmarksUI|DesignSystem|TestSupport)/' || true)
+bad=$(sources '^import (SwiftUI|UIKit)$' Modules | grep -vE '/Sources/(ListingsUI|BookmarksUI|SettingsUI|DesignSystem|TestSupport)/' || true)
 [ -z "$bad" ] || say "SwiftUI/UIKit outside the UI targets: $bad"
 
-# 2. No import between the two verticals
-[ -z "$(sources '^import Bookmarks' Modules/Listings)" ]  || say "Listings imports Bookmarks"
-[ -z "$(sources '^import Listings'  Modules/Bookmarks)" ] || say "Bookmarks imports Listings"
+# 2. No import between the verticals
+for vertical in Listings Bookmarks Settings; do
+  for other in Listings Bookmarks Settings; do
+    [ "$vertical" = "$other" ] && continue
+    [ -z "$(sources "^import $other" "Modules/$vertical")" ] || say "$vertical imports $other"
+  done
+done
 
 # 3. Kingfisher only inside DesignSystem
 bad=$(sources '^import Kingfisher' Modules PropertyListings | grep -v 'Modules/Shared/DesignSystem/Sources/' || true)

@@ -8,9 +8,15 @@ import TestSupport
         verifyLocalizationCoverage(in: ListingsPresentationResources.bundle, languages: ["en", "de", "fr", "it"])
     }
 
-    @Test func listingsFailed_resolvesPerLanguage() throws {
-        let german = try #require(ListingsPresentationResources.bundle.path(forResource: "de", ofType: "lproj").flatMap(Bundle.init(path:)))
+    @Test func listingsFailed_resolvesPerLanguage() {
+        let german = ListingsViewModel.Message.listingsFailed(Locale(identifier: "de_CH"))
 
-        #expect(String(localized: "listings.loadFailed", bundle: german).hasPrefix("Inserate konnten nicht geladen werden"))
+        #expect(german.hasPrefix("Inserate konnten nicht geladen werden"))
+    }
+
+    @Test func bookmarkNotSaved_resolvesPerLanguage() {
+        let french = ListingsViewModel.Message.bookmarkNotSaved(Locale(identifier: "fr_CH"))
+
+        #expect(french != ListingsViewModel.Message.bookmarkNotSaved(Locale(identifier: "de_CH")))
     }
 }

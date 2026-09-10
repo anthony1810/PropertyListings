@@ -20,7 +20,7 @@
 <rect x="276" y="206" width="400" height="96" rx="9" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6"/>
 <text x="290" y="230" class="s" fill="#d2a8ff">simulator-packages</text>
 <text x="290" y="250" class="d">xcodebuild test, iPhone 17 simulator</text>
-<text x="290" y="266" class="d">matrix: SharedPresentation, DesignSystem, Listings, Bookmarks</text>
+<text x="290" y="266" class="d">matrix: SharedPresentation, DesignSystem, Listings, Bookmarks, Settings</text>
 <text x="290" y="282" class="d">catalogs, locale formatting, snapshots</text>
 <line x1="230" y1="254" x2="272" y2="254" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
 <line x1="680" y1="254" x2="712" y2="254" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
@@ -57,7 +57,7 @@
 <text x="290" y="630" class="s" fill="#f78166">ui-tests</text>
 <text x="290" y="650" class="d">PropertyListingsUITests on the simulator</text>
 <text x="290" y="666" class="d">launch arguments: reset, offline</text>
-<text x="290" y="682" class="d">seven scenarios, about a minute</text>
+<text x="290" y="682" class="d">eight scenarios, about a minute</text>
 <line x1="230" y1="596" x2="272" y2="538" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
 <line x1="230" y1="596" x2="272" y2="654" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
 <text x="700" y="530" class="d">Each job reports its own status on the pull request</text>

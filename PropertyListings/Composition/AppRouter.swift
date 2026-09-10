@@ -7,16 +7,11 @@ final class AppRouter {
     enum Tab: Hashable {
         case listings
         case saved
+        case settings
     }
 
     enum AlertRoute: Equatable {
         case error(String)
-
-        var title: String {
-            switch self {
-            case .error: AppStrings.errorTitle
-            }
-        }
 
         var message: String {
             switch self {
