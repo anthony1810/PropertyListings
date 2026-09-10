@@ -10,6 +10,10 @@ import ListingsCache
 import ListingsFeature
 import ListingsPresentation
 import ListingsUI
+import SettingsFeature
+import SettingsPersistence
+import SettingsPresentation
+import SettingsUI
 
 @MainActor
 final class AppComposition {
@@ -20,6 +24,8 @@ final class AppComposition {
     private lazy var httpClient: HTTPClient = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
     private lazy var listingsStore: ListingsStore = CodableListingsStore(storeURL: Self.storeURL(named: "listings.json"))
     private lazy var bookmarkStore: BookmarkStore = CodableBookmarkStore(storeURL: Self.storeURL(named: "bookmarks.json"))
+    private lazy var settingsStore: SettingsStore = CodableSettingsStore(storeURL: Self.storeURL(named: "settings.json"))
+    private var defaultSettings: Settings = AppComposition.deviceSettings
     private var currentDate: @Sendable () -> Date = Date.init
     private var locale: Locale = .current
     private var clock: any Clock<Duration> = ContinuousClock()
@@ -33,11 +39,13 @@ final class AppComposition {
         currentDate: currentDate
     )
     private lazy var bookmarks = LocalBookmarksLoader(store: bookmarkStore)
+    private lazy var settings = LocalSettingsLoader(store: settingsStore, defaultSettings: defaultSettings)
 
     // MARK: - View models
 
     private(set) lazy var listingsViewModel = makeListingsViewModel()
     private(set) lazy var bookmarksViewModel = makeBookmarksViewModel()
+    private(set) lazy var settingsViewModel = makeSettingsViewModel()
 
     // MARK: - Init
 
@@ -54,6 +62,8 @@ final class AppComposition {
         httpClient: HTTPClient,
         listingsStore: ListingsStore,
         bookmarkStore: BookmarkStore,
+        settingsStore: SettingsStore,
+        defaultSettings: Settings = AppComposition.deviceSettings,
         currentDate: @escaping @Sendable () -> Date,
         locale: Locale,
         clock: any Clock<Duration> = ContinuousClock()
@@ -62,6 +72,8 @@ final class AppComposition {
         self.httpClient = httpClient
         self.listingsStore = listingsStore
         self.bookmarkStore = bookmarkStore
+        self.settingsStore = settingsStore
+        self.defaultSettings = defaultSettings
         self.currentDate = currentDate
         self.locale = locale
         self.clock = clock
@@ -115,6 +127,44 @@ extension AppComposition {
         return BookmarksViewModel(
             observeBookmarks: { bookmarks.observe() },
             removeBookmark: { try await bookmarks.remove(id: $0) },
+            notify: { router.present(.error($0)) },
+            locale: locale
+        )
+    }
+}
+
+// MARK: - Settings
+
+extension AppComposition {
+    static var deviceSettings: Settings {
+        let code = Bundle.main.preferredLocalizations.first ?? AppLanguage.english.rawValue
+        return Settings(appearance: .system, language: AppLanguage(rawValue: code) ?? .english)
+    }
+
+    func makeSettingsView() -> SettingsView {
+        SettingsView(viewModel: settingsViewModel)
+    }
+
+    func locale(for language: AppLanguage) -> Locale {
+        Locale(languageCode: Locale.LanguageCode(language.rawValue), languageRegion: locale.region)
+    }
+
+    func observeSettings() async {
+        for await value in settings.observe() {
+            let locale = locale(for: value.language)
+            listingsViewModel.update(locale: locale)
+            bookmarksViewModel.update(locale: locale)
+            settingsViewModel.update(locale: locale)
+        }
+    }
+
+    private func makeSettingsViewModel() -> SettingsViewModel {
+        let settings = settings
+        let router = router
+        return SettingsViewModel(
+            initial: defaultSettings,
+            observeSettings: { settings.observe() },
+            saveSettings: { try await settings.save($0) },
             notify: { router.present(.error($0)) },
             locale: locale
         )

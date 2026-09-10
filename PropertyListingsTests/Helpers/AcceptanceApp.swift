@@ -5,6 +5,9 @@ import Foundation
 import ListingsCache
 import ListingsFeature
 import ListingsPresentation
+import SettingsFeature
+import SettingsPersistence
+import SettingsPresentation
 import TestSupport
 @testable import PropertyListings
 
@@ -13,10 +16,16 @@ struct AcceptanceApp {
     struct Stores {
         let listings: InMemoryListingsStore
         let bookmarks: BookmarkStore
+        let settings: SettingsStore
 
-        init(listings: InMemoryListingsStore = InMemoryListingsStore(), bookmarks: BookmarkStore = InMemoryBookmarkStore()) {
+        init(
+            listings: InMemoryListingsStore = InMemoryListingsStore(),
+            bookmarks: BookmarkStore = InMemoryBookmarkStore(),
+            settings: SettingsStore = InMemorySettingsStore()
+        ) {
             self.listings = listings
             self.bookmarks = bookmarks
+            self.settings = settings
         }
     }
 
@@ -40,6 +49,8 @@ struct AcceptanceApp {
             httpClient: client,
             listingsStore: stores.listings,
             bookmarkStore: stores.bookmarks,
+            settingsStore: stores.settings,
+            defaultSettings: Settings(appearance: .system, language: .german),
             currentDate: { [today] in today.value },
             locale: locale,
             clock: clock

@@ -31,7 +31,6 @@ public struct SettingsView: View {
         .background(DSColor.surface)
         .accessibilityIdentifier(SettingsAccessibilityID.list)
         .navigationTitle(SettingsUIStrings.title)
-        .task { await viewModel.observe() }
     }
 }
 

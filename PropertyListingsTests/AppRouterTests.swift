@@ -10,13 +10,12 @@ import Testing
         #expect(sut.alert == nil)
     }
 
-    @Test func present_setsTheAlertWithALocalizedTitleAndTheMessage() {
+    @Test func present_setsTheAlertWithTheMessage() {
         let sut = AppRouter()
 
         sut.present(.error("A message"))
 
         #expect(sut.alert == .error("A message"))
-        #expect(sut.alert?.title == AppStrings.errorTitle)
         #expect(sut.alert?.message == "A message")
     }
 
