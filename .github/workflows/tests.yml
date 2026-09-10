@@ -60,8 +60,28 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
           | xcbeautify
 
+  brands:
+    runs-on: macos-26
+    strategy:
+      fail-fast: false
+      matrix:
+        brand: [PropertyListings, Lakeside]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Wait for CoreSimulator to list devices
+        run: xcrun simctl list devices available | grep -q "iPhone 17"
+      - run: |
+          set -o pipefail
+          xcodebuild build \
+            -workspace PropertyListings.xcworkspace \
+            -scheme ${{ matrix.brand }} \
+            -destination "$SIMULATOR" \
+            -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO \
+          | xcbeautify
+
   all-green:
-    needs: [host-packages, simulator-packages, app]
+    needs: [host-packages, simulator-packages, app, brands]
     runs-on: ubuntu-latest
     steps:
       - run: echo "every job passed"
