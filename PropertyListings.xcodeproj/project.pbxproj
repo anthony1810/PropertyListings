@@ -25,6 +25,7 @@
 		508027AE0E8BF712F83A8CAE /* SharedPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 4637889EDC9753A828874667 /* SharedPresentation */; };
 		50BE31F2CE3C9210A33BFE52 /* HTTPClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D761F6E685539D94DBF5C850 /* HTTPClientStub.swift */; };
 		5605FCB538533C25866A3DDA /* LaunchArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3265C0674A1CEC16BE45C /* LaunchArguments.swift */; };
+		5B8B9BE554C9537697C301C6 /* FailingSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56029AD3C4CF80CD6CFDC799 /* FailingSettingsStore.swift */; };
 		65F961DA9A0C256383B57FF1 /* BookmarksAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E627A5A56AF5B73D3AB5D8A6 /* BookmarksAcceptanceTests.swift */; };
 		664EFE19FBA8BC3E3888A71C /* ListingsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 17DEFD7762836B1286F2890F /* ListingsUI */; };
 		6851A8450C9FDDFE497AA98D /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = CDA5F3069E88F3DFEC8F7316 /* ListingsAPI */; };
@@ -61,6 +62,7 @@
 		F46AD66C392A00E38BAEEBB5 /* ListingsTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 3093FF3536C42EE8F630C546 /* ListingsTestSupport */; };
 		F497988E3F32F0DA77223082 /* BookmarksPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = A6A20CC9E3EA17307935F038 /* BookmarksPresentation */; };
 		F52E0A1650885D9C2CE1830F /* AppCompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED91886C76DF2B80DD9AB62D /* AppCompositionTests.swift */; };
+		F642910B9CA10F7D7EA23FDC /* SettingsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BACCC59B55AB91E717FC3C0 /* SettingsAcceptanceTests.swift */; };
 		FB00E3477FA57245A7D62E08 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341791FBF78E1523BD2B75B8 /* AppStrings.swift */; };
 		FBED1C6C8907E75D4246D0BA /* SettingsPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = C9DEFC2CC02252CD30B1E11C /* SettingsPresentation */; };
 /* End PBXBuildFile section */
@@ -99,6 +101,7 @@
 		360A3C7B3D9B257DF72A9238 /* PropertyListingsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PropertyListingsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		44D858908CFCF10A74D498EE /* SettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUITests.swift; sourceTree = "<group>"; };
 		4A0D2A33110AEB4CFEC44F54 /* PropertyListings.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PropertyListings.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		56029AD3C4CF80CD6CFDC799 /* FailingSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailingSettingsStore.swift; sourceTree = "<group>"; };
 		5710F2FB116C402EEF9FF486 /* AppComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppComposition.swift; sourceTree = "<group>"; };
 		5CC3265C0674A1CEC16BE45C /* LaunchArguments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArguments.swift; sourceTree = "<group>"; };
 		6BF30EF5C3659003BB41469A /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
@@ -109,6 +112,7 @@
 		8B6AD647C68A0F9259BB5E31 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DCC89960E627E4970D48C94 /* Appearance+ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Appearance+ColorScheme.swift"; sourceTree = "<group>"; };
 		8FE5101ABFCE235F72777E45 /* SettingsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTab.swift; sourceTree = "<group>"; };
+		9BACCC59B55AB91E717FC3C0 /* SettingsAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAcceptanceTests.swift; sourceTree = "<group>"; };
 		9E753C0F9A1542F253A685F2 /* SharedPresentation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SharedPresentation; path = Modules/Shared/SharedPresentation; sourceTree = SOURCE_ROOT; };
 		9F2F24AD3B93BE0C62F1CFE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AB886E855D873487E6E130AD /* PropertyListingsUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PropertyListingsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -242,6 +246,7 @@
 				F27B9E82F8C30512BA647A38 /* ListingsAcceptanceTests.swift */,
 				BCE4C182B5F5207442631DB0 /* ListingsServiceTests.swift */,
 				D5C061002CFC6973AC8B49A7 /* LocalizationTests.swift */,
+				9BACCC59B55AB91E717FC3C0 /* SettingsAcceptanceTests.swift */,
 				DF2ECE2C084856B0BF64CFC5 /* Helpers */,
 			);
 			path = PropertyListingsTests;
@@ -294,6 +299,7 @@
 			children = (
 				BB9889AE8F88A4E469E96572 /* AcceptanceApp.swift */,
 				252D2B0BD28DDA930E8B219D /* FailingBookmarkStore.swift */,
+				56029AD3C4CF80CD6CFDC799 /* FailingSettingsStore.swift */,
 				D761F6E685539D94DBF5C850 /* HTTPClientStub.swift */,
 				DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */,
 				0F79ACCC65D4F7FB49C645DF /* LocalBookmark+Bookmark.swift */,
@@ -568,12 +574,14 @@
 				D8CA0FCA26149BC6E38752D8 /* AppRouterTests.swift in Sources */,
 				65F961DA9A0C256383B57FF1 /* BookmarksAcceptanceTests.swift in Sources */,
 				1FCB78CF4B07E846591D3394 /* FailingBookmarkStore.swift in Sources */,
+				5B8B9BE554C9537697C301C6 /* FailingSettingsStore.swift in Sources */,
 				50BE31F2CE3C9210A33BFE52 /* HTTPClientStub.swift in Sources */,
 				E5A44CE35A91FB0D061EA87E /* ListingsAcceptanceTests.swift in Sources */,
 				449E9FF2605660E9AEFCF337 /* ListingsServiceTests.swift in Sources */,
 				1DF9E00E361AB9D18DC8ABDC /* ListingsTestValues.swift in Sources */,
 				DABB95A71FC7C06466100F2C /* LocalBookmark+Bookmark.swift in Sources */,
 				862F3F4A5D8BE5E8252C2A91 /* LocalizationTests.swift in Sources */,
+				F642910B9CA10F7D7EA23FDC /* SettingsAcceptanceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

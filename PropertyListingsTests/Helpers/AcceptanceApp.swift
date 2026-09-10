@@ -33,6 +33,7 @@ struct AcceptanceApp {
     let composition: AppComposition
     let listings: ListingsViewModel
     let saved: BookmarksViewModel
+    let settings: SettingsViewModel
 
     private let clock: TestClock<Duration>
 
@@ -57,6 +58,7 @@ struct AcceptanceApp {
         )
         listings = composition.listingsViewModel
         saved = composition.bookmarksViewModel
+        settings = composition.settingsViewModel
     }
 
     var router: AppRouter { composition.router }
@@ -70,6 +72,18 @@ struct AcceptanceApp {
 
     func unlike(_ listing: Listing) async {
         await toggle(listing)
+    }
+
+    func applyingSettings(_ body: () async -> Void) async {
+        await withMainSerialExecutor {
+            let settingsObservation = Task { await settings.observe() }
+            let rootObservation = Task { await composition.observeSettings() }
+            await Task.megaYield()
+            await body()
+            await Task.megaYield()
+            await settingsObservation.cancelAndWait()
+            await rootObservation.cancelAndWait()
+        }
     }
 
     func observingBookmarks(_ body: () async -> Void) async {
