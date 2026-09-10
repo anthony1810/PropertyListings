@@ -81,6 +81,8 @@ struct AcceptanceApp {
             await Task.megaYield()
             await body()
             await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
+            await Task.megaYield()
             await settingsObservation.cancelAndWait()
             await rootObservation.cancelAndWait()
         }

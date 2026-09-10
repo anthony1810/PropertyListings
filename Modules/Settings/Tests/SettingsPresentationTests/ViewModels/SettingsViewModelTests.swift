@@ -8,9 +8,10 @@ import TestSupport
 @MainActor
 @Suite final class SettingsViewModelTests {
     @Test func init_startsFromTheInitialSettingsWithoutObserving() {
-        let (sut, spy) = makeSUT(initial: makeSettings(appearance: .dark, language: .french))
+        let (sut, spy, _) = makeSUT(initial: makeSettings(appearance: .dark, language: .french))
 
         #expect(sut.settings == makeSettings(appearance: .dark, language: .french))
+        #expect(sut.appliedSettings == makeSettings(appearance: .dark, language: .french))
         #expect(spy.receivedMessages == [])
     }
 
@@ -18,7 +19,7 @@ import TestSupport
 
     @Test func observe_subscribesToSettings() async {
         await withMainSerialExecutor {
-            let (sut, spy) = makeSUT()
+            let (sut, spy, _) = makeSUT()
 
             let observation = Task { await sut.observe() }
             await Task.megaYield()
@@ -28,9 +29,9 @@ import TestSupport
         }
     }
 
-    @Test func observe_appliesEveryEmission() async {
+    @Test func observe_appliesEveryEmissionAtOnce() async {
         await withMainSerialExecutor {
-            let (sut, spy) = makeSUT()
+            let (sut, spy, _) = makeSUT()
             let observation = Task { await sut.observe() }
             await Task.megaYield()
 
@@ -38,89 +39,191 @@ import TestSupport
             await Task.megaYield()
 
             #expect(sut.settings == makeSettings(appearance: .dark, language: .italian))
+            #expect(sut.appliedSettings == makeSettings(appearance: .dark, language: .italian))
+            await observation.cancelAndWait()
+        }
+    }
+
+    @Test func observe_ignoresAnEmissionWhileAChoiceIsPending() async {
+        await withMainSerialExecutor {
+            let (sut, spy, _) = makeSUT(initial: makeSettings(appearance: .system))
+            let observation = Task { await sut.observe() }
+            await Task.megaYield()
+            sut.select(appearance: .dark)
+            await Task.megaYield()
+
+            spy.emitSettings(makeSettings(appearance: .system))
+            await Task.megaYield()
+
+            #expect(sut.settings.appearance == .dark)
             await observation.cancelAndWait()
         }
     }
 
     // MARK: - Select appearance
 
-    @Test func selectAppearance_appliesAtOnceAndSaves() async {
-        let (sut, spy) = makeSUT(initial: makeSettings(appearance: .system, language: .german))
+    @Test func selectAppearance_flipsAtOnceAndAppliesAfterTheDebounce() async {
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT(initial: makeSettings(appearance: .system, language: .german))
 
-        await sut.select(appearance: .dark)
+            sut.select(appearance: .dark)
+            await Task.megaYield()
 
-        #expect(sut.settings == makeSettings(appearance: .dark, language: .german))
-        #expect(spy.receivedMessages == [.saveSettings(makeSettings(appearance: .dark, language: .german))])
+            #expect(sut.settings.appearance == .dark)
+            #expect(sut.appliedSettings.appearance == .system)
+            #expect(spy.receivedMessages == [])
+            await clock.advance(by: SettingsViewModel.debounce)
+            #expect(sut.appliedSettings.appearance == .dark)
+            #expect(spy.receivedMessages == [.saveSettings(makeSettings(appearance: .dark, language: .german))])
+        }
+    }
+
+    @Test func selectAppearance_savesOnceWithTheFinalChoiceAfterRapidTaps() async {
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT(initial: makeSettings(appearance: .system))
+
+            sut.select(appearance: .dark)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce / 2)
+            sut.select(appearance: .light)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce / 2)
+
+            #expect(sut.appliedSettings.appearance == .system)
+            await clock.advance(by: SettingsViewModel.debounce / 2)
+            #expect(sut.appliedSettings.appearance == .light)
+            #expect(spy.receivedMessages == [.saveSettings(makeSettings(appearance: .light))])
+        }
+    }
+
+    @Test func selectAppearance_savesNothingWhenTheTapsEndWhereTheyStarted() async {
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT(initial: makeSettings(appearance: .system))
+
+            sut.select(appearance: .dark)
+            await Task.megaYield()
+            sut.select(appearance: .system)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
+
+            #expect(sut.appliedSettings.appearance == .system)
+            #expect(spy.receivedMessages == [])
+        }
     }
 
     @Test func selectAppearance_ignoresTheCurrentValue() async {
-        let (sut, spy) = makeSUT(initial: makeSettings(appearance: .dark))
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT(initial: makeSettings(appearance: .dark))
 
-        await sut.select(appearance: .dark)
+            sut.select(appearance: .dark)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
 
-        #expect(spy.receivedMessages == [])
+            #expect(spy.receivedMessages == [])
+        }
     }
 
     @Test func selectAppearance_revertsAndNotifiesWhenSavingFails() async {
-        let (sut, spy) = makeSUT(initial: makeSettings(appearance: .light))
-        spy.saveSettingsStub.complete(with: .failure(anyNSError()))
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT(initial: makeSettings(appearance: .light))
+            spy.saveSettingsStub.complete(with: .failure(anyNSError()))
 
-        await sut.select(appearance: .dark)
+            sut.select(appearance: .dark)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
 
-        #expect(sut.settings == makeSettings(appearance: .light))
-        #expect(spy.receivedMessages == [
-            .saveSettings(makeSettings(appearance: .dark)),
-            .notify(SettingsViewModel.Message.saveFailed(locale)),
-        ])
+            #expect(sut.settings == makeSettings(appearance: .light))
+            #expect(sut.appliedSettings == makeSettings(appearance: .light))
+            #expect(spy.receivedMessages == [
+                .saveSettings(makeSettings(appearance: .dark)),
+                .notify(SettingsViewModel.Message.saveFailed(locale)),
+            ])
+        }
     }
 
     // MARK: - Select language
 
-    @Test func selectLanguage_appliesAtOnceAndSaves() async {
-        let (sut, spy) = makeSUT(initial: makeSettings(appearance: .dark, language: .german))
+    @Test func selectLanguage_flipsAtOnceAndAppliesAfterTheDebounce() async {
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT(initial: makeSettings(appearance: .dark, language: .german))
 
-        await sut.select(language: .french)
+            sut.select(language: .french)
+            await Task.megaYield()
 
-        #expect(sut.settings == makeSettings(appearance: .dark, language: .french))
-        #expect(spy.receivedMessages == [.saveSettings(makeSettings(appearance: .dark, language: .french))])
+            #expect(sut.settings.language == .french)
+            #expect(sut.appliedSettings.language == .german)
+            await clock.advance(by: SettingsViewModel.debounce)
+            #expect(sut.appliedSettings.language == .french)
+            #expect(spy.receivedMessages == [.saveSettings(makeSettings(appearance: .dark, language: .french))])
+        }
+    }
+
+    @Test func selectLanguage_savesOnceWithTheFinalChoiceAfterRapidTaps() async {
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT(initial: makeSettings(language: .german))
+
+            sut.select(language: .french)
+            await Task.megaYield()
+            sut.select(language: .italian)
+            await Task.megaYield()
+            sut.select(language: .english)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
+
+            #expect(sut.appliedSettings.language == .english)
+            #expect(spy.receivedMessages == [.saveSettings(makeSettings(language: .english))])
+        }
     }
 
     @Test func selectLanguage_ignoresTheCurrentValue() async {
-        let (sut, spy) = makeSUT(initial: makeSettings(language: .french))
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT(initial: makeSettings(language: .french))
 
-        await sut.select(language: .french)
+            sut.select(language: .french)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
 
-        #expect(spy.receivedMessages == [])
+            #expect(spy.receivedMessages == [])
+        }
     }
 
     @Test func selectLanguage_revertsAndNotifiesWhenSavingFails() async {
-        let (sut, spy) = makeSUT(initial: makeSettings(language: .german))
-        spy.saveSettingsStub.complete(with: .failure(anyNSError()))
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT(initial: makeSettings(language: .german))
+            spy.saveSettingsStub.complete(with: .failure(anyNSError()))
 
-        await sut.select(language: .italian)
+            sut.select(language: .italian)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
 
-        #expect(sut.settings == makeSettings(language: .german))
-        #expect(spy.receivedMessages == [
-            .saveSettings(makeSettings(language: .italian)),
-            .notify(SettingsViewModel.Message.saveFailed(locale)),
-        ])
+            #expect(sut.settings == makeSettings(language: .german))
+            #expect(sut.appliedSettings == makeSettings(language: .german))
+            #expect(spy.receivedMessages == [
+                .saveSettings(makeSettings(language: .italian)),
+                .notify(SettingsViewModel.Message.saveFailed(locale)),
+            ])
+        }
     }
 
     // MARK: - Update locale
 
     @Test func updateLocale_resolvesTheFailureMessageInTheNewLocale() async {
-        let (sut, spy) = makeSUT()
-        let french = Locale(identifier: "fr_CH")
-        spy.saveSettingsStub.complete(with: .failure(anyNSError()))
+        await withMainSerialExecutor {
+            let (sut, spy, clock) = makeSUT()
+            let french = Locale(identifier: "fr_CH")
+            spy.saveSettingsStub.complete(with: .failure(anyNSError()))
+            sut.update(locale: french)
 
-        sut.update(locale: french)
-        await sut.select(appearance: .dark)
+            sut.select(appearance: .dark)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
 
-        #expect(sut.locale == french)
-        #expect(spy.receivedMessages == [
-            .saveSettings(makeSettings(appearance: .dark)),
-            .notify(SettingsViewModel.Message.saveFailed(french)),
-        ])
+            #expect(sut.locale == french)
+            #expect(spy.receivedMessages == [
+                .saveSettings(makeSettings(appearance: .dark)),
+                .notify(SettingsViewModel.Message.saveFailed(french)),
+            ])
+        }
     }
 
     // MARK: - Helpers
@@ -135,18 +238,20 @@ import TestSupport
     private func makeSUT(
         initial: Settings = makeSettings(),
         sourceLocation: SourceLocation = #_sourceLocation
-    ) -> (sut: SettingsViewModel, spy: SettingsLoaderSpy) {
+    ) -> (sut: SettingsViewModel, spy: SettingsLoaderSpy, clock: TestClock<Duration>) {
         let spy = SettingsLoaderSpy()
+        let clock = TestClock()
         let sut = SettingsViewModel(
             initial: initial,
             observeSettings: spy.observeSettings,
             saveSettings: spy.saveSettings,
             notify: spy.notify,
-            locale: locale
+            locale: locale,
+            clock: clock
         )
         trackForMemoryLeaks(sut, sourceLocation: sourceLocation)
         trackForMemoryLeaks(spy, sourceLocation: sourceLocation)
-        return (sut, spy)
+        return (sut, spy, clock)
     }
 
     private func trackForMemoryLeaks(_ instance: AnyObject, sourceLocation: SourceLocation) {

@@ -166,7 +166,8 @@ extension AppComposition {
             observeSettings: { settings.observe() },
             saveSettings: { try await settings.save($0) },
             notify: { router.present(.error($0)) },
-            locale: locale
+            locale: locale,
+            clock: clock
         )
     }
 }

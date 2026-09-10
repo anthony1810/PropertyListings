@@ -61,14 +61,14 @@ private extension SettingsView {
     var appearance: Binding<Appearance> {
         Binding(
             get: { viewModel.settings.appearance },
-            set: { chosen in Task { await viewModel.select(appearance: chosen) } }
+            set: { chosen in viewModel.select(appearance: chosen) }
         )
     }
 
     func languageRow(_ language: AppLanguage) -> some View {
         let isSelected = viewModel.settings.language == language
         return Button {
-            Task { await viewModel.select(language: language) }
+            viewModel.select(language: language)
         } label: {
             HStack {
                 Text(verbatim: language.nativeName)

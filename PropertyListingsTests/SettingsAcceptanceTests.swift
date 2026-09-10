@@ -21,7 +21,7 @@ struct SettingsAcceptanceTests {
         let rowsInGerman = app.listings.rows
 
         await app.applyingSettings {
-            await app.settings.select(language: .french)
+            app.settings.select(language: .french)
         }
 
         #expect(app.listings.locale.identifier == "fr_CH", "the Listings tab formats for French Switzerland")
@@ -35,7 +35,7 @@ struct SettingsAcceptanceTests {
         let stores = AcceptanceApp.Stores()
         let firstLaunch = launch(online, sharing: stores)
         await firstLaunch.applyingSettings {
-            await firstLaunch.settings.select(language: .french)
+            firstLaunch.settings.select(language: .french)
         }
 
         let secondLaunch = launch(online, sharing: stores)
@@ -59,7 +59,7 @@ struct SettingsAcceptanceTests {
         let stores = AcceptanceApp.Stores()
         let firstLaunch = launch(online, sharing: stores)
         await firstLaunch.applyingSettings {
-            await firstLaunch.settings.select(appearance: .dark)
+            firstLaunch.settings.select(appearance: .dark)
         }
         #expect(firstLaunch.settings.settings.appearance == .dark, "dark is in effect at once")
 
@@ -73,7 +73,7 @@ struct SettingsAcceptanceTests {
         let app = launch(online, sharing: AcceptanceApp.Stores(settings: FailingSettingsStore(settings: nil)))
 
         await app.applyingSettings {
-            await app.settings.select(appearance: .dark)
+            app.settings.select(appearance: .dark)
         }
 
         #expect(app.settings.settings.appearance == .system, "the previous choice is back")

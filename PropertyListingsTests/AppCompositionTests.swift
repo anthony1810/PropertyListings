@@ -3,6 +3,7 @@ import Foundation
 import ListingsCache
 import SettingsFeature
 import SettingsPersistence
+import SettingsPresentation
 import Testing
 import TestSupport
 @testable import PropertyListings
@@ -42,7 +43,9 @@ import TestSupport
             let observation = Task { await sut.observeSettings() }
             await Task.megaYield()
 
-            await sut.settingsViewModel.select(language: .french)
+            sut.settingsViewModel.select(language: .french)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
             await Task.megaYield()
 
             #expect(sut.listingsViewModel.locale.identifier == "fr_CH")
@@ -54,6 +57,8 @@ import TestSupport
 
     // MARK: - Helpers
 
+    private let clock = TestClock()
+
     private func makeSUT() -> AppComposition {
         let now = Date()
         return AppComposition(
@@ -63,7 +68,8 @@ import TestSupport
             settingsStore: InMemorySettingsStore(),
             defaultSettings: Settings(appearance: .system, language: .german),
             currentDate: { now },
-            locale: Locale(identifier: "de_CH")
+            locale: Locale(identifier: "de_CH"),
+            clock: clock
         )
     }
 }

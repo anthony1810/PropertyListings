@@ -11,7 +11,8 @@ extension SettingsViewModel {
             observeSettings: { AsyncStream { $0.yield(settings) } },
             saveSettings: { _ in },
             notify: { _ in },
-            locale: Locale(identifier: "de_CH")
+            locale: Locale(identifier: "de_CH"),
+            clock: ContinuousClock()
         )
     }
 }

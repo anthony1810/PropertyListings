@@ -13,7 +13,7 @@ struct RootView: View {
         _router = Bindable(composition.router)
     }
 
-    private var language: AppLanguage { settings.settings.language }
+    private var language: AppLanguage { settings.appliedSettings.language }
 
     var body: some View {
         TabView(selection: $router.selectedTab) {
@@ -34,7 +34,7 @@ struct RootView: View {
             }
         }
         .environment(\.locale, composition.locale(for: language))
-        .preferredColorScheme(settings.settings.appearance.colorScheme)
+        .preferredColorScheme(settings.appliedSettings.appearance.colorScheme)
         .alert(
             AppStrings.errorTitle,
             isPresented: Binding(
