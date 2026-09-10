@@ -37,6 +37,7 @@ let package = Package(
             name: "BookmarksUI",
             dependencies: [
                 "BookmarksPresentation",
+                "SharedPresentation",
                 .product(name: "DesignSystem", package: "DesignSystem", condition: .when(platforms: [.iOS])),
             ],
             resources: [.process("Resources")]

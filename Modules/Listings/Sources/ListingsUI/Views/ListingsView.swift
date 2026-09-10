@@ -4,6 +4,8 @@ import ListingsPresentation
 import SwiftUI
 
 public struct ListingsView: View {
+    @Environment(\.locale) private var locale
+
     private let viewModel: ListingsViewModel
 
     public init(viewModel: ListingsViewModel) {
@@ -12,7 +14,7 @@ public struct ListingsView: View {
 
     public var body: some View {
         content
-            .navigationTitle(ListingsUIStrings.title)
+            .navigationTitle(ListingsUIStrings.title(for: locale))
             .background(DSColor.surface)
             .task { await viewModel.loadIfNeeded() }
             .task { await viewModel.observeBookmarks() }

@@ -1,7 +1,11 @@
+import SharedPresentation
 import SwiftUI
 
 public enum BookmarksUIStrings {
-    public static var title: Text { localized("bookmarks.title") }
+    public static func title(for locale: Locale) -> String {
+        String(localized: "bookmarks.title", bundle: BookmarksUIResources.bundle.localized(for: locale))
+    }
+
     public static var emptyTitle: Text { localized("bookmarks.empty.title") }
     public static var emptyHint: Text { localized("bookmarks.empty.hint") }
     public static var browse: Text { localized("bookmarks.empty.browse") }

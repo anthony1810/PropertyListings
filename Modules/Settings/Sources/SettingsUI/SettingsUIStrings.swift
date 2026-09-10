@@ -1,9 +1,13 @@
 #if canImport(UIKit)
 import SettingsFeature
+import SharedPresentation
 import SwiftUI
 
 public enum SettingsUIStrings {
-    public static var title: Text { localized("settings.title") }
+    public static func title(for locale: Locale) -> String {
+        String(localized: "settings.title", bundle: SettingsUIResources.bundle.localized(for: locale))
+    }
+
     public static var appearance: Text { localized("settings.appearance") }
     public static var language: Text { localized("settings.language") }
 

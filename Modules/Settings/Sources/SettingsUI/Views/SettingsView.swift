@@ -5,6 +5,8 @@ import SettingsPresentation
 import SwiftUI
 
 public struct SettingsView: View {
+    @Environment(\.locale) private var locale
+
     private let viewModel: SettingsViewModel
 
     public init(viewModel: SettingsViewModel) {
@@ -30,7 +32,7 @@ public struct SettingsView: View {
         .scrollContentBackground(.hidden)
         .background(DSColor.surface)
         .accessibilityIdentifier(SettingsAccessibilityID.list)
-        .navigationTitle(SettingsUIStrings.title)
+        .navigationTitle(SettingsUIStrings.title(for: locale))
     }
 }
 

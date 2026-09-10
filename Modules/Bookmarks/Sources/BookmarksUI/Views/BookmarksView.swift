@@ -4,6 +4,8 @@ import DesignSystem
 import SwiftUI
 
 public struct BookmarksView: View {
+    @Environment(\.locale) private var locale
+
     private let viewModel: BookmarksViewModel
     private let onBrowseListings: () -> Void
 
@@ -14,7 +16,7 @@ public struct BookmarksView: View {
 
     public var body: some View {
         content
-            .navigationTitle(BookmarksUIStrings.title)
+            .navigationTitle(BookmarksUIStrings.title(for: locale))
             .background(DSColor.surface)
             .task { await viewModel.observe() }
     }
