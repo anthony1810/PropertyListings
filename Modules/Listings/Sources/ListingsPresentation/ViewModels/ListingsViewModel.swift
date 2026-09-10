@@ -1,17 +1,18 @@
 import Foundation
 import ListingsFeature
 import Observation
+import SharedPresentation
 
 @Observable
 @MainActor
 public final class ListingsViewModel {
     public enum Message {
-        public static var listingsFailed: String {
-            String(localized: "listings.loadFailed", bundle: ListingsPresentationResources.bundle)
+        public static func listingsFailed(_ locale: Locale) -> String {
+            String(localized: "listings.loadFailed", bundle: ListingsPresentationResources.bundle.localized(for: locale))
         }
 
-        public static var bookmarkNotSaved: String {
-            String(localized: "bookmarks.saveFailed", bundle: ListingsPresentationResources.bundle)
+        public static func bookmarkNotSaved(_ locale: Locale) -> String {
+            String(localized: "bookmarks.saveFailed", bundle: ListingsPresentationResources.bundle.localized(for: locale))
         }
     }
 
@@ -34,7 +35,7 @@ public final class ListingsViewModel {
     private let saveBookmark: @Sendable (Listing) async throws -> Void
     private let removeBookmark: @Sendable (Listing.ID) async throws -> Void
     private let notify: @MainActor (String) -> Void
-    private let locale: Locale
+    public private(set) var locale: Locale
     private let clock: any Clock<Duration>
 
     public init(
@@ -55,6 +56,14 @@ public final class ListingsViewModel {
         self.clock = clock
     }
 
+    public func update(locale: Locale) {
+        self.locale = locale
+        rebuildRows()
+        if loadFailureMessage != nil {
+            loadFailureMessage = Message.listingsFailed(locale)
+        }
+    }
+
     public var canLoadMore: Bool {
         page.loadMore != nil
     }
@@ -67,7 +76,7 @@ public final class ListingsViewModel {
             page = try await loadMore()
             rebuildRows()
         } catch {
-            notify(Message.listingsFailed)
+            notify(Message.listingsFailed(locale))
         }
     }
 
@@ -110,9 +119,9 @@ public final class ListingsViewModel {
             return
         } catch {
             if listings.isEmpty {
-                loadFailureMessage = Message.listingsFailed
+                loadFailureMessage = Message.listingsFailed(locale)
             } else {
-                notify(Message.listingsFailed)
+                notify(Message.listingsFailed(locale))
             }
         }
         hasLoaded = true
@@ -142,7 +151,7 @@ private extension ListingsViewModel {
                 bookmarkedIDs.remove(id)
             }
             rebuildRows()
-            notify(Message.bookmarkNotSaved)
+            notify(Message.bookmarkNotSaved(locale))
         }
     }
 }

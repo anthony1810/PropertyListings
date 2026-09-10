@@ -13,6 +13,9 @@
       <FileRef
          location = "group:Listings">
       </FileRef>
+      <FileRef
+         location = "group:Settings">
+      </FileRef>
       <Group
          location = "group:Shared"
          name = "Shared">

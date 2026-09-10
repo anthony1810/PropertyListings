@@ -47,7 +47,7 @@ into the asset catalog; names never change.
 | `PriceTag` | Amount, OnRequest | inside `ListingCard`, text from `PriceFormatter` |
 | `StateView` | Empty, Error | `EmptyStateView`, `ErrorStateView` |
 | `SkeletonRow` | one | `SkeletonRow().shimmering()` |
-| `TabBar` | Listings, Saved | `TabView` in `RootView`, driven by `AppRouter` |
+| `TabBar` | Listings, Saved, Settings | `TabView` in `RootView`, driven by `AppRouter` |
 
 Card anatomy: 3:2 image with `radius/l` corners, `PriceTag` bottom leading, `LikeButton` top trailing on a
 thin material disc, title on two lines in `DSFont/title`, address on one line with a pin in `DSFont/caption`.
@@ -67,7 +67,10 @@ asset with its vector representation preserved, so the launch screen renders it 
 
 ## Screens
 
-Listings: content, loading, empty, error. Saved: content, empty. Each in light and dark, iPhone 17 frame.
+Listings: content, loading, empty, error. Saved: content, empty. Settings: one screen, an appearance
+segmented control (System, Light, Dark) over `surfaceElevated` and a grouped language list with the
+languages in their own names and a checkmark in `accent` on the chosen one. Each in light and dark,
+iPhone 17 frame.
 
 ![Light](screens-light.png)
 ![Dark](screens-dark.png)

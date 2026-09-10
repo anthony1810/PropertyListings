@@ -70,7 +70,7 @@ struct BookmarksAcceptanceTests {
             await app.saved.remove(id: "1")
 
             #expect(app.savedIDs == ["1"], "the row is back on the Saved tab")
-            #expect(app.router.alert == .error(BookmarksViewModel.Message.removeFailed), "the router holds the not-removed alert")
+            #expect(app.router.alert == .error(BookmarksViewModel.Message.removeFailed(deCH)), "the router holds the not-removed alert")
         }
     }
 

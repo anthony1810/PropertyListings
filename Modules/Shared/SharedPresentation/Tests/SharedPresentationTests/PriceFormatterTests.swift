@@ -5,6 +5,7 @@ import Testing
 @Suite struct PriceFormatterTests {
     private let deCH = Locale(identifier: "de_CH")
     private let enUS = Locale(identifier: "en_US")
+    private let frCH = Locale(identifier: "fr_CH")
 
     @Test func text_wholeAmount_hasNoDecimalsAndSwissGrouping() {
         #expect(PriceFormatter.text(amount: 9_999_999, currency: "CHF", locale: deCH) == chf("9'999'999"))
@@ -23,11 +24,15 @@ import Testing
     }
 
     @Test func text_fallsBackToOnRequestWithoutAmount() {
-        #expect(PriceFormatter.text(amount: nil, currency: "CHF", locale: deCH) == PriceFormatter.onRequest)
+        #expect(PriceFormatter.text(amount: nil, currency: "CHF", locale: deCH) == PriceFormatter.onRequest(deCH))
     }
 
     @Test func text_fallsBackToOnRequestWithoutCurrency() {
-        #expect(PriceFormatter.text(amount: 100, currency: nil, locale: deCH) == PriceFormatter.onRequest)
+        #expect(PriceFormatter.text(amount: 100, currency: nil, locale: deCH) == PriceFormatter.onRequest(deCH))
+    }
+
+    @Test func text_resolvesOnRequestInTheLanguageOfTheLocale() {
+        #expect(PriceFormatter.text(amount: nil, currency: "CHF", locale: frCH) == "Prix sur demande")
     }
 
     // MARK: - Helpers

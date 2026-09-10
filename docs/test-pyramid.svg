@@ -8,22 +8,22 @@
 <text x="422.0" y="95.03999999999999" class="d"><tspan fill="#e3b341" font-weight="600" font-size="13">End to End Tests</tspan> · PropertyListingsEndToEndTests · live endpoint, own scheme</text>
 <polygon points="266.0,132 394.0,132 458.0,224 202.0,224" fill="#161b22" stroke="#f78166" stroke-width="1.6" stroke-linejoin="round"/>
 <text x="330" y="172" class="t" text-anchor="middle" fill="#f78166">UI Automation Tests</text>
-<text x="330" y="194" class="n" text-anchor="middle">7</text>
+<text x="330" y="194" class="n" text-anchor="middle">8</text>
 <line x1="462.0" y1="189.04" x2="478.0" y2="189.04" stroke="#30363d" stroke-width="1.2"/>
-<text x="486.0" y="193.04" class="d">PropertyListingsUITests · Listings 4, Saved 3 · launch arguments, iOS 18.2</text>
+<text x="486.0" y="193.04" class="d">PropertyListingsUITests · Listings 4, Saved 3, Settings 1 · launch arguments, iOS 18.2</text>
 <polygon points="202.0,230 458.0,230 522.0,322 138.0,322" fill="#161b22" stroke="#d2a8ff" stroke-width="1.6" stroke-linejoin="round"/>
 <text x="330" y="270" class="t" text-anchor="middle" fill="#d2a8ff">Snapshot Tests</text>
-<text x="330" y="292" class="n" text-anchor="middle">7 · 14 references</text>
+<text x="330" y="292" class="n" text-anchor="middle">10 · 18 references</text>
 <line x1="526.0" y1="287.04" x2="542.0" y2="287.04" stroke="#30363d" stroke-width="1.2"/>
-<text x="550.0" y="291.04" class="d">ListingsUITests 5, BookmarksUITests 2 · light and dark, iPhone 17</text>
+<text x="550.0" y="291.04" class="d">ListingsUITests 6, BookmarksUITests 2, SettingsUITests 2 · light and dark, iPhone 17</text>
 <polygon points="138.0,328 522.0,328 586.0,420 74.0,420" fill="#161b22" stroke="#58a6ff" stroke-width="1.6" stroke-linejoin="round"/>
 <text x="330" y="368" class="t" text-anchor="middle" fill="#58a6ff">Acceptance Tests</text>
-<text x="330" y="390" class="n" text-anchor="middle">22</text>
+<text x="330" y="390" class="n" text-anchor="middle">27</text>
 <line x1="590.0" y1="385.04" x2="606.0" y2="385.04" stroke="#30363d" stroke-width="1.2"/>
-<text x="614.0" y="389.04" class="d">PropertyListingsTests · Listings 17, Bookmarks 5 · real composition</text>
+<text x="614.0" y="389.04" class="d">PropertyListingsTests · Listings 17, Bookmarks 5, Settings 5 · real composition</text>
 <polygon points="74.0,426 586.0,426 650.0,518 10.0,518" fill="#161b22" stroke="#3fb950" stroke-width="1.6" stroke-linejoin="round"/>
 <text x="330" y="466" class="t" text-anchor="middle" fill="#3fb950">Unit Tests</text>
-<text x="330" y="488" class="n" text-anchor="middle">183 · 88 Listings, 40 Bookmarks, 34 shared, 21 app root</text>
+<text x="330" y="488" class="n" text-anchor="middle">240 · 98 Listings, 42 Bookmarks, 36 Settings, 38 shared, 26 app root</text>
 <line x1="654.0" y1="483.04" x2="670.0" y2="483.04" stroke="#30363d" stroke-width="1.2"/>
 <text x="678.0" y="487.04" class="d">Modules/*/Tests and PropertyListingsTests</text>
 </svg>

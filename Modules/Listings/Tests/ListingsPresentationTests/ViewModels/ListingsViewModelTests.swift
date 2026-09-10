@@ -55,7 +55,7 @@ import TestSupport
         await sut.load()
 
         #expect(sut.rows == [])
-        #expect(sut.loadFailureMessage == ListingsViewModel.Message.listingsFailed)
+        #expect(sut.loadFailureMessage == ListingsViewModel.Message.listingsFailed(locale))
         #expect(spy.receivedMessages == [.loadListings])
     }
 
@@ -70,7 +70,7 @@ import TestSupport
 
         #expect(sut.rows == previousRows)
         #expect(sut.loadFailureMessage == nil)
-        #expect(spy.receivedMessages == [.loadListings, .loadListings, .notify(ListingsViewModel.Message.listingsFailed)])
+        #expect(spy.receivedMessages == [.loadListings, .loadListings, .notify(ListingsViewModel.Message.listingsFailed(locale))])
     }
 
     @Test func load_clearsTheBlockingFailureOnSuccess() async {
@@ -143,7 +143,7 @@ import TestSupport
 
         await sut.loadIfNeeded()
 
-        #expect(sut.loadFailureMessage == ListingsViewModel.Message.listingsFailed)
+        #expect(sut.loadFailureMessage == ListingsViewModel.Message.listingsFailed(locale))
         #expect(spy.receivedMessages == [.loadListings])
     }
 
@@ -157,6 +157,55 @@ import TestSupport
 
         #expect(sut.rows.map(\.id) == ["a"])
         #expect(spy.receivedMessages == [.loadListings, .loadListings])
+    }
+
+    // MARK: - Update locale
+
+    @Test func update_rebuildsRowsInTheNewLocale() async {
+        let (sut, spy, _) = makeSUT()
+        let house = makeListing(id: "a", price: Price(amount: 9_999_999, currency: "CHF"))
+        spy.completeListings(with: .success([house]))
+        await sut.load()
+        let american = Locale(identifier: "en_US")
+
+        sut.update(locale: american)
+
+        #expect(sut.locale == american)
+        #expect(sut.rows == [ListingRowMapper.map(house, isBookmarked: false, locale: american)])
+    }
+
+    @Test func update_reResolvesTheBlockingFailureInTheNewLocale() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: .failure(anyNSError()))
+        await sut.load()
+        let french = Locale(identifier: "fr_CH")
+
+        sut.update(locale: french)
+
+        #expect(sut.loadFailureMessage == ListingsViewModel.Message.listingsFailed(french))
+    }
+
+    @Test func update_leavesNoFailureBehindWhenNoneIsShowing() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: .success([makeListing(id: "a")]))
+        await sut.load()
+
+        sut.update(locale: Locale(identifier: "fr_CH"))
+
+        #expect(sut.loadFailureMessage == nil)
+    }
+
+    @Test func load_notifiesInTheCurrentLocaleWhenARefreshFails() async {
+        let (sut, spy, _) = makeSUT()
+        spy.completeListings(with: .success([makeListing(id: "a")]))
+        await sut.load()
+        let french = Locale(identifier: "fr_CH")
+        sut.update(locale: french)
+        spy.completeListings(with: .failure(anyNSError()))
+
+        await sut.load()
+
+        #expect(spy.receivedMessages == [.loadListings, .loadListings, .notify(ListingsViewModel.Message.listingsFailed(french))])
     }
 
     // MARK: - Load more
@@ -231,7 +280,7 @@ import TestSupport
 
         #expect(sut.rows.map(\.id) == ["a"])
         #expect(sut.canLoadMore == true)
-        #expect(spy.receivedMessages == [.loadListings, .loadMore, .notify(ListingsViewModel.Message.listingsFailed)])
+        #expect(spy.receivedMessages == [.loadListings, .loadMore, .notify(ListingsViewModel.Message.listingsFailed(locale))])
     }
 
     // MARK: - Observe bookmarks
@@ -412,7 +461,7 @@ import TestSupport
             #expect(spy.receivedMessages == [
                 .loadListings,
                 .saveBookmark(listing),
-                .notify(ListingsViewModel.Message.bookmarkNotSaved),
+                .notify(ListingsViewModel.Message.bookmarkNotSaved(locale)),
             ])
         }
     }
@@ -437,7 +486,7 @@ import TestSupport
                 .loadListings,
                 .observeBookmarkedIDs,
                 .removeBookmark("a"),
-                .notify(ListingsViewModel.Message.bookmarkNotSaved),
+                .notify(ListingsViewModel.Message.bookmarkNotSaved(locale)),
             ])
             await observation.cancelAndWait()
         }

@@ -1,0 +1,15 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "settings.saveFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Your choice couldn't be saved. Please try again." } },
+        "de": { "stringUnit": { "state": "translated", "value": "Ihre Auswahl konnte nicht gespeichert werden. Bitte versuchen Sie es erneut." } },
+        "fr": { "stringUnit": { "state": "translated", "value": "Votre choix n'a pas pu être enregistré. Veuillez réessayer." } },
+        "it": { "stringUnit": { "state": "translated", "value": "La tua scelta non è stata salvata. Riprova." } }
+      }
+    }
+  }
+}

@@ -1,12 +1,12 @@
 import Foundation
 
 public enum PriceFormatter {
-    public static var onRequest: String {
-        String(localized: "price.onRequest", bundle: .module)
+    public static func onRequest(_ locale: Locale) -> String {
+        String(localized: "price.onRequest", bundle: .module.localized(for: locale))
     }
 
     public static func text(amount: Decimal?, currency: String?, locale: Locale) -> String {
-        guard let amount, let currency else { return onRequest }
+        guard let amount, let currency else { return onRequest(locale) }
         return amount.formatted(
             .currency(code: currency)
                 .locale(locale)

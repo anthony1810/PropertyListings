@@ -1,13 +1,14 @@
 import BookmarksFeature
 import Foundation
 import Observation
+import SharedPresentation
 
 @Observable
 @MainActor
 public final class BookmarksViewModel {
     public enum Message {
-        public static var removeFailed: String {
-            String(localized: "bookmarks.removeFailed", bundle: BookmarksPresentationResources.bundle)
+        public static func removeFailed(_ locale: Locale) -> String {
+            String(localized: "bookmarks.removeFailed", bundle: BookmarksPresentationResources.bundle.localized(for: locale))
         }
     }
 
@@ -19,7 +20,7 @@ public final class BookmarksViewModel {
     private let observeBookmarks: @Sendable () -> any AsyncSequence<[Bookmark], Never>
     private let removeBookmark: @Sendable (Bookmark.ID) async throws -> Void
     private let notify: @MainActor (String) -> Void
-    private let locale: Locale
+    public private(set) var locale: Locale
 
     public init(
         observeBookmarks: @Sendable @escaping () -> any AsyncSequence<[Bookmark], Never>,
@@ -47,8 +48,13 @@ public final class BookmarksViewModel {
         } catch {
             bookmarks.insert(removed, at: min(index, bookmarks.count))
             rebuildRows()
-            notify(Message.removeFailed)
+            notify(Message.removeFailed(locale))
         }
+    }
+
+    public func update(locale: Locale) {
+        self.locale = locale
+        rebuildRows()
     }
 
     public func observe() async {

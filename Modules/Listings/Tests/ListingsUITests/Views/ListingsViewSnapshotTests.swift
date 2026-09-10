@@ -49,6 +49,13 @@ import TestSupport
         assert(view, style: style, testName: "error")
     }
 
+    @Test func empty_followsTheEnvironmentLocale() async {
+        let view = await makeView(loadListings: { Paginated(items: []) })
+            .environment(\.locale, Locale(identifier: "fr_CH"))
+
+        assert(view, style: .light, testName: "emptyFrench")
+    }
+
     // MARK: - Helpers
 
     private var sampleListings: [Listing] {

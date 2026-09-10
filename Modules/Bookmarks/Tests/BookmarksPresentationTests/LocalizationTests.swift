@@ -8,9 +8,9 @@ import TestSupport
         verifyLocalizationCoverage(in: BookmarksPresentationResources.bundle, languages: ["en", "de", "fr", "it"])
     }
 
-    @Test func removeFailed_resolvesPerLanguage() throws {
-        let german = try #require(BookmarksPresentationResources.bundle.path(forResource: "de", ofType: "lproj").flatMap(Bundle.init(path:)))
+    @Test func removeFailed_resolvesPerLanguage() {
+        let german = BookmarksViewModel.Message.removeFailed(Locale(identifier: "de_CH"))
 
-        #expect(String(localized: "bookmarks.removeFailed", bundle: german).hasPrefix("Dieses Inserat konnte nicht entfernt werden"))
+        #expect(german.hasPrefix("Dieses Inserat konnte nicht entfernt werden"))
     }
 }
