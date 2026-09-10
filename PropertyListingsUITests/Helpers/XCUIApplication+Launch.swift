@@ -33,6 +33,15 @@ extension XCUIApplication {
         tabBars.buttons["Saved"].selectIfNeeded()
         return SavedTab(app: self)
     }
+
+    var settingsTab: SettingsTab {
+        tabBars.buttons["Settings"].selectIfNeeded()
+        return SettingsTab(app: self)
+    }
+
+    func isShowingTab(labelled label: String) -> Bool {
+        tabBars.buttons[label].appears()
+    }
 }
 
 @MainActor
