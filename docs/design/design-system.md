@@ -52,6 +52,19 @@ into the asset catalog; names never change.
 Card anatomy: 3:2 image with `radius/l` corners, `PriceTag` bottom leading, `LikeButton` top trailing on a
 thin material disc, title on two lines in `DSFont/title`, address on one line with a pin in `DSFont/caption`.
 
+## Brand
+
+![Brand](brand.png)
+
+| Asset | Figma | Xcode |
+|---|---|---|
+| App icon | `Brand / App icon / 1024`, a flat square, iOS applies the mask | `AppIcon.appiconset`, one 1024 image with no alpha |
+| Launch screen | `Brand / Launch / Light` and `Launch / Dark`, `color/surface` with the mark in `color/accent` | `UILaunchScreen` with `LaunchBackground` and `LaunchMark`, both with a dark appearance |
+| Accent | `color/accent` | `AccentColor` |
+
+The mark is `house-fill` from [Phosphor Icons](https://phosphoricons.com), MIT licensed. It ships as an SVG
+asset with its vector representation preserved, so the launch screen renders it at any scale.
+
 ## Screens
 
 Listings: content, loading, empty, error. Saved: content, empty. Each in light and dark, iPhone 17 frame.
