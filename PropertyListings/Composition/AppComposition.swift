@@ -55,6 +55,7 @@ final class AppComposition {
     init(brand: BrandConfiguration) {
         self.brand = brand
         ImagePipeline.configure()
+        DSTokens.configure(bundle: .main)
     }
 
     convenience init(brand: BrandConfiguration, httpClient: HTTPClient) {

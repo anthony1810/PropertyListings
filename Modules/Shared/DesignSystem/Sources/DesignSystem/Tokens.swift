@@ -1,12 +1,12 @@
 import SwiftUI
 
 public enum DSColor {
-    public static let surface = Color("surface", bundle: .module)
-    public static let surfaceElevated = Color("surfaceElevated", bundle: .module)
-    public static let textPrimary = Color("textPrimary", bundle: .module)
-    public static let textSecondary = Color("textSecondary", bundle: .module)
-    public static let accent = Color("accent", bundle: .module)
-    public static let like = Color("like", bundle: .module)
+    public static var surface: Color { DSTokens.color("surface") }
+    public static var surfaceElevated: Color { DSTokens.color("surfaceElevated") }
+    public static var textPrimary: Color { DSTokens.color("textPrimary") }
+    public static var textSecondary: Color { DSTokens.color("textSecondary") }
+    public static var accent: Color { DSTokens.color("accent") }
+    public static var like: Color { DSTokens.color("like") }
     public static let onImage = Color.white
 }
 

@@ -1,4 +1,5 @@
 import BookmarksPersistence
+import DesignSystem
 import Foundation
 import ListingsAPI
 import ListingsCache
@@ -54,6 +55,14 @@ import TestSupport
             #expect(sut.settingsViewModel.locale.identifier == "fr_CH")
             await observation.cancelAndWait()
         }
+    }
+
+    @Test func init_registersTheAppBundleAsTheTokenSource() {
+        DSTokens.configure(bundle: nil)
+
+        _ = makeSUT()
+
+        #expect(DSTokens.bundle == .main)
     }
 
     // MARK: - Brand
