@@ -21,6 +21,20 @@
                ReferencedContainer = "container:PropertyListings.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2B99BAD377A956B0A05A1F12"
+               BuildableName = "LakesideTests.xctest"
+               BlueprintName = "LakesideTests"
+               ReferencedContainer = "container:PropertyListings.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -39,7 +53,20 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2B99BAD377A956B0A05A1F12"
+               BuildableName = "LakesideTests.xctest"
+               BlueprintName = "LakesideTests"
+               ReferencedContainer = "container:PropertyListings.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

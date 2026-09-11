@@ -37,6 +37,7 @@ targetTemplates:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.anthony.${bundleName}
+        PRODUCT_MODULE_NAME: PropertyListings
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS: NO
@@ -88,6 +89,23 @@ targetTemplates:
         product: HTTPClient
       - package: HTTPClient
         product: HTTPClientLive
+  BrandTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [PropertyListingsTests]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: ${brand}
+      - package: Listings
+        product: ListingsTestSupport
+      - package: Bookmarks
+        product: BookmarksTestSupport
+      - package: Settings
+        product: SettingsTestSupport
+      - package: TestSupport
+        product: TestSupport
 targets:
   PropertyListings:
     templates: [BrandApp]
@@ -103,22 +121,13 @@ targets:
       properties:
         UIAppFonts: [Manrope-Variable.ttf]
   PropertyListingsTests:
-    type: bundle.unit-test
-    platform: iOS
-    sources: [PropertyListingsTests]
-    settings:
-      base:
-        GENERATE_INFOPLIST_FILE: YES
-    dependencies:
-      - target: PropertyListings
-      - package: Listings
-        product: ListingsTestSupport
-      - package: Bookmarks
-        product: BookmarksTestSupport
-      - package: Settings
-        product: SettingsTestSupport
-      - package: TestSupport
-        product: TestSupport
+    templates: [BrandTests]
+    templateAttributes:
+      brand: PropertyListings
+  LakesideTests:
+    templates: [BrandTests]
+    templateAttributes:
+      brand: Lakeside
   PropertyListingsUITests:
     type: bundle.ui-testing
     platform: iOS
@@ -160,8 +169,12 @@ schemes:
     build:
       targets:
         Lakeside: all
+        LakesideTests: [test]
     run:
       config: Debug
+    test:
+      config: Debug
+      targets: [LakesideTests]
   PropertyListingsEndToEndTests:
     build:
       targets:
