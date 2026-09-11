@@ -3,14 +3,12 @@ import Testing
 @testable import DesignSystem
 
 @Suite struct TokensTests {
-    private static let namesDSColorAsksFor = ["surface", "surfaceElevated", "textPrimary", "textSecondary", "accent", "like"]
-
-    @Test(arguments: namesDSColorAsksFor)
+    @Test(arguments: DSColor.names)
     func designSystemCatalog_definesAColor_forEveryNameDSColorAsksFor(name: String) {
         #expect(designSystemCatalog.definesColor(named: name), "DesignSystem's catalog has no colorset named \(name)")
     }
 
-    @Test(arguments: namesDSColorAsksFor)
+    @Test(arguments: DSColor.names)
     func designSystemCatalog_definesADarkAppearance_forEveryNameDSColorAsksFor(name: String) throws {
         let colour = try #require(UIColor(named: name, in: designSystemCatalog, compatibleWith: nil))
         let light = colour.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))

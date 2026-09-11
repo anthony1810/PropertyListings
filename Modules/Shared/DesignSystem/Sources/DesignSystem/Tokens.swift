@@ -1,6 +1,8 @@
 import SwiftUI
 
 public enum DSColor {
+    public static let names = ["surface", "surfaceElevated", "textPrimary", "textSecondary", "accent", "like"]
+
     public static var surface: Color { DSTokens.color("surface") }
     public static var surfaceElevated: Color { DSTokens.color("surfaceElevated") }
     public static var textPrimary: Color { DSTokens.color("textPrimary") }
