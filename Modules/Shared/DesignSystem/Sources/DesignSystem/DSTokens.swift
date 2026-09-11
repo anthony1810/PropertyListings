@@ -13,6 +13,16 @@ public enum DSTokens {
         registered.withLock { $0 = bundle }
     }
 
+    private static let registeredRadii = Mutex<DSRadii?>(nil)
+
+    public static var radii: DSRadii {
+        registeredRadii.withLock { $0 } ?? .designSystem
+    }
+
+    public static func configure(radii: DSRadii?) {
+        registeredRadii.withLock { $0 = radii }
+    }
+
     static var designSystemBundle: Bundle { .module }
 
     static func color(_ name: String) -> Color {

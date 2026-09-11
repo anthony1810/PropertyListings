@@ -1,3 +1,4 @@
+import DesignSystem
 import Foundation
 
 struct BrandConfiguration: Equatable, Sendable {
@@ -7,5 +8,10 @@ struct BrandConfiguration: Equatable, Sendable {
         let cacheMaxAgeInDays: Int
     }
 
+    struct Design: Equatable, Sendable {
+        let radii: DSRadii
+    }
+
     let listings: Listings
+    let design: Design
 }

@@ -20,9 +20,21 @@ public enum DSSpacing {
     public static let xl: CGFloat = 32
 }
 
+public struct DSRadii: Equatable, Sendable {
+    public static let designSystem = DSRadii(m: 12, l: 20)
+
+    public let m: CGFloat
+    public let l: CGFloat
+
+    public init(m: CGFloat, l: CGFloat) {
+        self.m = m
+        self.l = l
+    }
+}
+
 public enum DSRadius {
-    public static let m: CGFloat = 12
-    public static let l: CGFloat = 20
+    public static var m: CGFloat { DSTokens.radii.m }
+    public static var l: CGFloat { DSTokens.radii.l }
 }
 
 public enum DSFont {

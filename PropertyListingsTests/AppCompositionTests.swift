@@ -65,6 +65,15 @@ import TestSupport
         #expect(DSTokens.bundle == .main)
     }
 
+    @Test func init_registersTheBrandRadii() {
+        let brandRadii = DSRadii(m: 3, l: 5)
+        DSTokens.configure(radii: nil)
+
+        _ = makeSUT(brand: makeBrand(radii: brandRadii))
+
+        #expect(DSTokens.radii == brandRadii)
+    }
+
     // MARK: - Brand
 
     @Test func listingsViewModel_loadsListingsFromTheBrandHost() async {

@@ -3,6 +3,8 @@ import Testing
 @testable import DesignSystem
 
 @Suite(.serialized) struct DSTokensTests {
+    // MARK: - Colors
+
     @Test func accent_resolvesFromTheRegisteredBundle_whenItDefinesTheName() {
         let overriddenName = "accent"
         let fixtureAccent = Color(overriddenName, bundle: fixtureBundle)
@@ -27,6 +29,24 @@ import Testing
         DSTokens.configure(bundle: nil)
 
         #expect(lightHex(of: DSColor.accent) == lightHex(of: designSystemAccent))
+    }
+
+    // MARK: - Radii
+
+    @Test func radius_resolvesFromTheRegisteredRadii_whenRadiiAreRegistered() {
+        let brandRadii = DSRadii(m: 3, l: 5)
+        DSTokens.configure(radii: brandRadii)
+        defer { DSTokens.configure(radii: nil) }
+
+        #expect(DSRadius.m == brandRadii.m)
+        #expect(DSRadius.l == brandRadii.l)
+    }
+
+    @Test func radius_resolvesFromTheDesignSystemRadii_whenNothingIsRegistered() {
+        DSTokens.configure(radii: nil)
+
+        #expect(DSRadius.m == DSRadii.designSystem.m)
+        #expect(DSRadius.l == DSRadii.designSystem.l)
     }
 
     // MARK: - Helpers
