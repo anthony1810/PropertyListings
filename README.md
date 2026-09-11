@@ -62,8 +62,7 @@ the tests that need the network and reports on the pull request and its own badg
 |---|---|---|
 | Tests | `host-packages` | `swift test` for TestSupport and HTTPClient on the Mac, no simulator |
 | Tests | `simulator-packages` | `xcodebuild test` for SharedPresentation, DesignSystem, Listings, Bookmarks and Settings on iPhone 17, for catalogs, locale formatting and snapshots |
-| Tests | `app` | the architecture guard, then the `PropertyListings` scheme with the UI tests skipped: unit and acceptance tests |
-| Tests | `brands` | `xcodebuild build` for every brand scheme, `PropertyListings` and `Lakeside`, so a brand that stops compiling fails the merge |
+| Tests | `app` | the architecture guard, then one brand scheme per matrix entry, `PropertyListings` and `Lakeside`, with the UI tests skipped: the unit and acceptance suite hosted by that brand's app, so a brand that stops compiling or ships a broken catalog fails the merge |
 | Tests | `all-green` | nothing, the one name branch protection requires |
 | Live | `end-to-end` | `PropertyListingsEndToEndTests` on the Mac against the live endpoint |
 | Live | `ui-tests` | `PropertyListingsUITests` on iPhone 17, eight scenarios launching the app with `-reset` and `-connectivity offline` |
