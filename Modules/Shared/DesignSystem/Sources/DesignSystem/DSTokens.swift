@@ -3,6 +3,8 @@ import Synchronization
 import UIKit
 
 public enum DSTokens {
+    // MARK: - Colors
+
     private static let registered = Mutex<Bundle?>(nil)
 
     public static var bundle: Bundle? {
@@ -12,6 +14,17 @@ public enum DSTokens {
     public static func configure(bundle: Bundle?) {
         registered.withLock { $0 = bundle }
     }
+
+    static var designSystemBundle: Bundle { .module }
+
+    static func color(_ name: String) -> Color {
+        if let bundle, UIColor(named: name, in: bundle, compatibleWith: nil) != nil {
+            return Color(name, bundle: bundle)
+        }
+        return Color(name, bundle: .module)
+    }
+
+    // MARK: - Radii
 
     private static let registeredRadii = Mutex<DSRadii?>(nil)
 
@@ -23,12 +36,15 @@ public enum DSTokens {
         registeredRadii.withLock { $0 = radii }
     }
 
-    static var designSystemBundle: Bundle { .module }
+    // MARK: - Typeface
 
-    static func color(_ name: String) -> Color {
-        if let bundle, UIColor(named: name, in: bundle, compatibleWith: nil) != nil {
-            return Color(name, bundle: bundle)
-        }
-        return Color(name, bundle: .module)
+    private static let registeredTypeface = Mutex<DSTypeface?>(nil)
+
+    public static var typeface: DSTypeface? {
+        registeredTypeface.withLock { $0 }
+    }
+
+    public static func configure(typeface: DSTypeface?) {
+        registeredTypeface.withLock { $0 = typeface }
     }
 }

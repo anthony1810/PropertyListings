@@ -9,7 +9,8 @@ enum CurrentBrand {
             cacheMaxAgeInDays: 3
         ),
         design: BrandConfiguration.Design(
-            radii: DSRadii(m: 16, l: 28)
+            radii: DSRadii(m: 16, l: 28),
+            typeface: DSTypeface(regular: "Manrope-Regular", semibold: "Manrope-SemiBold", bold: "Manrope-Bold")
         )
     )
 }

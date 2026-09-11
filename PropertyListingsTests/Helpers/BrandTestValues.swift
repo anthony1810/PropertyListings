@@ -6,7 +6,8 @@ func makeBrand(
     listingsHost: URL = URL(string: "https://brand.example")!,
     listingsPageSize: Int = 5,
     listingsCacheMaxAgeInDays: Int = 7,
-    radii: DSRadii = .designSystem
+    radii: DSRadii = .designSystem,
+    typeface: DSTypeface? = nil
 ) -> BrandConfiguration {
     BrandConfiguration(
         listings: BrandConfiguration.Listings(
@@ -14,6 +15,6 @@ func makeBrand(
             pageSize: listingsPageSize,
             cacheMaxAgeInDays: listingsCacheMaxAgeInDays
         ),
-        design: BrandConfiguration.Design(radii: radii)
+        design: BrandConfiguration.Design(radii: radii, typeface: typeface)
     )
 }

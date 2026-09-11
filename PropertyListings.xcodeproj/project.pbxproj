@@ -73,6 +73,7 @@
 		B92F9EF640CDA063D3B3B41E /* SettingsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 061518DF9F53ACBBA413D5F6 /* SettingsFeature */; };
 		BB884C80C89760557F1AB08C /* BookmarksPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = 06C6AE89E20DCAA40372AF4D /* BookmarksPersistence */; };
 		C3689D3CDD07B968C46BB678 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF30EF5C3659003BB41469A /* AppRouter.swift */; };
+		C4613AD501E85BEED1824048 /* Manrope-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0C2142E31F7E930AF39252B /* Manrope-Variable.ttf */; };
 		C4D2C8192580EEE8BD7D8DDF /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF30EF5C3659003BB41469A /* AppRouter.swift */; };
 		CACA67688884141EA9F5FB95 /* SavedTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891070D7A04C09A679970D13 /* SavedTab.swift */; };
 		CB2D7A2D3F826E6E91187395 /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 0CD4157F80781B2AADE331C8 /* ListingsAPI */; };
@@ -91,6 +92,7 @@
 		E3561739C9FDAC6B6DF1727C /* SettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D858908CFCF10A74D498EE /* SettingsUITests.swift */; };
 		E5A44CE35A91FB0D061EA87E /* ListingsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27B9E82F8C30512BA647A38 /* ListingsAcceptanceTests.swift */; };
 		EBE626E89A682944C760C0AF /* ListingsCache in Frameworks */ = {isa = PBXBuildFile; productRef = 8D60C12B895BC1F11F21614A /* ListingsCache */; };
+		EC1BFC9CBE7C4B75D541C0B8 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = CAA1A87C15C2D50390372208 /* OFL.txt */; };
 		F1457E1612E36C09F58B3ED4 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF683814C0BBC97EB4A37BC4 /* Brand.swift */; };
 		F46AD66C392A00E38BAEEBB5 /* ListingsTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 3093FF3536C42EE8F630C546 /* ListingsTestSupport */; };
 		F497988E3F32F0DA77223082 /* BookmarksPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = A6A20CC9E3EA17307935F038 /* BookmarksPresentation */; };
@@ -158,11 +160,13 @@
 		BCE4C182B5F5207442631DB0 /* ListingsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsServiceTests.swift; sourceTree = "<group>"; };
 		C2FB02D48B3BA2410D26F32F /* PropertyListingsEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PropertyListingsEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C62DA20E78457193A4CB660B /* Settings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Settings; path = Modules/Settings; sourceTree = SOURCE_ROOT; };
+		CAA1A87C15C2D50390372208 /* OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
 		CF683814C0BBC97EB4A37BC4 /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
 		D5C061002CFC6973AC8B49A7 /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
 		D761F6E685539D94DBF5C850 /* HTTPClientStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientStub.swift; sourceTree = "<group>"; };
 		D8D099A29A5E654262757132 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsTestValues.swift; sourceTree = "<group>"; };
+		E0C2142E31F7E930AF39252B /* Manrope-Variable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Variable.ttf"; sourceTree = "<group>"; };
 		E4BA6453C4BAC20C49688B8D /* Listing+Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Listing+Bookmark.swift"; sourceTree = "<group>"; };
 		E627A5A56AF5B73D3AB5D8A6 /* BookmarksAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksAcceptanceTests.swift; sourceTree = "<group>"; };
 		E6E67D71D0AD377B3346CEC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -361,6 +365,15 @@
 			path = Brands;
 			sourceTree = "<group>";
 		};
+		BA73A428FD2436C59CEF511D /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				E0C2142E31F7E930AF39252B /* Manrope-Variable.ttf */,
+				CAA1A87C15C2D50390372208 /* OFL.txt */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		CA7DE8BA9ACF2537C582CBDA /* PropertyListingsUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -407,6 +420,7 @@
 				162C1067C22770C351BB4E91 /* Assets.xcassets */,
 				A00679CB5A8161C9C5AC1E9E /* Brand.swift */,
 				D8D099A29A5E654262757132 /* Info.plist */,
+				BA73A428FD2436C59CEF511D /* Fonts */,
 			);
 			path = Lakeside;
 			sourceTree = "<group>";
@@ -628,6 +642,8 @@
 			files = (
 				91A1DE9CE8FE5A259FAA7C1A /* Assets.xcassets in Resources */,
 				CD18A2197037482806CBEA3F /* Localizable.xcstrings in Resources */,
+				C4613AD501E85BEED1824048 /* Manrope-Variable.ttf in Resources */,
+				EC1BFC9CBE7C4B75D541C0B8 /* OFL.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

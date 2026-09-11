@@ -37,8 +37,63 @@ public enum DSRadius {
     public static var l: CGFloat { DSTokens.radii.l }
 }
 
+public struct DSTypeface: Equatable, Sendable {
+    public let regular: String
+    public let semibold: String
+    public let bold: String
+
+    public init(regular: String, semibold: String, bold: String) {
+        self.regular = regular
+        self.semibold = semibold
+        self.bold = bold
+    }
+
+    func name(for weight: Font.Weight) -> String {
+        switch weight {
+        case .bold: bold
+        case .semibold: semibold
+        default: regular
+        }
+    }
+}
+
 public enum DSFont {
-    public static let title = Font.system(.headline, weight: .semibold)
-    public static let price = Font.system(.subheadline, weight: .bold)
-    public static let caption = Font.system(.footnote)
+    public enum Role: Sendable {
+        case title, price, caption
+
+        public var style: Font.TextStyle {
+            switch self {
+            case .title: .headline
+            case .price: .subheadline
+            case .caption: .footnote
+            }
+        }
+
+        public var weight: Font.Weight {
+            switch self {
+            case .title: .semibold
+            case .price: .bold
+            case .caption: .regular
+            }
+        }
+
+        public var size: CGFloat {
+            switch self {
+            case .title: 17
+            case .price: 15
+            case .caption: 13
+            }
+        }
+    }
+
+    public static var title: Font { font(for: .title) }
+    public static var price: Font { font(for: .price) }
+    public static var caption: Font { font(for: .caption) }
+
+    static func font(for role: Role) -> Font {
+        guard let typeface = DSTokens.typeface else {
+            return .system(role.style, weight: role.weight)
+        }
+        return .custom(typeface.name(for: role.weight), size: role.size, relativeTo: role.style)
+    }
 }

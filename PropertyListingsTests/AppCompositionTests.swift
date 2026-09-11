@@ -74,6 +74,15 @@ import TestSupport
         #expect(DSTokens.radii == brandRadii)
     }
 
+    @Test func init_registersTheBrandTypeface() {
+        let brandTypeface = DSTypeface(regular: "Brand-Regular", semibold: "Brand-SemiBold", bold: "Brand-Bold")
+        DSTokens.configure(typeface: nil)
+
+        _ = makeSUT(brand: makeBrand(typeface: brandTypeface))
+
+        #expect(DSTokens.typeface == brandTypeface)
+    }
+
     // MARK: - Brand
 
     @Test func listingsViewModel_loadsListingsFromTheBrandHost() async {

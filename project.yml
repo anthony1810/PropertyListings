@@ -99,6 +99,9 @@ targets:
     templateAttributes:
       brand: Lakeside
       bundleName: lakeside
+    info:
+      properties:
+        UIAppFonts: [Manrope-Variable.ttf]
   PropertyListingsTests:
     type: bundle.unit-test
     platform: iOS

@@ -49,6 +49,24 @@ import Testing
         #expect(DSRadius.l == DSRadii.designSystem.l)
     }
 
+    // MARK: - Typeface
+
+    @Test(arguments: [DSFont.Role.title, .price, .caption])
+    func font_usesTheRegisteredTypeface_whenOneIsRegistered(role: DSFont.Role) {
+        let brandTypeface = DSTypeface(regular: "Brand-Regular", semibold: "Brand-SemiBold", bold: "Brand-Bold")
+        DSTokens.configure(typeface: brandTypeface)
+        defer { DSTokens.configure(typeface: nil) }
+
+        #expect(DSFont.font(for: role) == Font.custom(brandTypeface.name(for: role.weight), size: role.size, relativeTo: role.style))
+    }
+
+    @Test(arguments: [DSFont.Role.title, .price, .caption])
+    func font_usesTheSystemFont_whenNothingIsRegistered(role: DSFont.Role) {
+        DSTokens.configure(typeface: nil)
+
+        #expect(DSFont.font(for: role) == Font.system(role.style, weight: role.weight))
+    }
+
     // MARK: - Helpers
 
     private var fixtureBundle: Bundle { .module }

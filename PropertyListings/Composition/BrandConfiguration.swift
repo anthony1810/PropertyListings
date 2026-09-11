@@ -10,6 +10,7 @@ struct BrandConfiguration: Equatable, Sendable {
 
     struct Design: Equatable, Sendable {
         let radii: DSRadii
+        let typeface: DSTypeface?
     }
 
     let listings: Listings
