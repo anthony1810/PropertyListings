@@ -42,12 +42,13 @@ struct AcceptanceApp {
         stores: Stores,
         today: LockIsolated<Date>,
         locale: Locale,
-        clock: TestClock<Duration>
+        clock: TestClock<Duration>,
+        brand: BrandConfiguration = makeBrand()
     ) {
         self.stores = stores
         self.clock = clock
         composition = AppComposition(
-            brand: makeBrand(),
+            brand: brand,
             httpClient: client,
             listingsStore: stores.listings,
             bookmarkStore: stores.bookmarks,
