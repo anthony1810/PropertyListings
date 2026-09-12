@@ -24,11 +24,27 @@ struct SettingsAcceptanceTests {
             app.settings.select(language: .french)
         }
 
-        #expect(app.listings.locale.identifier == "fr_CH", "the Listings tab formats for French Switzerland")
-        #expect(app.saved.locale.identifier == "fr_CH", "the Saved tab formats for French Switzerland")
-        #expect(app.settings.locale.identifier == "fr_CH", "the Settings tab formats for French Switzerland")
-        #expect(app.listings.rows.map(\.id) == rowsInGerman.map(\.id), "the loaded listings stay on screen")
-        #expect(app.listings.rows.first?.priceText == PriceFormatter.text(amount: 9_999_999, currency: "CHF", locale: frCH), "the price is formatted for French Switzerland")
+        #expect(
+            app.listings.locale.identifier == "fr_CH",
+            "the Listings tab formats for French Switzerland"
+        )
+        #expect(
+            app.saved.locale.identifier == "fr_CH",
+            "the Saved tab formats for French Switzerland"
+        )
+        #expect(
+            app.settings.locale.identifier == "fr_CH",
+            "the Settings tab formats for French Switzerland"
+        )
+        #expect(
+            app.listings.rows.map(\.id) == rowsInGerman.map(\.id),
+            "the loaded listings stay on screen"
+        )
+        #expect(
+            app.listings.rows.first?.priceText
+                == PriceFormatter.text(amount: 9_999_999, currency: "CHF", locale: frCH),
+            "the price is formatted for French Switzerland"
+        )
     }
 
     @Test func customerPicksFrench_seesItKeptAfterRelaunch() async {
@@ -41,8 +57,14 @@ struct SettingsAcceptanceTests {
         let secondLaunch = launch(online, sharing: stores)
         await secondLaunch.applyingSettings {}
 
-        #expect(secondLaunch.settings.settings.language == .french, "the second launch comes up in French")
-        #expect(secondLaunch.listings.locale.identifier == "fr_CH", "the Listings tab formats for French Switzerland on the second launch")
+        #expect(
+            secondLaunch.settings.settings.language == .french,
+            "the second launch comes up in French"
+        )
+        #expect(
+            secondLaunch.listings.locale.identifier == "fr_CH",
+            "the Listings tab formats for French Switzerland on the second launch"
+        )
     }
 
     @Test func freshInstall_followsTheLanguageThePhoneChose() async {
@@ -50,7 +72,22 @@ struct SettingsAcceptanceTests {
 
         await app.applyingSettings {}
 
-        #expect(app.settings.settings == makeSettings(appearance: .system, language: .german), "a fresh install shows the default the phone chose")
+        #expect(
+            app.settings.settings == makeSettings(appearance: .system, language: .german),
+            "a fresh install shows the default the phone chose"
+        )
+    }
+
+    @Test func freshInstallOnAPhoneTheBrandDoesNotSpeak_startsInTheBrandDefault() async {
+        let brand = makeBrand(defaultLanguage: .french, supportedLanguages: [.english, .french])
+        let app = launch(online, brand: brand, deviceLanguages: ["it"])
+
+        await app.applyingSettings {}
+
+        #expect(
+            app.settings.settings == makeSettings(appearance: .system, language: .french),
+            "a phone the brand does not speak starts in the brand's default language"
+        )
     }
 
     // MARK: - Narrative 2, appearance
@@ -66,18 +103,27 @@ struct SettingsAcceptanceTests {
         let secondLaunch = launch(online, sharing: stores)
         await secondLaunch.applyingSettings {}
 
-        #expect(secondLaunch.settings.settings.appearance == .dark, "dark is still in effect after the relaunch")
+        #expect(
+            secondLaunch.settings.settings.appearance == .dark,
+            "dark is still in effect after the relaunch"
+        )
     }
 
     @Test func customerPicksDarkAndSavingFails_seesSystemBackAndAnAlert() async {
-        let app = launch(online, sharing: AcceptanceApp.Stores(settings: FailingSettingsStore(settings: nil)))
+        let app = launch(
+            online,
+            sharing: AcceptanceApp.Stores(settings: FailingSettingsStore(settings: nil))
+        )
 
         await app.applyingSettings {
             app.settings.select(appearance: .dark)
         }
 
         #expect(app.settings.settings.appearance == .system, "the previous choice is back")
-        #expect(app.router.alert == .error(SettingsViewModel.Message.saveFailed(deCH)), "the router holds the not-saved alert")
+        #expect(
+            app.router.alert == .error(SettingsViewModel.Message.saveFailed(deCH)),
+            "the router holds the not-saved alert"
+        )
     }
 
     // MARK: - Helpers
@@ -86,14 +132,28 @@ struct SettingsAcceptanceTests {
     private let deCH = Locale(identifier: "de_CH")
     private let frCH = Locale(identifier: "fr_CH")
     private let clock = TestClock()
-    private let listingsURL = ListingsEndpoint.page(from: 0, size: makeBrand().listings.pageSize).url(baseURL: makeBrand().listings.host)
+    private let listingsURL = ListingsEndpoint.page(from: 0, size: makeBrand().listings.pageSize)
+        .url(baseURL: makeBrand().listings.host)
     private let house = makeRemoteListing(id: "1", title: "Haus", price: 9_999_999)
 
     private var online: HTTPClientStub {
         HTTPClientStub([listingsURL: [.success(makeItemsJSON([house.json]))]])
     }
 
-    private func launch(_ client: HTTPClientStub, sharing stores: AcceptanceApp.Stores = AcceptanceApp.Stores()) -> AcceptanceApp {
-        AcceptanceApp(client: client, stores: stores, today: LockIsolated(now), locale: deCH, clock: clock)
+    private func launch(
+        _ client: HTTPClientStub,
+        sharing stores: AcceptanceApp.Stores = AcceptanceApp.Stores(),
+        brand: BrandConfiguration = makeBrand(),
+        deviceLanguages: [String] = ["de"]
+    ) -> AcceptanceApp {
+        AcceptanceApp(
+            client: client,
+            stores: stores,
+            today: LockIsolated(now),
+            locale: deCH,
+            clock: clock,
+            brand: brand,
+            deviceLanguages: deviceLanguages
+        )
     }
 }

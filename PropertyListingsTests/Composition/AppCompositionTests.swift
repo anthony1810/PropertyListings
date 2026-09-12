@@ -106,35 +106,6 @@ import UIKit
 
     // MARK: - Settings
 
-    @Test func deviceSettings_useTheDeviceLanguage_whenTheBrandSupportsIt() {
-        let brandSettings = BrandConfiguration.Settings(
-            defaultLanguage: .english,
-            supportedLanguages: [.german, .french, .english]
-        )
-
-        let settings = AppComposition.deviceSettings(
-            preferredLanguageCodes: ["fr", "en"],
-            settings: brandSettings
-        )
-
-        #expect(settings == Settings(appearance: .system, language: .french))
-    }
-
-    @Test func deviceSettings_fallBackToTheBrandDefault_whenTheDeviceLanguageIsNotSupported() {
-        let unsupported = AppLanguage.italian
-        let brandSettings = BrandConfiguration.Settings(
-            defaultLanguage: .french,
-            supportedLanguages: [.english, .french]
-        )
-
-        let settings = AppComposition.deviceSettings(
-            preferredLanguageCodes: [unsupported.rawValue],
-            settings: brandSettings
-        )
-
-        #expect(settings == Settings(appearance: .system, language: .french))
-    }
-
     @Test func settingsViewModel_supportsTheBrandLanguages() {
         let supported: [AppLanguage] = [.english, .french]
         let sut = makeSUT(brand: makeBrand(supportedLanguages: supported))
@@ -209,7 +180,7 @@ import UIKit
             listingsStore: listingsStore,
             bookmarkStore: InMemoryBookmarkStore(),
             settingsStore: InMemorySettingsStore(),
-            defaultSettings: Settings(appearance: .system, language: .german),
+            preferredLanguageCodes: ["de"],
             currentDate: { now },
             locale: Locale(identifier: "de_CH"),
             clock: clock

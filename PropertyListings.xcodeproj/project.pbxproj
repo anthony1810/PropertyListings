@@ -104,6 +104,7 @@
 		CDFDACE11597A94BDE61CDF3 /* ListingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6E8775681EF4E11EF330 /* ListingsService.swift */; };
 		CECA766F75D2B05429E41682 /* AppComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5710F2FB116C402EEF9FF486 /* AppComposition.swift */; };
 		D016FECFBEC067B202A4D742 /* BookmarksTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBB71A455E15EBF17853001 /* BookmarksTestSupport */; };
+		D46DF77BEA597616595121AE /* BrandConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BC94EF5F2717A4F593A7A4 /* BrandConfigurationTests.swift */; };
 		D8C268F2F4B71A869B8CC144 /* LocalBookmark+Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F79ACCC65D4F7FB49C645DF /* LocalBookmark+Bookmark.swift */; };
 		DABB95A71FC7C06466100F2C /* LocalBookmark+Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F79ACCC65D4F7FB49C645DF /* LocalBookmark+Bookmark.swift */; };
 		DBA5AA885B2ABF0F13D14348 /* ListingsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 67D0ACA0E035256B79CE87F5 /* ListingsUI */; };
@@ -112,6 +113,7 @@
 		DF9BDE188A0A447251239536 /* SettingsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE5101ABFCE235F72777E45 /* SettingsTab.swift */; };
 		E1D4864E213DD8DD0E9DFE5E /* SettingsPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 8193A057B9F449F0B2740AFC /* SettingsPresentation */; };
 		E3561739C9FDAC6B6DF1727C /* SettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D858908CFCF10A74D498EE /* SettingsUITests.swift */; };
+		EA2C4D9A322B8A33B59EDAC7 /* BrandConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BC94EF5F2717A4F593A7A4 /* BrandConfigurationTests.swift */; };
 		EB60079C647E25A6C80EF915 /* ListingsTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 5258B7E9FD5400E28448274A /* ListingsTestSupport */; };
 		EBE626E89A682944C760C0AF /* ListingsCache in Frameworks */ = {isa = PBXBuildFile; productRef = 8D60C12B895BC1F11F21614A /* ListingsCache */; };
 		EC1BFC9CBE7C4B75D541C0B8 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = CAA1A87C15C2D50390372208 /* OFL.txt */; };
@@ -202,6 +204,7 @@
 		A3D0AF908B2C3E7DB86F5C4B /* settings.light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.light.png; sourceTree = "<group>"; };
 		A43941A7B2A88FFE4BB6173B /* root.light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = root.light.png; sourceTree = "<group>"; };
 		A81028421D3DD7891F7DD937 /* BrandConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandConfiguration.swift; sourceTree = "<group>"; };
+		A9BC94EF5F2717A4F593A7A4 /* BrandConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandConfigurationTests.swift; sourceTree = "<group>"; };
 		AB886E855D873487E6E130AD /* PropertyListingsUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PropertyListingsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA29985562432E99E1D51D6 /* listings.dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = listings.dark.png; sourceTree = "<group>"; };
 		B67BAD04564C6F87A6B01273 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -551,6 +554,7 @@
 			children = (
 				BBA7B5F86D4432D0EAF32022 /* AppCompositionTests.swift */,
 				408ADE6F3D499E1ECC8037C5 /* AppRouterTests.swift */,
+				A9BC94EF5F2717A4F593A7A4 /* BrandConfigurationTests.swift */,
 				9F25E56306A7A8A2BD691F17 /* ListingsServiceTests.swift */,
 			);
 			path = Composition;
@@ -936,6 +940,7 @@
 				FCF7268B0A673E4865EEB898 /* AppRouterTests.swift in Sources */,
 				0FD7600FEBBAFCD2E3365DDB /* BookmarksAcceptanceTests.swift in Sources */,
 				54E6B94A7CDC182EB5E7AD84 /* BrandCatalogTests.swift in Sources */,
+				D46DF77BEA597616595121AE /* BrandConfigurationTests.swift in Sources */,
 				86D29B8E2418E6669CDB40DA /* BrandSnapshotTests.swift in Sources */,
 				311482577044EFC71AD48B63 /* BrandTestValues.swift in Sources */,
 				BD74274CB8FA26EF392DF33F /* Date+Adding.swift in Sources */,
@@ -960,6 +965,7 @@
 				127DDFE1351DFC7E6E8C0EE2 /* AppRouterTests.swift in Sources */,
 				2CBAA21A0805B5C7E10C2DA6 /* BookmarksAcceptanceTests.swift in Sources */,
 				546AA46D71780CCB9DED3880 /* BrandCatalogTests.swift in Sources */,
+				EA2C4D9A322B8A33B59EDAC7 /* BrandConfigurationTests.swift in Sources */,
 				255C07E3CA474F5A4FC1447B /* BrandSnapshotTests.swift in Sources */,
 				27EB483492D0BAAB813B49F4 /* BrandTestValues.swift in Sources */,
 				A03BE7A596FE914E04413255 /* Date+Adding.swift in Sources */,

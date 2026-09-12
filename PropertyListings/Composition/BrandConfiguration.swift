@@ -50,5 +50,11 @@ extension BrandConfiguration {
     struct Settings: Equatable, Sendable {
         let defaultLanguage: AppLanguage
         let supportedLanguages: [AppLanguage]
+
+        func initialLanguage(preferring languageCodes: [String]) -> AppLanguage {
+            languageCodes.lazy
+                .compactMap(AppLanguage.init(rawValue:))
+                .first { supportedLanguages.contains($0) } ?? defaultLanguage
+        }
     }
 }

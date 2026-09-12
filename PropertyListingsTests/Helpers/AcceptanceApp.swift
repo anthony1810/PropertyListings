@@ -43,7 +43,8 @@ struct AcceptanceApp {
         today: LockIsolated<Date>,
         locale: Locale,
         clock: TestClock<Duration>,
-        brand: BrandConfiguration = makeBrand()
+        brand: BrandConfiguration = makeBrand(),
+        deviceLanguages: [String] = ["de"]
     ) {
         self.stores = stores
         self.clock = clock
@@ -53,7 +54,7 @@ struct AcceptanceApp {
             listingsStore: stores.listings,
             bookmarkStore: stores.bookmarks,
             settingsStore: stores.settings,
-            defaultSettings: Settings(appearance: .system, language: .german),
+            preferredLanguageCodes: deviceLanguages,
             currentDate: { [today] in today.value },
             locale: locale,
             clock: clock

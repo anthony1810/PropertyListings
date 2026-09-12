@@ -34,9 +34,10 @@ final class AppComposition {
     private lazy var settingsStore: SettingsStore = CodableSettingsStore(
         storeURL: Self.storeURL(named: "settings.json")
     )
-    private lazy var defaultSettings: Settings = Self.deviceSettings(
-        preferredLanguageCodes: Bundle.main.preferredLocalizations,
-        settings: brand.settings
+    private var preferredLanguageCodes: [String] = Bundle.main.preferredLocalizations
+    private lazy var defaultSettings = Settings(
+        appearance: .system,
+        language: brand.settings.initialLanguage(preferring: preferredLanguageCodes)
     )
     private var currentDate: @Sendable () -> Date = Date.init
     private var locale: Locale = .current
@@ -89,7 +90,7 @@ final class AppComposition {
         listingsStore: ListingsStore,
         bookmarkStore: BookmarkStore,
         settingsStore: SettingsStore,
-        defaultSettings: Settings? = nil,
+        preferredLanguageCodes: [String],
         currentDate: @escaping @Sendable () -> Date,
         locale: Locale,
         clock: any Clock<Duration> = ContinuousClock()
@@ -99,9 +100,7 @@ final class AppComposition {
         self.listingsStore = listingsStore
         self.bookmarkStore = bookmarkStore
         self.settingsStore = settingsStore
-        if let defaultSettings {
-            self.defaultSettings = defaultSettings
-        }
+        self.preferredLanguageCodes = preferredLanguageCodes
         self.currentDate = currentDate
         self.locale = locale
         self.clock = clock
@@ -170,16 +169,6 @@ extension AppComposition {
 // MARK: - Settings
 
 extension AppComposition {
-    static func deviceSettings(
-        preferredLanguageCodes: [String],
-        settings brandSettings: BrandConfiguration.Settings
-    ) -> Settings {
-        let device = preferredLanguageCodes.lazy
-            .compactMap(AppLanguage.init(rawValue:))
-            .first { brandSettings.supportedLanguages.contains($0) }
-        return Settings(appearance: .system, language: device ?? brandSettings.defaultLanguage)
-    }
-
     func makeSettingsView() -> SettingsView {
         SettingsView(viewModel: settingsViewModel)
     }
