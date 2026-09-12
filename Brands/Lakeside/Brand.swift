@@ -1,5 +1,6 @@
 import DesignSystem
 import Foundation
+import SettingsFeature
 
 enum CurrentBrand {
     static let configuration = BrandConfiguration(
@@ -20,6 +21,10 @@ enum CurrentBrand {
         tabs: [
             BrandConfiguration.Tab(destination: .listings, icon: .image("TabListings")),
             BrandConfiguration.Tab(destination: .settings, icon: .image("TabSettings")),
-        ]
+        ],
+        settings: BrandConfiguration.Settings(
+            defaultLanguage: .english,
+            supportedLanguages: [.english]
+        )
     )
 }

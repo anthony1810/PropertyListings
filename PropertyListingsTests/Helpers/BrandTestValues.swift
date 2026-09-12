@@ -1,5 +1,6 @@
 import DesignSystem
 import Foundation
+import SettingsFeature
 @testable import PropertyListings
 
 func makeBrand(
@@ -12,7 +13,9 @@ func makeBrand(
         BrandConfiguration.Tab(destination: .listings, icon: .symbol("house")),
         BrandConfiguration.Tab(destination: .saved, icon: .symbol("heart")),
         BrandConfiguration.Tab(destination: .settings, icon: .symbol("slider.horizontal.3")),
-    ]
+    ],
+    defaultLanguage: AppLanguage = .english,
+    supportedLanguages: [AppLanguage] = AppLanguage.allCases
 ) -> BrandConfiguration {
     BrandConfiguration(
         listings: BrandConfiguration.Listings(
@@ -21,6 +24,10 @@ func makeBrand(
             cacheMaxAgeInDays: listingsCacheMaxAgeInDays
         ),
         design: BrandConfiguration.Design(radii: radii, typeface: typeface),
-        tabs: tabs
+        tabs: tabs,
+        settings: BrandConfiguration.Settings(
+            defaultLanguage: defaultLanguage,
+            supportedLanguages: supportedLanguages
+        )
     )
 }

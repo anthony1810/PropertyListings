@@ -21,7 +21,7 @@ public struct SettingsView: View {
                 header(SettingsUIStrings.appearance)
             }
             Section {
-                ForEach(AppLanguage.allCases, id: \.self) { language in
+                ForEach(viewModel.supportedLanguages, id: \.self) { language in
                     languageRow(language)
                 }
             } header: {

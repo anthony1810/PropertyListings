@@ -34,7 +34,10 @@ final class AppComposition {
     private lazy var settingsStore: SettingsStore = CodableSettingsStore(
         storeURL: Self.storeURL(named: "settings.json")
     )
-    private var defaultSettings: Settings = AppComposition.deviceSettings
+    private lazy var defaultSettings: Settings = Self.deviceSettings(
+        preferredLanguageCodes: Bundle.main.preferredLocalizations,
+        settings: brand.settings
+    )
     private var currentDate: @Sendable () -> Date = Date.init
     private var locale: Locale = .current
     private var clock: any Clock<Duration> = ContinuousClock()
@@ -86,7 +89,7 @@ final class AppComposition {
         listingsStore: ListingsStore,
         bookmarkStore: BookmarkStore,
         settingsStore: SettingsStore,
-        defaultSettings: Settings = AppComposition.deviceSettings,
+        defaultSettings: Settings? = nil,
         currentDate: @escaping @Sendable () -> Date,
         locale: Locale,
         clock: any Clock<Duration> = ContinuousClock()
@@ -96,7 +99,9 @@ final class AppComposition {
         self.listingsStore = listingsStore
         self.bookmarkStore = bookmarkStore
         self.settingsStore = settingsStore
-        self.defaultSettings = defaultSettings
+        if let defaultSettings {
+            self.defaultSettings = defaultSettings
+        }
         self.currentDate = currentDate
         self.locale = locale
         self.clock = clock
@@ -165,9 +170,14 @@ extension AppComposition {
 // MARK: - Settings
 
 extension AppComposition {
-    static var deviceSettings: Settings {
-        let code = Bundle.main.preferredLocalizations.first ?? AppLanguage.english.rawValue
-        return Settings(appearance: .system, language: AppLanguage(rawValue: code) ?? .english)
+    static func deviceSettings(
+        preferredLanguageCodes: [String],
+        settings brandSettings: BrandConfiguration.Settings
+    ) -> Settings {
+        let device = preferredLanguageCodes.lazy
+            .compactMap(AppLanguage.init(rawValue:))
+            .first { brandSettings.supportedLanguages.contains($0) }
+        return Settings(appearance: .system, language: device ?? brandSettings.defaultLanguage)
     }
 
     func makeSettingsView() -> SettingsView {
@@ -192,6 +202,7 @@ extension AppComposition {
         let router = router
         return SettingsViewModel(
             initial: defaultSettings,
+            supportedLanguages: brand.settings.supportedLanguages,
             observeSettings: { settings.observe() },
             saveSettings: { try await settings.save($0) },
             notify: { router.present(.error($0)) },
