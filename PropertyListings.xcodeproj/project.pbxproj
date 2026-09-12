@@ -95,7 +95,6 @@
 		BB884C80C89760557F1AB08C /* BookmarksPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = 06C6AE89E20DCAA40372AF4D /* BookmarksPersistence */; };
 		BD74274CB8FA26EF392DF33F /* Date+Adding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EA247DB409233E2EDD2731 /* Date+Adding.swift */; };
 		C3689D3CDD07B968C46BB678 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF30EF5C3659003BB41469A /* AppRouter.swift */; };
-		C4613AD501E85BEED1824048 /* Manrope-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0C2142E31F7E930AF39252B /* Manrope-Variable.ttf */; };
 		C4D2C8192580EEE8BD7D8DDF /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF30EF5C3659003BB41469A /* AppRouter.swift */; };
 		C8BD5CF1FEB9E9E6690C3824 /* BookmarksTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = FAC49A91B332D7DF64847EDA /* BookmarksTestSupport */; };
 		CACA67688884141EA9F5FB95 /* SavedTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891070D7A04C09A679970D13 /* SavedTab.swift */; };
@@ -123,6 +122,7 @@
 		FB00E3477FA57245A7D62E08 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341791FBF78E1523BD2B75B8 /* AppStrings.swift */; };
 		FBED1C6C8907E75D4246D0BA /* SettingsPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = C9DEFC2CC02252CD30B1E11C /* SettingsPresentation */; };
 		FCF7268B0A673E4865EEB898 /* AppRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408ADE6F3D499E1ECC8037C5 /* AppRouterTests.swift */; };
+		FE191A0AF926855AF6456260 /* Fraunces-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFB467C8116F681092481737 /* Fraunces-Variable.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -213,10 +213,10 @@
 		D8D099A29A5E654262757132 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DA33788F0738E751A76B2A01 /* BrandSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSnapshotTests.swift; sourceTree = "<group>"; };
 		DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsTestValues.swift; sourceTree = "<group>"; };
-		E0C2142E31F7E930AF39252B /* Manrope-Variable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Manrope-Variable.ttf"; sourceTree = "<group>"; };
 		E4BA6453C4BAC20C49688B8D /* Listing+Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Listing+Bookmark.swift"; sourceTree = "<group>"; };
 		E6E67D71D0AD377B3346CEC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EFA3FB96F6CFCB6DF4EBF14F /* XCUIApplication+Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIApplication+Launch.swift"; sourceTree = "<group>"; };
+		EFB467C8116F681092481737 /* Fraunces-Variable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Fraunces-Variable.ttf"; sourceTree = "<group>"; };
 		F30C8B751508D273CF279444 /* BookmarksUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksUITests.swift; sourceTree = "<group>"; };
 		F3E961E5898C72B8C3CA0D8C /* TestSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestSupport; path = Modules/Shared/TestSupport; sourceTree = SOURCE_ROOT; };
 		F7D846AAAECEAACA5F6EFD52 /* BrandTestValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandTestValues.swift; sourceTree = "<group>"; };
@@ -468,7 +468,7 @@
 		BA73A428FD2436C59CEF511D /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				E0C2142E31F7E930AF39252B /* Manrope-Variable.ttf */,
+				EFB467C8116F681092481737 /* Fraunces-Variable.ttf */,
 				CAA1A87C15C2D50390372208 /* OFL.txt */,
 			);
 			path = Fonts;
@@ -800,8 +800,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				91A1DE9CE8FE5A259FAA7C1A /* Assets.xcassets in Resources */,
+				FE191A0AF926855AF6456260 /* Fraunces-Variable.ttf in Resources */,
 				CD18A2197037482806CBEA3F /* Localizable.xcstrings in Resources */,
-				C4613AD501E85BEED1824048 /* Manrope-Variable.ttf in Resources */,
 				EC1BFC9CBE7C4B75D541C0B8 /* OFL.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

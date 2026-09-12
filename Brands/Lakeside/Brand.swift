@@ -10,7 +10,7 @@ enum CurrentBrand {
         ),
         design: BrandConfiguration.Design(
             radii: DSRadii(m: 16, l: 28),
-            typeface: DSTypeface(regular: "Manrope-Regular", semibold: "Manrope-SemiBold", bold: "Manrope-Bold")
+            typeface: DSTypeface(regular: "Fraunces-Regular", semibold: "Fraunces-SemiBold", bold: "Fraunces-Bold")
         )
     )
 }

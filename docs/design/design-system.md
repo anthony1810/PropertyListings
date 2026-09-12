@@ -79,12 +79,12 @@ components only ever name the semantic variable.
 
 | Semantic name | PropertyListings light, dark | Lakeside light, dark | Swift |
 |---|---|---|---|
-| `surface` | #FFFFFF, #121417 | #FFFFFF, #10161A | `DSColor.surface` |
-| `surfaceElevated` | #F2F3F6, #1C2027 | #EEF4F3, #182126 | `DSColor.surfaceElevated` |
-| `textPrimary` | #171B24, #E7EAF0 | #14201E, #E4ECEA | `DSColor.textPrimary` |
-| `textSecondary` | #626B7A, #97A0B0 | #5C6D6A, #93A6A2 | `DSColor.textSecondary` |
-| `accent` | #2946C4, #8EA3FF | #0E7C86, #4FC3CC | `DSColor.accent` |
-| `like` | #D83A56, #FF6B81 | #D9542B, #FF8A65 | `DSColor.like` |
+| `surface` | #FFFFFF, #121417 | #FFFFFF, #1A1216 | `DSColor.surface` |
+| `surfaceElevated` | #F2F3F6, #1C2027 | #FCEFF4, #26191F | `DSColor.surfaceElevated` |
+| `textPrimary` | #171B24, #E7EAF0 | #24141B, #F2E6EB | `DSColor.textPrimary` |
+| `textSecondary` | #626B7A, #97A0B0 | #7A5C68, #B394A2 | `DSColor.textSecondary` |
+| `accent` | #2946C4, #8EA3FF | #D6336C, #FF7AA8 | `DSColor.accent` |
+| `like` | #D83A56, #FF6B81 | #E8590C, #FFA36B | `DSColor.like` |
 | `onImage` | #FFFFFF, #FFFFFF | #FFFFFF, #FFFFFF | `DSColor.onImage` |
 
 The values are exported per brand under [tokens/](tokens/), one JSON file each, straight from the
@@ -101,10 +101,10 @@ change is shown on it:
 |---|---|---|
 | Display name | PropertyListings | Lakeside |
 | Mark | house-fill, Phosphor | lighthouse-fill, Phosphor |
-| Icon | the house on a blue gradient | the lighthouse on a teal gradient |
+| Icon | the house on a blue gradient | the lighthouse on a pink gradient |
 | Launch screen | the mark over `surface`, the display name under it | the same lockup with the Lakeside mark and name |
 | Colours | the palette above | the palette above |
-| Typeface | Inter, standing in for SF Pro | Manrope |
+| Typeface | Inter, standing in for SF Pro | Fraunces |
 | Radii | 12 and 20 | 16 and 28 |
 | Tabs | Listings, Saved, Settings | Listings, Settings, no Saved |
 | Tab icons | house, heart, sliders, the SF Symbols | lighthouse and gear-six, Phosphor, fill when selected |
