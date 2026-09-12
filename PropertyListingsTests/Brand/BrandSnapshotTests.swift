@@ -12,6 +12,19 @@ import TestSupport
 @MainActor
 @Suite struct BrandSnapshotTests {
     @Test(arguments: [UIUserInterfaceStyle.light, .dark])
+    func root_matchesTheBrandReference(style: UIUserInterfaceStyle) async {
+        let app = launch(online)
+        await app.listings.load()
+
+        assert(
+            RootView(composition: app.composition),
+            style: style,
+            testName: "root",
+            inKeyWindow: true
+        )
+    }
+
+    @Test(arguments: [UIUserInterfaceStyle.light, .dark])
     func listings_matchTheBrandReference(style: UIUserInterfaceStyle) async {
         let app = launch(
             online,
@@ -110,6 +123,7 @@ import TestSupport
         _ view: some View,
         style: UIUserInterfaceStyle,
         testName: String,
+        inKeyWindow: Bool = false,
         filePath: StaticString = #filePath,
         sourceLocation: SourceLocation = #_sourceLocation
     ) {
@@ -123,6 +137,7 @@ import TestSupport
         let failure = verifySnapshot(
             of: view.transaction { $0.animation = nil },
             as: .image(
+                drawHierarchyInKeyWindow: inKeyWindow,
                 precision: 0.95,
                 perceptualPrecision: 0.97,
                 layout: .device(config: .iPhone17(style))

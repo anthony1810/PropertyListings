@@ -13,6 +13,19 @@ struct BrandConfiguration: Equatable, Sendable {
         let typeface: DSTypeface?
     }
 
+    struct Tab: Equatable, Sendable, Identifiable {
+        enum Icon: Equatable, Sendable {
+            case symbol(String)
+            case image(String)
+        }
+
+        let destination: AppRouter.Tab
+        let icon: Icon
+
+        var id: AppRouter.Tab { destination }
+    }
+
     let listings: Listings
     let design: Design
+    let tabs: [Tab]
 }

@@ -1,3 +1,4 @@
+import DesignSystem
 import SettingsFeature
 import SettingsPresentation
 import SwiftUI
@@ -17,22 +18,15 @@ struct RootView: View {
 
     var body: some View {
         TabView(selection: $router.selectedTab) {
-            Tab(value: .listings) {
-                NavigationStack { composition.makeListingsView() }
-            } label: {
-                Label { AppStrings.listingsTab } icon: { Image(systemName: "house") }
-            }
-            Tab(value: .saved) {
-                NavigationStack { composition.makeBookmarksView() }
-            } label: {
-                Label { AppStrings.savedTab } icon: { Image(systemName: "heart") }
-            }
-            Tab(value: .settings) {
-                NavigationStack { composition.makeSettingsView() }
-            } label: {
-                Label { AppStrings.settingsTab } icon: { Image(systemName: "slider.horizontal.3") }
+            ForEach(composition.tabs) { tab in
+                Tab(value: tab.destination) {
+                    NavigationStack { screen(for: tab.destination) }
+                } label: {
+                    Label { title(for: tab.destination) } icon: { icon(for: tab.icon) }
+                }
             }
         }
+        .tint(DSColor.accent)
         .environment(\.locale, composition.locale(for: language))
         .preferredColorScheme(settings.appliedSettings.appearance.colorScheme)
         .alert(
@@ -50,5 +44,29 @@ struct RootView: View {
         .task { await composition.validateCache() }
         .task { await settings.observe() }
         .task { await composition.observeSettings() }
+    }
+
+    @ViewBuilder
+    private func screen(for destination: AppRouter.Tab) -> some View {
+        switch destination {
+        case .listings: composition.makeListingsView()
+        case .saved: composition.makeBookmarksView()
+        case .settings: composition.makeSettingsView()
+        }
+    }
+
+    private func title(for destination: AppRouter.Tab) -> Text {
+        switch destination {
+        case .listings: AppStrings.listingsTab
+        case .saved: AppStrings.savedTab
+        case .settings: AppStrings.settingsTab
+        }
+    }
+
+    private func icon(for icon: BrandConfiguration.Tab.Icon) -> Image {
+        switch icon {
+        case .symbol(let name): Image(systemName: name)
+        case .image(let name): Image(name)
+        }
     }
 }

@@ -11,6 +11,11 @@ enum CurrentBrand {
         design: BrandConfiguration.Design(
             radii: DSRadii(m: 12, l: 20),
             typeface: nil
-        )
+        ),
+        tabs: [
+            BrandConfiguration.Tab(destination: .listings, icon: .symbol("house")),
+            BrandConfiguration.Tab(destination: .saved, icon: .symbol("heart")),
+            BrandConfiguration.Tab(destination: .settings, icon: .symbol("slider.horizontal.3")),
+        ]
     )
 }

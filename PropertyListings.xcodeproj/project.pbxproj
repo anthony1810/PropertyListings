@@ -169,6 +169,7 @@
 		24F20F4231156975DD571AC2 /* HTTPClient */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HTTPClient; path = Modules/Shared/HTTPClient; sourceTree = SOURCE_ROOT; };
 		252D2B0BD28DDA930E8B219D /* FailingBookmarkStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailingBookmarkStore.swift; sourceTree = "<group>"; };
 		2844869DD14DFA482B99C57B /* settings.dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.dark.png; sourceTree = "<group>"; };
+		2B3B71D86B989F043EEA4447 /* root.light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = root.light.png; sourceTree = "<group>"; };
 		2C3CDF1C14A0AE2C5BDCB1DA /* ListingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsUITests.swift; sourceTree = "<group>"; };
 		2CB14A4F660C8074EA08954F /* saved.light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = saved.light.png; sourceTree = "<group>"; };
 		2E93BB8CE86820D716F79495 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignSystem; path = Modules/Shared/DesignSystem; sourceTree = SOURCE_ROOT; };
@@ -185,7 +186,9 @@
 		5CC3265C0674A1CEC16BE45C /* LaunchArguments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArguments.swift; sourceTree = "<group>"; };
 		6BF30EF5C3659003BB41469A /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		6D3BA63FF5791F1E6356139C /* listings.dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = listings.dark.png; sourceTree = "<group>"; };
+		7661D1C4596555EB527403F2 /* root.dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = root.dark.png; sourceTree = "<group>"; };
 		7D4B6E8775681EF4E11EF330 /* ListingsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsService.swift; sourceTree = "<group>"; };
+		7EA80A89846B47FA320288B3 /* root.dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = root.dark.png; sourceTree = "<group>"; };
 		82070D5A912A1DAC3FE34668 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		891070D7A04C09A679970D13 /* SavedTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedTab.swift; sourceTree = "<group>"; };
 		8DCC89960E627E4970D48C94 /* Appearance+ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Appearance+ColorScheme.swift"; sourceTree = "<group>"; };
@@ -197,6 +200,7 @@
 		A00679CB5A8161C9C5AC1E9E /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
 		A3740DBF40B3DE6004FE9C84 /* listings.light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = listings.light.png; sourceTree = "<group>"; };
 		A3D0AF908B2C3E7DB86F5C4B /* settings.light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.light.png; sourceTree = "<group>"; };
+		A43941A7B2A88FFE4BB6173B /* root.light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = root.light.png; sourceTree = "<group>"; };
 		A81028421D3DD7891F7DD937 /* BrandConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandConfiguration.swift; sourceTree = "<group>"; };
 		AB886E855D873487E6E130AD /* PropertyListingsUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PropertyListingsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA29985562432E99E1D51D6 /* listings.dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = listings.dark.png; sourceTree = "<group>"; };
@@ -354,6 +358,8 @@
 			children = (
 				AEA29985562432E99E1D51D6 /* listings.dark.png */,
 				401DE6CD7669E08F83C46C0D /* listings.light.png */,
+				7661D1C4596555EB527403F2 /* root.dark.png */,
+				2B3B71D86B989F043EEA4447 /* root.light.png */,
 				21D1670B7280F490AAB39739 /* saved.dark.png */,
 				D37E39E6A4CA413D9F2A7073 /* saved.light.png */,
 				2844869DD14DFA482B99C57B /* settings.dark.png */,
@@ -479,6 +485,8 @@
 			children = (
 				6D3BA63FF5791F1E6356139C /* listings.dark.png */,
 				A3740DBF40B3DE6004FE9C84 /* listings.light.png */,
+				7EA80A89846B47FA320288B3 /* root.dark.png */,
+				A43941A7B2A88FFE4BB6173B /* root.light.png */,
 				8F3CA934CB99C26D4A4C3DDE /* saved.dark.png */,
 				2CB14A4F660C8074EA08954F /* saved.light.png */,
 				380D621F7B3229DE4E048D6C /* settings.dark.png */,

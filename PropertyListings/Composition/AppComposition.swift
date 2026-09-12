@@ -102,6 +102,10 @@ final class AppComposition {
         self.clock = clock
     }
 
+    // MARK: - Tabs
+
+    var tabs: [BrandConfiguration.Tab] { brand.tabs }
+
     // MARK: - Launch
 
     func validateCache() async {

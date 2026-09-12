@@ -7,7 +7,12 @@ func makeBrand(
     listingsPageSize: Int = 5,
     listingsCacheMaxAgeInDays: Int = 7,
     radii: DSRadii = .designSystem,
-    typeface: DSTypeface? = nil
+    typeface: DSTypeface? = nil,
+    tabs: [BrandConfiguration.Tab] = [
+        BrandConfiguration.Tab(destination: .listings, icon: .symbol("house")),
+        BrandConfiguration.Tab(destination: .saved, icon: .symbol("heart")),
+        BrandConfiguration.Tab(destination: .settings, icon: .symbol("slider.horizontal.3")),
+    ]
 ) -> BrandConfiguration {
     BrandConfiguration(
         listings: BrandConfiguration.Listings(
@@ -15,6 +20,7 @@ func makeBrand(
             pageSize: listingsPageSize,
             cacheMaxAgeInDays: listingsCacheMaxAgeInDays
         ),
-        design: BrandConfiguration.Design(radii: radii, typeface: typeface)
+        design: BrandConfiguration.Design(radii: radii, typeface: typeface),
+        tabs: tabs
     )
 }

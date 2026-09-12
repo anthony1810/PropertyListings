@@ -104,6 +104,18 @@ import UIKit
         #expect(font.fontName == brandTypeface.bold)
     }
 
+    // MARK: - Tabs
+
+    @Test func tabs_areTheBrandTabs() {
+        let twoTabs = [
+            BrandConfiguration.Tab(destination: .listings, icon: .image("Lighthouse")),
+            BrandConfiguration.Tab(destination: .settings, icon: .image("Gear")),
+        ]
+        let sut = makeSUT(brand: makeBrand(tabs: twoTabs))
+
+        #expect(sut.tabs == twoTabs)
+    }
+
     // MARK: - Brand
 
     @Test func listingsViewModel_loadsListingsFromTheBrandHost() async {
