@@ -252,7 +252,7 @@ GET /properties
 
 ## Scenario to test map
 
-Acceptance tests live in `PropertyListingsTests/ListingsAcceptanceTests.swift`, one per scenario,
+Acceptance tests live in `PropertyListingsTests/Acceptance/ListingsAcceptanceTests.swift`, one per scenario,
 grouped by narrative, driving the real composition with stubs at the edges.
 
 | Scenario | Proven by |

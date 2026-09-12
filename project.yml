@@ -92,7 +92,11 @@ targetTemplates:
   BrandTests:
     type: bundle.unit-test
     platform: iOS
-    sources: [PropertyListingsTests]
+    sources:
+      - path: PropertyListingsTests
+        excludes: ["**/__Snapshots__"]
+      - path: PropertyListingsTests/Brand/__Snapshots__
+        buildPhase: none
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES

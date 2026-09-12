@@ -45,7 +45,7 @@ import TestSupport
     private let flat = makeRemoteListing(id: "2", title: "Wohnung mit Balkon", price: nil, street: nil, locality: "Bern")
 
     private var brandName: String {
-        (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? "unknown").lowercased()
+        Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? "unknown"
     }
 
     private var listingsURL: URL {
@@ -61,16 +61,31 @@ import TestSupport
         return AcceptanceApp(client: client, stores: stores, today: LockIsolated(now), locale: deCH, clock: clock, brand: brand)
     }
 
-    private func assert(_ view: some View, style: UIUserInterfaceStyle, testName: String) {
+    private func assert(
+        _ view: some View,
+        style: UIUserInterfaceStyle,
+        testName: String,
+        filePath: StaticString = #filePath,
+        sourceLocation: SourceLocation = #_sourceLocation
+    ) {
         DSTokens.configure(bundle: .main)
         DSTokens.configure(radii: brand.design.radii)
         DSTokens.configure(typeface: brand.design.typeface)
-        assertSnapshot(
+        let failure = verifySnapshot(
             of: view.transaction { $0.animation = nil },
             as: .image(precision: 0.95, perceptualPrecision: 0.97, layout: .device(config: .iPhone17(style))),
-            named: "\(brandName).\(style.snapshotName)",
+            named: style.snapshotName,
             record: SnapshotHost.isRecording ? .all : nil,
+            snapshotDirectory: referenceDirectory(besides: filePath),
             testName: testName
         )
+        #expect(failure == nil, Comment(rawValue: failure ?? ""), sourceLocation: sourceLocation)
+    }
+
+    private func referenceDirectory(besides filePath: StaticString) -> String {
+        URL(fileURLWithPath: "\(filePath)", isDirectory: false)
+            .deletingLastPathComponent()
+            .appending(path: "__Snapshots__/BrandSnapshotTests/\(brandName)")
+            .path
     }
 }

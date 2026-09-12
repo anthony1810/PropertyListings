@@ -114,7 +114,7 @@ Primary course:
 
 ## Scenario to test map
 
-Acceptance tests live in `PropertyListingsTests/SettingsAcceptanceTests`, through the real composition
+Acceptance tests live in `PropertyListingsTests/Acceptance/SettingsAcceptanceTests.swift`, through the real composition
 over in-memory stores. A relaunch is a second composition over the same stores.
 
 | Scenario | Proven by |
