@@ -8,6 +8,7 @@ import SettingsPersistence
 import SettingsPresentation
 import Testing
 import TestSupport
+import UIKit
 @testable import PropertyListings
 
 @MainActor
@@ -75,7 +76,11 @@ import TestSupport
     }
 
     @Test func init_registersTheBrandTypeface() {
-        let brandTypeface = DSTypeface(regular: "Brand-Regular", semibold: "Brand-SemiBold", bold: "Brand-Bold")
+        let brandTypeface = DSTypeface(
+            regular: "Brand-Regular",
+            semibold: "Brand-SemiBold",
+            bold: "Brand-Bold"
+        )
         DSTokens.configure(typeface: nil)
 
         _ = makeSUT(brand: makeBrand(typeface: brandTypeface))
@@ -83,12 +88,30 @@ import TestSupport
         #expect(DSTokens.typeface == brandTypeface)
     }
 
+    @Test func init_appliesTheBrandTypefaceToNavigationTitles() throws {
+        let brandTypeface = DSTypeface(
+            regular: "HelveticaNeue",
+            semibold: "HelveticaNeue-Medium",
+            bold: "HelveticaNeue-Bold"
+        )
+        UINavigationBar.appearance().largeTitleTextAttributes = nil
+
+        _ = makeSUT(brand: makeBrand(typeface: brandTypeface))
+
+        let font = try #require(
+            UINavigationBar.appearance().largeTitleTextAttributes?[.font] as? UIFont
+        )
+        #expect(font.fontName == brandTypeface.bold)
+    }
+
     // MARK: - Brand
 
     @Test func listingsViewModel_loadsListingsFromTheBrandHost() async {
         let brand = makeBrand(listingsHost: URL(string: "https://brand.example")!)
         let listing = makeRemoteListing(title: "From the brand host")
-        let url = ListingsEndpoint.page(from: 0, size: brand.listings.pageSize).url(baseURL: brand.listings.host)
+        let url = ListingsEndpoint.page(from: 0, size: brand.listings.pageSize).url(
+            baseURL: brand.listings.host
+        )
         let client = HTTPClientStub([url: [.success(makeItemsJSON([listing.json]))]])
         let sut = makeSUT(brand: brand, client: client)
 

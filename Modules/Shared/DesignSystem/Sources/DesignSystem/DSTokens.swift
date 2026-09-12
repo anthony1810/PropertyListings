@@ -3,6 +3,16 @@ import Synchronization
 import UIKit
 
 public enum DSTokens {
+    // MARK: - Brand
+
+    @MainActor
+    public static func configure(brand: DSBrand) {
+        configure(bundle: brand.bundle)
+        configure(radii: brand.radii)
+        configure(typeface: brand.typeface)
+        DSNavigationBar.configure()
+    }
+
     // MARK: - Colors
 
     private static let registered = Mutex<Bundle?>(nil)
@@ -22,6 +32,13 @@ public enum DSTokens {
             return Color(name, bundle: bundle)
         }
         return Color(name, bundle: .module)
+    }
+
+    static func uiColor(_ name: String) -> UIColor? {
+        if let bundle, let brand = UIColor(named: name, in: bundle, compatibleWith: nil) {
+            return brand
+        }
+        return UIColor(named: name, in: .module, compatibleWith: nil)
     }
 
     // MARK: - Radii

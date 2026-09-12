@@ -22,10 +22,18 @@ final class AppComposition {
 
     // MARK: - Edges
 
-    private lazy var httpClient: HTTPClient = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-    private lazy var listingsStore: ListingsStore = CodableListingsStore(storeURL: Self.storeURL(named: "listings.json"))
-    private lazy var bookmarkStore: BookmarkStore = CodableBookmarkStore(storeURL: Self.storeURL(named: "bookmarks.json"))
-    private lazy var settingsStore: SettingsStore = CodableSettingsStore(storeURL: Self.storeURL(named: "settings.json"))
+    private lazy var httpClient: HTTPClient = URLSessionHTTPClient(
+        session: URLSession(configuration: .ephemeral)
+    )
+    private lazy var listingsStore: ListingsStore = CodableListingsStore(
+        storeURL: Self.storeURL(named: "listings.json")
+    )
+    private lazy var bookmarkStore: BookmarkStore = CodableBookmarkStore(
+        storeURL: Self.storeURL(named: "bookmarks.json")
+    )
+    private lazy var settingsStore: SettingsStore = CodableSettingsStore(
+        storeURL: Self.storeURL(named: "settings.json")
+    )
     private var defaultSettings: Settings = AppComposition.deviceSettings
     private var currentDate: @Sendable () -> Date = Date.init
     private var locale: Locale = .current
@@ -42,7 +50,10 @@ final class AppComposition {
         currentDate: currentDate
     )
     private lazy var bookmarks = LocalBookmarksLoader(store: bookmarkStore)
-    private lazy var settings = LocalSettingsLoader(store: settingsStore, defaultSettings: defaultSettings)
+    private lazy var settings = LocalSettingsLoader(
+        store: settingsStore,
+        defaultSettings: defaultSettings
+    )
 
     // MARK: - View models
 
@@ -55,9 +66,13 @@ final class AppComposition {
     init(brand: BrandConfiguration) {
         self.brand = brand
         ImagePipeline.configure()
-        DSTokens.configure(bundle: .main)
-        DSTokens.configure(radii: brand.design.radii)
-        DSTokens.configure(typeface: brand.design.typeface)
+        DSTokens.configure(
+            brand: DSBrand(
+                bundle: .main,
+                radii: brand.design.radii,
+                typeface: brand.design.typeface
+            )
+        )
     }
 
     convenience init(brand: BrandConfiguration, httpClient: HTTPClient) {
@@ -109,7 +124,9 @@ extension AppComposition {
         return ListingsViewModel(
             loadListings: { try await service.loadListings() },
             observeBookmarkedIDs: { bookmarks.observe().map { Set($0.map(\.id)) } },
-            saveBookmark: { try await bookmarks.save(Bookmark(listing: $0, savedAt: currentDate())) },
+            saveBookmark: {
+                try await bookmarks.save(Bookmark(listing: $0, savedAt: currentDate()))
+            },
             removeBookmark: { try await bookmarks.remove(id: $0) },
             notify: { router.present(.error($0)) },
             locale: locale,
@@ -183,10 +200,16 @@ extension AppComposition {
 // MARK: - Storage
 
 extension AppComposition {
-    static let storageDirectory = URL.applicationSupportDirectory.appending(path: "PropertyListings", directoryHint: .isDirectory)
+    static let storageDirectory = URL.applicationSupportDirectory.appending(
+        path: "PropertyListings",
+        directoryHint: .isDirectory
+    )
 
     private static func storeURL(named fileName: String) -> URL {
-        try? FileManager.default.createDirectory(at: storageDirectory, withIntermediateDirectories: true)
+        try? FileManager.default.createDirectory(
+            at: storageDirectory,
+            withIntermediateDirectories: true
+        )
         return storageDirectory.appending(path: fileName)
     }
 }
