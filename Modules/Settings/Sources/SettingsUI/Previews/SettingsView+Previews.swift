@@ -10,7 +10,7 @@ extension SettingsViewModel {
     ) -> SettingsViewModel {
         SettingsViewModel(
             initial: settings,
-            supportedLanguages: AppLanguage.allCases,
+            supportedLanguages: [.german, .french, .italian, .english],
             observeSettings: { AsyncStream { $0.yield(settings) } },
             saveSettings: { _ in },
             notify: { _ in },

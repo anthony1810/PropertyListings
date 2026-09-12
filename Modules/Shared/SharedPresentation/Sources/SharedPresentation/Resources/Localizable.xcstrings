@@ -28,6 +28,12 @@
             "state": "translated",
             "value": "Prezzo su richiesta"
           }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giá theo yêu cầu"
+          }
         }
       }
     }

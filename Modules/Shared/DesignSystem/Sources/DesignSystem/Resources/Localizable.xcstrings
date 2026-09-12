@@ -28,6 +28,12 @@
             "state": "translated",
             "value": "Qualcosa è andato storto"
           }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã có lỗi xảy ra"
+          }
         }
       }
     },
@@ -56,6 +62,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Riprova"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thử lại"
           }
         }
       }
@@ -86,6 +98,12 @@
             "state": "translated",
             "value": "Salva"
           }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thích"
+          }
         }
       }
     },
@@ -115,6 +133,12 @@
             "state": "translated",
             "value": "Salvato"
           }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã thích"
+          }
         }
       }
     },
@@ -143,6 +167,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Non salvato"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa thích"
           }
         }
       }

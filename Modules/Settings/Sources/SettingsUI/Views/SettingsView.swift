@@ -98,6 +98,7 @@ private extension AppLanguage {
         case .french: "Français"
         case .italian: "Italiano"
         case .english: "English"
+        case .vietnamese: "Tiếng Việt"
         }
     }
 }

@@ -8,7 +8,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "Saved" } },
         "de": { "stringUnit": { "state": "translated", "value": "Gespeichert" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Enregistrés" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Salvati" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Salvati" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Đã lưu" } }
       }
     },
     "bookmarks.empty.title": {
@@ -17,7 +18,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "No saved listings yet" } },
         "de": { "stringUnit": { "state": "translated", "value": "Noch keine gespeicherten Inserate" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Aucune annonce enregistrée" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Nessun annuncio salvato" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Nessun annuncio salvato" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chưa có tin nào được lưu" } }
       }
     },
     "bookmarks.empty.hint": {
@@ -26,7 +28,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "Tap the heart on a listing to keep it here." } },
         "de": { "stringUnit": { "state": "translated", "value": "Tippen Sie auf das Herz eines Inserats, um es hier zu behalten." } },
         "fr": { "stringUnit": { "state": "translated", "value": "Touchez le cœur d'une annonce pour la garder ici." } },
-        "it": { "stringUnit": { "state": "translated", "value": "Tocca il cuore di un annuncio per tenerlo qui." } }
+        "it": { "stringUnit": { "state": "translated", "value": "Tocca il cuore di un annuncio per tenerlo qui." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chạm vào trái tim trên một tin để giữ nó ở đây." } }
       }
     },
     "bookmarks.empty.browse": {
@@ -35,7 +38,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "Browse listings" } },
         "de": { "stringUnit": { "state": "translated", "value": "Inserate durchsuchen" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Parcourir les annonces" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Sfoglia gli annunci" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Sfoglia gli annunci" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Xem tin đăng" } }
       }
     },
     "bookmarks.remove": {
@@ -44,7 +48,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "Remove" } },
         "de": { "stringUnit": { "state": "translated", "value": "Entfernen" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Retirer" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Rimuovi" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Rimuovi" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Bỏ lưu" } }
       }
     }
   }

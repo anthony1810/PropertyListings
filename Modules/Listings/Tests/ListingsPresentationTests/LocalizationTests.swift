@@ -5,7 +5,7 @@ import TestSupport
 
 @Suite struct LocalizationTests {
     @Test func catalog_isTranslatedInEveryLanguage() {
-        verifyLocalizationCoverage(in: ListingsPresentationResources.bundle, languages: ["en", "de", "fr", "it"])
+        verifyLocalizationCoverage(in: ListingsPresentationResources.bundle, languages: ["en", "de", "fr", "it", "vi"])
     }
 
     @Test func listingsFailed_resolvesPerLanguage() {

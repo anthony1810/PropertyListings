@@ -3,4 +3,5 @@ public enum AppLanguage: String, CaseIterable, Sendable {
     case french = "fr"
     case italian = "it"
     case english = "en"
+    case vietnamese = "vi"
 }

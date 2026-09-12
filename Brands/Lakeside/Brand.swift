@@ -24,7 +24,7 @@ enum CurrentBrand {
         ],
         settings: BrandConfiguration.Settings(
             defaultLanguage: .english,
-            supportedLanguages: [.english]
+            supportedLanguages: [.english, .vietnamese]
         )
     )
 }
