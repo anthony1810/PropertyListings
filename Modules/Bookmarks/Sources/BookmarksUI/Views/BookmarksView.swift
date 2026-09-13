@@ -5,6 +5,7 @@ import SwiftUI
 
 public struct BookmarksView: View {
     @Environment(\.locale) private var locale
+    @Environment(\.theme) private var theme
 
     private let viewModel: BookmarksViewModel
     private let onBrowseListings: () -> Void
@@ -17,7 +18,7 @@ public struct BookmarksView: View {
     public var body: some View {
         content
             .navigationTitle(BookmarksUIStrings.title(for: locale))
-            .background(DSColor.surface)
+            .background(theme.colors.surface)
             .task { await viewModel.observe() }
     }
 }
@@ -32,7 +33,10 @@ private extension BookmarksView {
                 title: BookmarksUIStrings.emptyTitle,
                 hint: BookmarksUIStrings.emptyHint,
                 systemImage: "heart",
-                action: EmptyStateView.Action(title: BookmarksUIStrings.browse, handler: onBrowseListings)
+                action: EmptyStateView.Action(
+                    title: BookmarksUIStrings.browse,
+                    handler: onBrowseListings
+                )
             )
             .accessibilityIdentifier(BookmarksAccessibilityID.empty)
         } else {

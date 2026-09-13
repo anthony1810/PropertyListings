@@ -6,6 +6,7 @@ import SwiftUI
 
 public struct SettingsView: View {
     @Environment(\.locale) private var locale
+    @Environment(\.theme) private var theme
 
     private let viewModel: SettingsViewModel
 
@@ -30,7 +31,7 @@ public struct SettingsView: View {
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
-        .background(DSColor.surface)
+        .background(theme.colors.surface)
         .accessibilityIdentifier(SettingsAccessibilityID.list)
         .navigationTitle(SettingsUIStrings.title(for: locale))
     }
@@ -55,8 +56,8 @@ private extension SettingsView {
 
     func header(_ title: Text) -> some View {
         title
-            .font(DSFont.caption)
-            .foregroundStyle(DSColor.textSecondary)
+            .font(theme.font(for: .caption))
+            .foregroundStyle(theme.colors.textSecondary)
             .textCase(.uppercase)
     }
 
@@ -74,16 +75,16 @@ private extension SettingsView {
         } label: {
             HStack {
                 Text(verbatim: language.nativeName)
-                    .foregroundStyle(DSColor.textPrimary)
+                    .foregroundStyle(theme.colors.textPrimary)
                 Spacer()
                 if isSelected {
                     Image(systemName: "checkmark")
                         .fontWeight(.semibold)
-                        .foregroundStyle(DSColor.accent)
+                        .foregroundStyle(theme.colors.accent)
                 }
             }
         }
-        .listRowBackground(DSColor.surfaceElevated)
+        .listRowBackground(theme.colors.surfaceElevated)
         .accessibilityIdentifier(SettingsAccessibilityID.language(language))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
