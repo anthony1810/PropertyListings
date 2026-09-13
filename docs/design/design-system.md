@@ -109,7 +109,6 @@ change is shown on it:
 | Tabs | Listings, Saved, Settings | Listings, Settings, no Saved |
 | Tab icons | house, heart, sliders, the SF Symbols | lighthouse and gear-six, Phosphor, fill when selected |
 | Default language and languages offered | the device language; German, French, Italian, English | English; English, Vietnamese |
-| Wording override | none | the Listings title reads Homes, Nhà in Vietnamese |
 | Listings source | the sample endpoint, nine listings | its own mock, eight lakeside listings, see below |
 
 The cache validity, the page size and the debounces differ per brand as well; they are

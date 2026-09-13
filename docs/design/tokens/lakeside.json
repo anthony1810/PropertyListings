@@ -44,12 +44,6 @@
       "vi"
     ]
   },
-  "wording": {
-    "listings.title": {
-      "en": "Homes",
-      "vi": "Nhà"
-    }
-  },
   "tabIcons": {
     "listings": "lighthouse",
     "settings": "gear-six",
