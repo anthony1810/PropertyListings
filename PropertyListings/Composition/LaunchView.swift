@@ -6,9 +6,9 @@ struct LaunchView: View {
 
     var body: some View {
         ZStack {
-            CurrentBrand.configuration.theme.colors.surface
+            CurrentBrand.source.fallback.theme.colors.surface
                 .ignoresSafeArea()
-            
+
             if let composition {
                 RootView(composition: composition)
             }

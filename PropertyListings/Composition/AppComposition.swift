@@ -41,7 +41,7 @@ final class AppComposition {
         storeURL: Self.storeURL(named: "remote-brand.json")
     )
     private var preferredLanguageCodes: [String] = Bundle.main.preferredLocalizations
-    private let remoteConfigURL: URL?
+    private let brandDocumentURL: URL?
     private lazy var defaultSettings = Settings(
         appearance: .system,
         language: brand.settings.initialLanguage(preferring: preferredLanguageCodes)
@@ -74,15 +74,19 @@ final class AppComposition {
 
     // MARK: - Init
 
-    init(brand: BrandConfiguration, remoteConfigURL: URL? = nil) {
+    init(brand: BrandConfiguration, brandDocumentURL: URL? = nil) {
         self.brand = brand
-        self.remoteConfigURL = remoteConfigURL
+        self.brandDocumentURL = brandDocumentURL
         theme = brand.theme
         ImagePipeline.configure()
     }
 
-    convenience init(brand: BrandConfiguration, httpClient: HTTPClient) {
-        self.init(brand: brand, remoteConfigURL: nil)
+    convenience init(
+        brand: BrandConfiguration,
+        httpClient: HTTPClient,
+        brandDocumentURL: URL? = nil
+    ) {
+        self.init(brand: brand, brandDocumentURL: brandDocumentURL)
         self.httpClient = httpClient
     }
 
@@ -93,13 +97,13 @@ final class AppComposition {
         bookmarkStore: BookmarkStore,
         settingsStore: SettingsStore,
         remoteBrandStore: RemoteBrandStore = InMemoryRemoteBrandStore(),
-        remoteConfigURL: URL? = nil,
+        brandDocumentURL: URL? = nil,
         preferredLanguageCodes: [String],
         currentDate: @escaping @Sendable () -> Date,
         locale: Locale,
         clock: any Clock<Duration> = ContinuousClock()
     ) {
-        self.init(brand: brand, remoteConfigURL: remoteConfigURL)
+        self.init(brand: brand, brandDocumentURL: brandDocumentURL)
         self.httpClient = httpClient
         self.listingsStore = listingsStore
         self.bookmarkStore = bookmarkStore
@@ -134,11 +138,11 @@ final class AppComposition {
     }
 
     func refreshRemoteConfig() async {
-        guard let remoteConfigURL else { return }
+        guard let brandDocumentURL else { return }
         let service = RemoteConfigService(
             httpClient: httpClient,
             store: remoteBrandStore,
-            baseURL: remoteConfigURL,
+            baseURL: brandDocumentURL,
             cachePolicy: Self.remoteConfigPolicy,
             currentDate: currentDate
         )

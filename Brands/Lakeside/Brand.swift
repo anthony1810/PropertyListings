@@ -3,37 +3,38 @@ import Foundation
 import SettingsFeature
 
 enum CurrentBrand {
-    static let remoteConfigURL: URL? = URL(string: "https://raw.githubusercontent.com")!
-        .appending(
-            path: "anthony1810/PropertyListings/feature/white-label-product/docs/mock/lakeside"
-        )
-
-    static let configuration = BrandConfiguration(
-        listings: BrandConfiguration.Listings(
-            host: URL(string: "https://raw.githubusercontent.com")!
-                .appending(
-                    path:
-                        "anthony1810/PropertyListings/feature/white-label-product/docs/mock/lakeside"
-                ),
-            pageSize: 4,
-            cacheMaxAgeInDays: 3
-        ),
-        theme: DSTheme(
-            colors: DSPalette(bundle: .main),
-            radii: DSRadii(m: 16, l: 28),
-            typeface: DSTypeface(
-                regular: "Fraunces-Regular",
-                semibold: "Fraunces-SemiBold",
-                bold: "Fraunces-Bold"
+    static let source = BrandSource(
+        documentURL: URL(string: "https://raw.githubusercontent.com")!
+            .appending(
+                path: "anthony1810/PropertyListings/feature/white-label-product/docs/mock/lakeside"
+            ),
+        fallback: BrandConfiguration(
+            listings: BrandConfiguration.Listings(
+                host: URL(string: "https://raw.githubusercontent.com")!
+                    .appending(
+                        path:
+                            "anthony1810/PropertyListings/feature/white-label-product/docs/mock/lakeside"
+                    ),
+                pageSize: 4,
+                cacheMaxAgeInDays: 3
+            ),
+            theme: DSTheme(
+                colors: DSPalette(bundle: .main),
+                radii: DSRadii(m: 16, l: 28),
+                typeface: DSTypeface(
+                    regular: "Fraunces-Regular",
+                    semibold: "Fraunces-SemiBold",
+                    bold: "Fraunces-Bold"
+                )
+            ),
+            tabs: [
+                BrandConfiguration.Tab(destination: .listings, icon: .image("TabListings")),
+                BrandConfiguration.Tab(destination: .settings, icon: .image("TabSettings")),
+            ],
+            settings: BrandConfiguration.Settings(
+                defaultLanguage: .english,
+                supportedLanguages: [.english, .vietnamese]
             )
-        ),
-        tabs: [
-            BrandConfiguration.Tab(destination: .listings, icon: .image("TabListings")),
-            BrandConfiguration.Tab(destination: .settings, icon: .image("TabSettings")),
-        ],
-        settings: BrandConfiguration.Settings(
-            defaultLanguage: .english,
-            supportedLanguages: [.english, .vietnamese]
         )
     )
 }

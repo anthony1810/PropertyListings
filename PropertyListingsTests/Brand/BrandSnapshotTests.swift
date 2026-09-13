@@ -70,7 +70,7 @@ import TestSupport
 
     // MARK: - Helpers
 
-    private let brand = CurrentBrand.configuration
+    private let brand = CurrentBrand.source.fallback
     private var theme: DSTheme { brand.theme }
     private let now = Date()
     private let clock = TestClock()

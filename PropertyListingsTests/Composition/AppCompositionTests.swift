@@ -135,7 +135,7 @@ import UIKit
         let client = HTTPClientStub([
             RemoteBrandEndpoint.current.url(baseURL: configURL): [.success(documentJSON)]
         ])
-        let sut = makeSUT(client: client, remoteConfigURL: configURL, remoteBrandStore: store)
+        let sut = makeSUT(client: client, brandDocumentURL: configURL, remoteBrandStore: store)
 
         await sut.refreshRemoteConfig()
 
@@ -149,7 +149,7 @@ import UIKit
 
     @Test func refreshRemoteConfig_doesNothing_whenTheBrandHasNoDocument() async throws {
         let store = InMemoryRemoteBrandStore()
-        let sut = makeSUT(client: .offline, remoteConfigURL: nil, remoteBrandStore: store)
+        let sut = makeSUT(client: .offline, brandDocumentURL: nil, remoteBrandStore: store)
 
         await sut.refreshRemoteConfig()
 
@@ -239,7 +239,7 @@ import UIKit
         brand: BrandConfiguration = makeBrand(),
         client: HTTPClientStub = .offline,
         listingsStore: InMemoryListingsStore = InMemoryListingsStore(),
-        remoteConfigURL: URL? = nil,
+        brandDocumentURL: URL? = nil,
         remoteBrandStore: RemoteBrandStore = InMemoryRemoteBrandStore()
     ) -> AppComposition {
         AppComposition(
@@ -249,7 +249,7 @@ import UIKit
             bookmarkStore: InMemoryBookmarkStore(),
             settingsStore: InMemorySettingsStore(),
             remoteBrandStore: remoteBrandStore,
-            remoteConfigURL: remoteConfigURL,
+            brandDocumentURL: brandDocumentURL,
             preferredLanguageCodes: ["de"],
             currentDate: { now },
             locale: Locale(identifier: "de_CH"),
