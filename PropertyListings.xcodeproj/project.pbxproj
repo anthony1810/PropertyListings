@@ -188,6 +188,7 @@
 		56029AD3C4CF80CD6CFDC799 /* FailingSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailingSettingsStore.swift; sourceTree = "<group>"; };
 		5710F2FB116C402EEF9FF486 /* AppComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppComposition.swift; sourceTree = "<group>"; };
 		5CC3265C0674A1CEC16BE45C /* LaunchArguments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArguments.swift; sourceTree = "<group>"; };
+		64861A8B7E25B9E40BE0A5F4 /* RemoteConfig */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RemoteConfig; path = Modules/RemoteConfig; sourceTree = SOURCE_ROOT; };
 		6BF30EF5C3659003BB41469A /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		6D3BA63FF5791F1E6356139C /* listings.dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = listings.dark.png; sourceTree = "<group>"; };
 		7393BF388F0BEEF2A4B9E783 /* Color+LightHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+LightHex.swift"; sourceTree = "<group>"; };
@@ -535,6 +536,7 @@
 				2E93BB8CE86820D716F79495 /* DesignSystem */,
 				24F20F4231156975DD571AC2 /* HTTPClient */,
 				19B59B24773D2FE35703D661 /* Listings */,
+				64861A8B7E25B9E40BE0A5F4 /* RemoteConfig */,
 				C62DA20E78457193A4CB660B /* Settings */,
 				9E753C0F9A1542F253A685F2 /* SharedPresentation */,
 				F3E961E5898C72B8C3CA0D8C /* TestSupport */,
@@ -792,6 +794,7 @@
 				2477C0A1EE5EE32C75F3ABE3 /* XCLocalSwiftPackageReference "Modules/Shared/DesignSystem" */,
 				E7E32880A1B6F03CEC31E57D /* XCLocalSwiftPackageReference "Modules/Shared/HTTPClient" */,
 				A198456E11FB22B85C56A7F0 /* XCLocalSwiftPackageReference "Modules/Listings" */,
+				D99E1ED3BFBBD30E70845F44 /* XCLocalSwiftPackageReference "Modules/RemoteConfig" */,
 				DBDAE3478E875D3C98E98661 /* XCLocalSwiftPackageReference "Modules/Settings" */,
 				3F2FD8FCE7B040EFD5DF8B93 /* XCLocalSwiftPackageReference "Modules/Shared/SharedPresentation" */,
 				00C0300F87CC895873BC1150 /* XCLocalSwiftPackageReference "Modules/Shared/TestSupport" */,
@@ -1437,6 +1440,10 @@
 		A198456E11FB22B85C56A7F0 /* XCLocalSwiftPackageReference "Modules/Listings" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/Listings;
+		};
+		D99E1ED3BFBBD30E70845F44 /* XCLocalSwiftPackageReference "Modules/RemoteConfig" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/RemoteConfig;
 		};
 		DBDAE3478E875D3C98E98661 /* XCLocalSwiftPackageReference "Modules/Settings" */ = {
 			isa = XCLocalSwiftPackageReference;

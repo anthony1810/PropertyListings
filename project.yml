@@ -19,6 +19,8 @@ packages:
     path: Modules/Bookmarks
   Settings:
     path: Modules/Settings
+  RemoteConfig:
+    path: Modules/RemoteConfig
   HTTPClient:
     path: Modules/Shared/HTTPClient
   TestSupport:
