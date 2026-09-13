@@ -1,0 +1,18 @@
+{
+  "listings": {
+    "host": "https://raw.githubusercontent.com/anthony1810/PropertyListings/feature/white-label-product/docs/mock/lakeside",
+    "pageSize": 3,
+    "cacheMaxAgeInDays": 2
+  },
+  "settings": {
+    "defaultLanguage": "vi",
+    "supportedLanguages": [
+      "vi",
+      "en"
+    ]
+  },
+  "tabs": [
+    "listings",
+    "settings"
+  ]
+}
