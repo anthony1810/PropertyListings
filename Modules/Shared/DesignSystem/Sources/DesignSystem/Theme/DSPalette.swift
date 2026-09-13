@@ -2,7 +2,11 @@ import SwiftUI
 import UIKit
 
 public struct DSPalette: Equatable, Sendable {
-    public static let designSystem = DSPalette(bundle: .module)
+    public static let names = [
+        "surface", "surfaceElevated", "textPrimary", "textSecondary", "accent", "like",
+    ]
+
+    public static let designSystem = DSPalette(bundle: .designSystem)
 
     public let surface: Color
     public let surfaceElevated: Color
@@ -26,6 +30,6 @@ public struct DSPalette: Equatable, Sendable {
         if UIColor(named: name, in: bundle, compatibleWith: nil) != nil {
             return Color(name, bundle: bundle)
         }
-        return Color(name, bundle: .module)
+        return Color(name, bundle: .designSystem)
     }
 }

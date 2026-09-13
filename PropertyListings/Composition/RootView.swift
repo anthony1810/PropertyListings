@@ -30,7 +30,7 @@ struct RootView: View {
                 }
             }
         }
-        .tint(DSColor.accent)
+        .tint(composition.theme.colors.accent)
         .environment(\.locale, composition.locale(for: language))
         .environment(\.theme, composition.theme)
         .preferredColorScheme(settings.appliedSettings.appearance.colorScheme)

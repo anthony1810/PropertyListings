@@ -3,12 +3,12 @@ import Testing
 import UIKit
 
 @Suite struct BrandCatalogTests {
-    @Test(arguments: DSColor.names)
+    @Test(arguments: DSPalette.names)
     func brandCatalog_definesAColor_forEveryNameDSColorAsksFor(name: String) {
         #expect(brandCatalog.definesColor(named: name), "the brand catalog has no colorset named \(name)")
     }
 
-    @Test(arguments: DSColor.names)
+    @Test(arguments: DSPalette.names)
     func brandCatalog_definesADarkAppearance_forEveryNameDSColorAsksFor(name: String) throws {
         let colour = try #require(UIColor(named: name, in: brandCatalog, compatibleWith: nil))
         let light = colour.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))

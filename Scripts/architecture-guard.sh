@@ -44,5 +44,9 @@ bad=$(sources '^import [A-Za-z]*TestSupport$' Modules PropertyListings | grep -v
 bad=$(sources 'CurrentBrand|BrandConfiguration' Modules)
 [ -z "$bad" ] || say "brand referenced inside a feature module: $bad"
 
+# 9. No static token registry: the design system is read through an injected theme
+bad=$(sources 'DSTokens|DSColor\.|DSRadius\.' Modules PropertyListings)
+[ -z "$bad" ] || say "static design token registry referenced: $bad"
+
 [ $fail -eq 0 ] && echo "guard: ok"
 exit $fail

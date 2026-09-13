@@ -2,13 +2,13 @@ import SwiftUI
 import Testing
 @testable import DesignSystem
 
-@Suite struct TokensTests {
-    @Test(arguments: DSColor.names)
+@Suite struct DesignSystemCatalogTests {
+    @Test(arguments: DSPalette.names)
     func designSystemCatalog_definesAColor_forEveryNameDSColorAsksFor(name: String) {
         #expect(designSystemCatalog.definesColor(named: name), "DesignSystem's catalog has no colorset named \(name)")
     }
 
-    @Test(arguments: DSColor.names)
+    @Test(arguments: DSPalette.names)
     func designSystemCatalog_definesADarkAppearance_forEveryNameDSColorAsksFor(name: String) throws {
         let colour = try #require(UIColor(named: name, in: designSystemCatalog, compatibleWith: nil))
         let light = colour.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
@@ -19,7 +19,7 @@ import Testing
 
     // MARK: - Helpers
 
-    private var designSystemCatalog: Bundle { DSTokens.designSystemBundle }
+    private var designSystemCatalog: Bundle { .designSystem }
 }
 
 extension Bundle {

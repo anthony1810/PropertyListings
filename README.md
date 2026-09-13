@@ -34,6 +34,7 @@ that crosses a module boundary.
 | 6 | A TestSupport module may only be linked by a test bundle. | Test doubles never ship. |
 | 7 | ListingsAPI and ListingsCache never import each other. | The two infrastructure layers know nothing about each other, so when either one has to go, the other stays intact. |
 | 8 | A feature package never names a brand: `CurrentBrand` and `BrandConfiguration` exist only in the composition root and the `Brands/` folders. | Features are built once and linked by every brand. The brand is decided in one place, the root, and a feature that knew its brand could not be reused by the next one. |
+| 9 | No file names `DSTokens`, `DSColor.` or `DSRadius.`: the design system is read through a `DSTheme` injected into the environment. | A component that asks a global for its colours hides that it has a theme at all, and makes two brands impossible to render in one process. The theme is an input, like every other dependency. |
 
 ## Module map
 

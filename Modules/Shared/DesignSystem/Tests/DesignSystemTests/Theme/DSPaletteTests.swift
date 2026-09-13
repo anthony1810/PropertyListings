@@ -15,7 +15,7 @@ import Testing
     @Test func palette_fallsBackToTheDesignSystem_whenTheBundleLacksTheName() throws {
         let missingName = "surface"
         try #require(fixtureBundle.definesColor(named: missingName) == false)
-        let designSystemSurface = Color(missingName, bundle: DSTokens.designSystemBundle)
+        let designSystemSurface = Color(missingName, bundle: .designSystem)
 
         let palette = DSPalette(bundle: fixtureBundle)
 
