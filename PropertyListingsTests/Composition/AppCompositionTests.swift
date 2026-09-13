@@ -59,52 +59,6 @@ import UIKit
         }
     }
 
-    @Test func init_registersTheAppBundleAsTheTokenSource() {
-        DSTokens.configure(bundle: nil)
-
-        _ = makeSUT()
-
-        #expect(DSTokens.bundle == .main)
-    }
-
-    @Test func init_registersTheBrandRadii() {
-        let brandRadii = DSRadii(m: 3, l: 5)
-        DSTokens.configure(radii: nil)
-
-        _ = makeSUT(brand: makeBrand(radii: brandRadii))
-
-        #expect(DSTokens.radii == brandRadii)
-    }
-
-    @Test func init_registersTheBrandTypeface() {
-        let brandTypeface = DSTypeface(
-            regular: "Brand-Regular",
-            semibold: "Brand-SemiBold",
-            bold: "Brand-Bold"
-        )
-        DSTokens.configure(typeface: nil)
-
-        _ = makeSUT(brand: makeBrand(typeface: brandTypeface))
-
-        #expect(DSTokens.typeface == brandTypeface)
-    }
-
-    @Test func init_appliesTheBrandTypefaceToNavigationTitles() throws {
-        let brandTypeface = DSTypeface(
-            regular: "HelveticaNeue",
-            semibold: "HelveticaNeue-Medium",
-            bold: "HelveticaNeue-Bold"
-        )
-        UINavigationBar.appearance().largeTitleTextAttributes = nil
-
-        _ = makeSUT(brand: makeBrand(typeface: brandTypeface))
-
-        let font = try #require(
-            UINavigationBar.appearance().largeTitleTextAttributes?[.font] as? UIFont
-        )
-        #expect(font.fontName == brandTypeface.bold)
-    }
-
     // MARK: - Settings
 
     @Test func settingsViewModel_supportsTheBrandLanguages() {
@@ -116,20 +70,11 @@ import UIKit
 
     // MARK: - Theme
 
-    @Test func theme_isBuiltFromTheBrandDesignAndTheAppBundle() {
-        let brandRadii = DSRadii(m: 3, l: 5)
-        let brandTypeface = DSTypeface(
-            regular: "HelveticaNeue",
-            semibold: "HelveticaNeue-Medium",
-            bold: "HelveticaNeue-Bold"
-        )
-        let sut = makeSUT(brand: makeBrand(radii: brandRadii, typeface: brandTypeface))
+    @Test func theme_isTheBrandTheme() {
+        let brandTheme = makeTheme(radii: DSRadii(m: 3, l: 5))
+        let sut = makeSUT(brand: makeBrand(theme: brandTheme))
 
-        #expect(sut.theme.radii == brandRadii)
-        #expect(sut.theme.typeface == brandTypeface)
-        #expect(
-            lightHex(of: sut.theme.colors.accent) == lightHex(of: Color("accent", bundle: .main))
-        )
+        #expect(sut.theme == brandTheme)
     }
 
     // MARK: - Tabs

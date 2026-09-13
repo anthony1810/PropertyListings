@@ -7,8 +7,7 @@ func makeBrand(
     listingsHost: URL = URL(string: "https://brand.example")!,
     listingsPageSize: Int = 5,
     listingsCacheMaxAgeInDays: Int = 7,
-    radii: DSRadii = .designSystem,
-    typeface: DSTypeface? = nil,
+    theme: DSTheme = makeTheme(),
     tabs: [BrandConfiguration.Tab] = [
         BrandConfiguration.Tab(destination: .listings, icon: .symbol("house")),
         BrandConfiguration.Tab(destination: .saved, icon: .symbol("heart")),
@@ -23,11 +22,19 @@ func makeBrand(
             pageSize: listingsPageSize,
             cacheMaxAgeInDays: listingsCacheMaxAgeInDays
         ),
-        design: BrandConfiguration.Design(radii: radii, typeface: typeface),
+        theme: theme,
         tabs: tabs,
         settings: BrandConfiguration.Settings(
             defaultLanguage: defaultLanguage,
             supportedLanguages: supportedLanguages
         )
     )
+}
+
+func makeTheme(
+    colors: DSPalette = .designSystem,
+    radii: DSRadii = .designSystem,
+    typeface: DSTypeface? = nil
+) -> DSTheme {
+    DSTheme(colors: colors, radii: radii, typeface: typeface)
 }

@@ -102,26 +102,6 @@ extension RegistryTests {
             #expect(DSTokens.typeface == brand.typeface)
         }
 
-        @MainActor
-        @Test
-        func configureBrand_appliesTheTypefaceToNavigationTitles_evenAfterAStaleTypeface() throws {
-            let staleTypeface = DSTypeface(
-                regular: "Georgia",
-                semibold: "Georgia-Bold",
-                bold: "Georgia-Bold"
-            )
-            DSTokens.configure(typeface: staleTypeface)
-            DSAppearance.configure()
-
-            DSTokens.configure(
-                brand: DSBrand(bundle: nil, radii: .designSystem, typeface: helveticaNeue)
-            )
-
-            let font = try #require(
-                UINavigationBar.appearance().largeTitleTextAttributes?[.font] as? UIFont
-            )
-            #expect(font.fontName == helveticaNeue.bold)
-        }
 
         // MARK: - Helpers
 

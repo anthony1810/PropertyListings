@@ -10,7 +10,6 @@ public enum DSTokens {
         configure(bundle: brand.bundle)
         configure(radii: brand.radii)
         configure(typeface: brand.typeface)
-        DSAppearance.configure()
     }
 
     // MARK: - Colors

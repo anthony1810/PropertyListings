@@ -3,28 +3,25 @@ import UIKit
 
 public enum DSAppearance {
     @MainActor
-    public static func configure() {
+    public static func apply(_ theme: DSTheme) {
         let bar = UINavigationBar.appearance()
-        bar.largeTitleTextAttributes = attributes(for: .largeTitle)
-        bar.titleTextAttributes = attributes(for: .title)
+        bar.largeTitleTextAttributes = attributes(theme, for: .largeTitle)
+        bar.titleTextAttributes = attributes(theme, for: .title)
 
         let segments = UISegmentedControl.appearance()
-        segments.setTitleTextAttributes(
-            attributes(for: .caption, weight: .semibold),
-            for: .selected
-        )
-        segments.setTitleTextAttributes(attributes(for: .caption), for: .normal)
+        segments.setTitleTextAttributes(attributes(theme, for: .caption, weight: .semibold), for: .selected)
+        segments.setTitleTextAttributes(attributes(theme, for: .caption), for: .normal)
     }
 
     private static func attributes(
+        _ theme: DSTheme,
         for role: DSFont.Role,
         weight: Font.Weight? = nil
     ) -> [NSAttributedString.Key: Any] {
-        var attributes: [NSAttributedString.Key: Any] = [:]
-        if let textPrimary = DSTokens.uiColor("textPrimary") {
-            attributes[.foregroundColor] = textPrimary
-        }
-        if let typeface = DSTokens.typeface,
+        var attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor(theme.colors.textPrimary)
+        ]
+        if let typeface = theme.typeface,
             let font = UIFont(name: typeface.name(for: weight ?? role.weight), size: role.size)
         {
             attributes[.font] = font

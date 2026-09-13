@@ -71,13 +71,7 @@ import TestSupport
     // MARK: - Helpers
 
     private let brand = CurrentBrand.configuration
-    private var theme: DSTheme {
-        DSTheme(
-            colors: DSPalette(bundle: .main),
-            radii: brand.design.radii,
-            typeface: brand.design.typeface
-        )
-    }
+    private var theme: DSTheme { brand.theme }
     private let now = Date()
     private let clock = TestClock()
     private let deCH = Locale(identifier: "de_CH")
@@ -134,13 +128,7 @@ import TestSupport
         filePath: StaticString = #filePath,
         sourceLocation: SourceLocation = #_sourceLocation
     ) {
-        DSTokens.configure(
-            brand: DSBrand(
-                bundle: .main,
-                radii: brand.design.radii,
-                typeface: brand.design.typeface
-            )
-        )
+        DSAppearance.apply(theme)
         let failure = verifySnapshot(
             of: view.environment(\.theme, theme).transaction { $0.animation = nil },
             as: .image(

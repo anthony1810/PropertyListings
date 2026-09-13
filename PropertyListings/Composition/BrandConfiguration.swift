@@ -4,7 +4,7 @@ import SettingsFeature
 
 struct BrandConfiguration: Equatable, Sendable {
     let listings: Listings
-    let design: Design
+    let theme: DSTheme
     let tabs: [Tab]
     let settings: Settings
 }
@@ -16,15 +16,6 @@ extension BrandConfiguration {
         let host: URL
         let pageSize: Int
         let cacheMaxAgeInDays: Int
-    }
-}
-
-// MARK: - Design
-
-extension BrandConfiguration {
-    struct Design: Equatable, Sendable {
-        let radii: DSRadii
-        let typeface: DSTypeface?
     }
 }
 

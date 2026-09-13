@@ -1,4 +1,5 @@
 #if DEBUG
+import DesignSystem
 import Foundation
 import HTTPClient
 
@@ -10,13 +11,18 @@ enum LaunchArguments {
 
 extension AppComposition {
     static func launch(arguments: [String] = ProcessInfo.processInfo.arguments) -> AppComposition {
+        DSAppearance.apply(CurrentBrand.configuration.theme)
         if arguments.contains(LaunchArguments.reset) {
             try? FileManager.default.removeItem(at: storageDirectory)
         }
         if let index = arguments.firstIndex(of: LaunchArguments.connectivity),
-           arguments.indices.contains(index + 1),
-           arguments[index + 1] == LaunchArguments.offline {
-            return AppComposition(brand: CurrentBrand.configuration, httpClient: AlwaysFailingHTTPClient())
+            arguments.indices.contains(index + 1),
+            arguments[index + 1] == LaunchArguments.offline
+        {
+            return AppComposition(
+                brand: CurrentBrand.configuration,
+                httpClient: AlwaysFailingHTTPClient()
+            )
         }
         return AppComposition(brand: CurrentBrand.configuration)
     }
@@ -32,7 +38,8 @@ private struct AlwaysFailingHTTPClient: HTTPClient {
 #else
 extension AppComposition {
     static func launch() -> AppComposition {
-        AppComposition(brand: CurrentBrand.configuration)
+        DSAppearance.apply(CurrentBrand.configuration.theme)
+        return AppComposition(brand: CurrentBrand.configuration)
     }
 }
 #endif

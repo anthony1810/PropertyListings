@@ -9,7 +9,8 @@ enum CurrentBrand {
             pageSize: 5,
             cacheMaxAgeInDays: 7
         ),
-        design: BrandConfiguration.Design(
+        theme: DSTheme(
+            colors: DSPalette(bundle: .main),
             radii: DSRadii(m: 12, l: 20),
             typeface: nil
         ),
