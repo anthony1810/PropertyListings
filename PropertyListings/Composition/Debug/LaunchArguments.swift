@@ -2,6 +2,7 @@
 import DesignSystem
 import Foundation
 import HTTPClient
+import RemoteConfigCache
 
 enum LaunchArguments {
     static let reset = "-reset"
@@ -10,21 +11,24 @@ enum LaunchArguments {
 }
 
 extension AppComposition {
-    static func launch(arguments: [String] = ProcessInfo.processInfo.arguments) -> AppComposition {
+    static func launch(
+        arguments: [String] = ProcessInfo.processInfo.arguments
+    ) async -> AppComposition {
         DSAppearance.apply(CurrentBrand.configuration.theme)
         if arguments.contains(LaunchArguments.reset) {
             try? FileManager.default.removeItem(at: storageDirectory)
         }
+        let brand = await resolvedBrand(
+            CurrentBrand.configuration,
+            store: CodableRemoteBrandStore(storeURL: storeURL(named: "remote-brand.json"))
+        )
         if let index = arguments.firstIndex(of: LaunchArguments.connectivity),
             arguments.indices.contains(index + 1),
             arguments[index + 1] == LaunchArguments.offline
         {
-            return AppComposition(
-                brand: CurrentBrand.configuration,
-                httpClient: AlwaysFailingHTTPClient()
-            )
+            return AppComposition(brand: brand, httpClient: AlwaysFailingHTTPClient())
         }
-        return AppComposition(brand: CurrentBrand.configuration)
+        return AppComposition(brand: brand, remoteConfigURL: CurrentBrand.remoteConfigURL)
     }
 }
 
@@ -37,9 +41,13 @@ private struct AlwaysFailingHTTPClient: HTTPClient {
 }
 #else
 extension AppComposition {
-    static func launch() -> AppComposition {
+    static func launch() async -> AppComposition {
         DSAppearance.apply(CurrentBrand.configuration.theme)
-        return AppComposition(brand: CurrentBrand.configuration)
+        let brand = await resolvedBrand(
+            CurrentBrand.configuration,
+            store: CodableRemoteBrandStore(storeURL: storeURL(named: "remote-brand.json"))
+        )
+        return AppComposition(brand: brand, remoteConfigURL: CurrentBrand.remoteConfigURL)
     }
 }
 #endif

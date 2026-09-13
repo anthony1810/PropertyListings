@@ -3,6 +3,8 @@ import Foundation
 import SettingsFeature
 
 enum CurrentBrand {
+    static let remoteConfigURL: URL? = nil
+
     static let configuration = BrandConfiguration(
         listings: BrandConfiguration.Listings(
             host: URL(string: "https://private-9f1bb1-homegate3.apiary-mock.com")!,

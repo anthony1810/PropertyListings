@@ -3,6 +3,9 @@ import DesignSystem
 import Foundation
 import ListingsAPI
 import ListingsCache
+import RemoteConfigAPI
+import RemoteConfigCache
+import RemoteConfigFeature
 import SettingsFeature
 import SettingsPersistence
 import SettingsPresentation
@@ -77,6 +80,82 @@ import UIKit
         #expect(sut.theme == brandTheme)
     }
 
+    // MARK: - Remote configuration
+
+    @Test func resolvedBrand_isTheFallback_whenNothingIsCached() async {
+        let fallback = makeBrand(listingsPageSize: 5)
+
+        let resolved = await AppComposition.resolvedBrand(
+            fallback,
+            store: InMemoryRemoteBrandStore()
+        )
+
+        #expect(resolved == fallback)
+    }
+
+    @Test func resolvedBrand_isTheCachedDocument_whenItIsUsable() async {
+        let fallback = makeBrand(listingsPageSize: 5)
+        let cached = CachedRemoteBrand(brand: usableDocument, timestamp: now)
+
+        let resolved = await AppComposition.resolvedBrand(
+            fallback,
+            store: InMemoryRemoteBrandStore(cache: cached),
+            currentDate: { [now] in now }
+        )
+
+        #expect(resolved.listings.pageSize == usableDocument.listingsPageSize)
+        #expect(resolved.theme == fallback.theme)
+    }
+
+    @Test func resolvedBrand_isTheFallback_whenTheCachedDocumentIsNotUsable() async {
+        let fallback = makeBrand(listingsPageSize: 5)
+        let unusable = LocalRemoteBrand(
+            listingsHost: URL(string: "http://brand.example")!,
+            listingsPageSize: usableDocument.listingsPageSize,
+            listingsCacheMaxAgeInDays: usableDocument.listingsCacheMaxAgeInDays,
+            defaultLanguage: usableDocument.defaultLanguage,
+            supportedLanguages: usableDocument.supportedLanguages,
+            tabs: usableDocument.tabs
+        )
+
+        let resolved = await AppComposition.resolvedBrand(
+            fallback,
+            store: InMemoryRemoteBrandStore(
+                cache: CachedRemoteBrand(brand: unusable, timestamp: now)
+            ),
+            currentDate: { [now] in now }
+        )
+
+        #expect(resolved == fallback)
+    }
+
+    @Test func refreshRemoteConfig_cachesTheDocumentForTheNextLaunch() async {
+        let store = InMemoryRemoteBrandStore()
+        let configURL = URL(string: "https://brand.example/config")!
+        let client = HTTPClientStub([
+            RemoteBrandEndpoint.current.url(baseURL: configURL): [.success(documentJSON)]
+        ])
+        let sut = makeSUT(client: client, remoteConfigURL: configURL, remoteBrandStore: store)
+
+        await sut.refreshRemoteConfig()
+
+        let resolved = await AppComposition.resolvedBrand(
+            makeBrand(listingsPageSize: 5),
+            store: store,
+            currentDate: { [now] in now }
+        )
+        #expect(resolved.listings.pageSize == usableDocument.listingsPageSize)
+    }
+
+    @Test func refreshRemoteConfig_doesNothing_whenTheBrandHasNoDocument() async throws {
+        let store = InMemoryRemoteBrandStore()
+        let sut = makeSUT(client: .offline, remoteConfigURL: nil, remoteBrandStore: store)
+
+        await sut.refreshRemoteConfig()
+
+        #expect(try await store.retrieve() == nil)
+    }
+
     // MARK: - Tabs
 
     @Test func tabs_areTheBrandTabs() {
@@ -131,12 +210,37 @@ import UIKit
     // MARK: - Helpers
 
     private let now = Date()
+    private let usableDocument = LocalRemoteBrand(
+        listingsHost: URL(string: "https://staging.brand.example/api")!,
+        listingsPageSize: 4,
+        listingsCacheMaxAgeInDays: 3,
+        defaultLanguage: "en",
+        supportedLanguages: ["en", "vi"],
+        tabs: ["listings", "settings"]
+    )
+
+    private var documentJSON: Data {
+        try! JSONSerialization.data(withJSONObject: [
+            "listings": [
+                "host": usableDocument.listingsHost.absoluteString,
+                "pageSize": usableDocument.listingsPageSize,
+                "cacheMaxAgeInDays": usableDocument.listingsCacheMaxAgeInDays,
+            ],
+            "settings": [
+                "defaultLanguage": usableDocument.defaultLanguage,
+                "supportedLanguages": usableDocument.supportedLanguages,
+            ],
+            "tabs": usableDocument.tabs,
+        ])
+    }
     private let clock = TestClock()
 
     private func makeSUT(
         brand: BrandConfiguration = makeBrand(),
         client: HTTPClientStub = .offline,
-        listingsStore: InMemoryListingsStore = InMemoryListingsStore()
+        listingsStore: InMemoryListingsStore = InMemoryListingsStore(),
+        remoteConfigURL: URL? = nil,
+        remoteBrandStore: RemoteBrandStore = InMemoryRemoteBrandStore()
     ) -> AppComposition {
         AppComposition(
             brand: brand,
@@ -144,6 +248,8 @@ import UIKit
             listingsStore: listingsStore,
             bookmarkStore: InMemoryBookmarkStore(),
             settingsStore: InMemorySettingsStore(),
+            remoteBrandStore: remoteBrandStore,
+            remoteConfigURL: remoteConfigURL,
             preferredLanguageCodes: ["de"],
             currentDate: { now },
             locale: Locale(identifier: "de_CH"),

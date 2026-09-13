@@ -10,6 +10,8 @@ import ListingsCache
 import ListingsFeature
 import ListingsPresentation
 import ListingsUI
+import RemoteConfigCache
+import RemoteConfigFeature
 import SettingsFeature
 import SettingsPersistence
 import SettingsPresentation
@@ -35,7 +37,11 @@ final class AppComposition {
     private lazy var settingsStore: SettingsStore = CodableSettingsStore(
         storeURL: Self.storeURL(named: "settings.json")
     )
+    private lazy var remoteBrandStore: RemoteBrandStore = CodableRemoteBrandStore(
+        storeURL: Self.storeURL(named: "remote-brand.json")
+    )
     private var preferredLanguageCodes: [String] = Bundle.main.preferredLocalizations
+    private let remoteConfigURL: URL?
     private lazy var defaultSettings = Settings(
         appearance: .system,
         language: brand.settings.initialLanguage(preferring: preferredLanguageCodes)
@@ -68,14 +74,15 @@ final class AppComposition {
 
     // MARK: - Init
 
-    init(brand: BrandConfiguration) {
+    init(brand: BrandConfiguration, remoteConfigURL: URL? = nil) {
         self.brand = brand
+        self.remoteConfigURL = remoteConfigURL
         theme = brand.theme
         ImagePipeline.configure()
     }
 
     convenience init(brand: BrandConfiguration, httpClient: HTTPClient) {
-        self.init(brand: brand)
+        self.init(brand: brand, remoteConfigURL: nil)
         self.httpClient = httpClient
     }
 
@@ -85,16 +92,19 @@ final class AppComposition {
         listingsStore: ListingsStore,
         bookmarkStore: BookmarkStore,
         settingsStore: SettingsStore,
+        remoteBrandStore: RemoteBrandStore = InMemoryRemoteBrandStore(),
+        remoteConfigURL: URL? = nil,
         preferredLanguageCodes: [String],
         currentDate: @escaping @Sendable () -> Date,
         locale: Locale,
         clock: any Clock<Duration> = ContinuousClock()
     ) {
-        self.init(brand: brand)
+        self.init(brand: brand, remoteConfigURL: remoteConfigURL)
         self.httpClient = httpClient
         self.listingsStore = listingsStore
         self.bookmarkStore = bookmarkStore
         self.settingsStore = settingsStore
+        self.remoteBrandStore = remoteBrandStore
         self.preferredLanguageCodes = preferredLanguageCodes
         self.currentDate = currentDate
         self.locale = locale
@@ -104,6 +114,36 @@ final class AppComposition {
     // MARK: - Tabs
 
     var tabs: [BrandConfiguration.Tab] { brand.tabs }
+
+    // MARK: - Remote configuration
+
+    static let remoteConfigPolicy = RemoteConfigCachePolicy(maxAgeInDays: 7)
+
+    static func resolvedBrand(
+        _ fallback: BrandConfiguration,
+        store: RemoteBrandStore,
+        currentDate: @escaping @Sendable () -> Date = Date.init
+    ) async -> BrandConfiguration {
+        let loader = LocalRemoteBrandLoader(
+            store: store,
+            policy: remoteConfigPolicy,
+            currentDate: currentDate
+        )
+        guard let remote = try? await loader.load() else { return fallback }
+        return BrandConfiguration(remote: remote, fallback: fallback) ?? fallback
+    }
+
+    func refreshRemoteConfig() async {
+        guard let remoteConfigURL else { return }
+        let service = RemoteConfigService(
+            httpClient: httpClient,
+            store: remoteBrandStore,
+            baseURL: remoteConfigURL,
+            cachePolicy: Self.remoteConfigPolicy,
+            currentDate: currentDate
+        )
+        await service.refresh()
+    }
 
     // MARK: - Launch
 
@@ -204,7 +244,7 @@ extension AppComposition {
         directoryHint: .isDirectory
     )
 
-    private static func storeURL(named fileName: String) -> URL {
+    static func storeURL(named fileName: String) -> URL {
         try? FileManager.default.createDirectory(
             at: storageDirectory,
             withIntermediateDirectories: true

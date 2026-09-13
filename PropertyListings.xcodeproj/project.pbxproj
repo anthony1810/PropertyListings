@@ -23,6 +23,7 @@
 		14FE093BD8720ED0CFE3864A /* PropertyListingsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191461208EF00FD0D076FAD4 /* PropertyListingsApp.swift */; };
 		1AB3F72A9D1871FD92B013C8 /* ListingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F25E56306A7A8A2BD691F17 /* ListingsServiceTests.swift */; };
 		1B1E062E01E9C07878D71C78 /* SharedPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 4637889EDC9753A828874667 /* SharedPresentation */; };
+		1C4B1D45CEF84171851DB2D1 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD00BCA44E359D037A47EED6 /* LaunchView.swift */; };
 		1C836DEC6FA795D66D3BC8BD /* SharedPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = B6ADF3CD4AF231FDE5D3AEF4 /* SharedPresentation */; };
 		1DD434053A2D65BEFA7FFDB5 /* RemoteConfigFeature in Frameworks */ = {isa = PBXBuildFile; productRef = CAE8F668238948BB2375518A /* RemoteConfigFeature */; };
 		1DF9E00E361AB9D18DC8ABDC /* ListingsTestValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */; };
@@ -130,6 +131,7 @@
 		EBE626E89A682944C760C0AF /* ListingsCache in Frameworks */ = {isa = PBXBuildFile; productRef = 8D60C12B895BC1F11F21614A /* ListingsCache */; };
 		EC1BFC9CBE7C4B75D541C0B8 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = CAA1A87C15C2D50390372208 /* OFL.txt */; };
 		F1457E1612E36C09F58B3ED4 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF683814C0BBC97EB4A37BC4 /* Brand.swift */; };
+		F284F8476263E3E28CBC1410 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD00BCA44E359D037A47EED6 /* LaunchView.swift */; };
 		F46AD66C392A00E38BAEEBB5 /* ListingsTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 3093FF3536C42EE8F630C546 /* ListingsTestSupport */; };
 		F497988E3F32F0DA77223082 /* BookmarksPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = A6A20CC9E3EA17307935F038 /* BookmarksPresentation */; };
 		F7AA621A431DFE54982E1DB7 /* SettingsPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = 3B956CAE3CB42361EC4F2D8F /* SettingsPersistence */; };
@@ -236,6 +238,7 @@
 		D8D099A29A5E654262757132 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DA33788F0738E751A76B2A01 /* BrandSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSnapshotTests.swift; sourceTree = "<group>"; };
 		DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsTestValues.swift; sourceTree = "<group>"; };
+		DD00BCA44E359D037A47EED6 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		E4BA6453C4BAC20C49688B8D /* Listing+Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Listing+Bookmark.swift"; sourceTree = "<group>"; };
 		E6E67D71D0AD377B3346CEC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EFA3FB96F6CFCB6DF4EBF14F /* XCUIApplication+Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIApplication+Launch.swift"; sourceTree = "<group>"; };
@@ -342,6 +345,7 @@
 				8DCC89960E627E4970D48C94 /* Appearance+ColorScheme.swift */,
 				6BF30EF5C3659003BB41469A /* AppRouter.swift */,
 				A81028421D3DD7891F7DD937 /* BrandConfiguration.swift */,
+				DD00BCA44E359D037A47EED6 /* LaunchView.swift */,
 				E4BA6453C4BAC20C49688B8D /* Listing+Bookmark.swift */,
 				7D4B6E8775681EF4E11EF330 /* ListingsService.swift */,
 				503F83BE4E69CCBD38BAE181 /* RemoteConfigService.swift */,
@@ -939,6 +943,7 @@
 				3601F36E3B0ABABBACF2B6E6 /* Brand.swift in Sources */,
 				A4D8D4DF21CE0F66A48686D0 /* BrandConfiguration.swift in Sources */,
 				064CF6126C61F3679C8E1E0F /* LaunchArguments.swift in Sources */,
+				1C4B1D45CEF84171851DB2D1 /* LaunchView.swift in Sources */,
 				52DC44653C75D81AE94F6559 /* Listing+Bookmark.swift in Sources */,
 				1293CA35481D26B8BE0919AC /* ListingsService.swift in Sources */,
 				814960F3720822ED1280160E /* PropertyListingsApp.swift in Sources */,
@@ -958,6 +963,7 @@
 				F1457E1612E36C09F58B3ED4 /* Brand.swift in Sources */,
 				0ECA0A1DF29C4B81ACA8323C /* BrandConfiguration.swift in Sources */,
 				5605FCB538533C25866A3DDA /* LaunchArguments.swift in Sources */,
+				F284F8476263E3E28CBC1410 /* LaunchView.swift in Sources */,
 				94DA2F8CF782F1A3DB67FC4D /* Listing+Bookmark.swift in Sources */,
 				CDFDACE11597A94BDE61CDF3 /* ListingsService.swift in Sources */,
 				14FE093BD8720ED0CFE3864A /* PropertyListingsApp.swift in Sources */,

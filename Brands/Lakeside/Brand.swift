@@ -3,6 +3,11 @@ import Foundation
 import SettingsFeature
 
 enum CurrentBrand {
+    static let remoteConfigURL: URL? = URL(string: "https://raw.githubusercontent.com")!
+        .appending(
+            path: "anthony1810/PropertyListings/feature/white-label-product/docs/mock/lakeside"
+        )
+
     static let configuration = BrandConfiguration(
         listings: BrandConfiguration.Listings(
             host: URL(string: "https://raw.githubusercontent.com")!
