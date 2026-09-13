@@ -19,6 +19,7 @@ import SettingsUI
 final class AppComposition {
     let router = AppRouter()
     private let brand: BrandConfiguration
+    let theme: DSTheme
 
     // MARK: - Edges
 
@@ -69,6 +70,11 @@ final class AppComposition {
 
     init(brand: BrandConfiguration) {
         self.brand = brand
+        theme = DSTheme(
+            colors: DSPalette(bundle: .main),
+            radii: brand.design.radii,
+            typeface: brand.design.typeface
+        )
         ImagePipeline.configure()
         DSTokens.configure(
             brand: DSBrand(

@@ -6,6 +6,7 @@ import ListingsCache
 import SettingsFeature
 import SettingsPersistence
 import SettingsPresentation
+import SwiftUI
 import Testing
 import TestSupport
 import UIKit
@@ -111,6 +112,24 @@ import UIKit
         let sut = makeSUT(brand: makeBrand(supportedLanguages: supported))
 
         #expect(sut.settingsViewModel.supportedLanguages == supported)
+    }
+
+    // MARK: - Theme
+
+    @Test func theme_isBuiltFromTheBrandDesignAndTheAppBundle() {
+        let brandRadii = DSRadii(m: 3, l: 5)
+        let brandTypeface = DSTypeface(
+            regular: "HelveticaNeue",
+            semibold: "HelveticaNeue-Medium",
+            bold: "HelveticaNeue-Bold"
+        )
+        let sut = makeSUT(brand: makeBrand(radii: brandRadii, typeface: brandTypeface))
+
+        #expect(sut.theme.radii == brandRadii)
+        #expect(sut.theme.typeface == brandTypeface)
+        #expect(
+            lightHex(of: sut.theme.colors.accent) == lightHex(of: Color("accent", bundle: .main))
+        )
     }
 
     // MARK: - Tabs

@@ -22,12 +22,17 @@ struct RootView: View {
                 Tab(value: tab.destination) {
                     NavigationStack { screen(for: tab.destination) }
                 } label: {
-                    Label { title(for: tab.destination) } icon: { icon(for: tab.icon) }
+                    Label {
+                        title(for: tab.destination)
+                    } icon: {
+                        icon(for: tab.icon)
+                    }
                 }
             }
         }
         .tint(DSColor.accent)
         .environment(\.locale, composition.locale(for: language))
+        .environment(\.theme, composition.theme)
         .preferredColorScheme(settings.appliedSettings.appearance.colorScheme)
         .alert(
             AppStrings.errorTitle,

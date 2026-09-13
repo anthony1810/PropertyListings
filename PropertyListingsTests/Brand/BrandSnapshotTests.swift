@@ -71,6 +71,13 @@ import TestSupport
     // MARK: - Helpers
 
     private let brand = CurrentBrand.configuration
+    private var theme: DSTheme {
+        DSTheme(
+            colors: DSPalette(bundle: .main),
+            radii: brand.design.radii,
+            typeface: brand.design.typeface
+        )
+    }
     private let now = Date()
     private let clock = TestClock()
     private let deCH = Locale(identifier: "de_CH")
@@ -135,7 +142,7 @@ import TestSupport
             )
         )
         let failure = verifySnapshot(
-            of: view.transaction { $0.animation = nil },
+            of: view.environment(\.theme, theme).transaction { $0.animation = nil },
             as: .image(
                 drawHierarchyInKeyWindow: inKeyWindow,
                 precision: 0.95,
