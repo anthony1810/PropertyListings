@@ -3,7 +3,7 @@ import Testing
 @testable import DesignSystem
 
 @Suite struct DSThemeTests {
-    @Test(arguments: [DSFont.Role.largeTitle, .title, .price, .caption])
+    @Test(arguments: [DSFont.Role.largeTitle, .title, .body, .price, .caption])
     func font_isCustom_whenATypefaceIsSet(role: DSFont.Role) {
         let brandTypeface = DSTypeface(
             regular: "Brand-Regular",
@@ -22,7 +22,7 @@ import Testing
         )
     }
 
-    @Test(arguments: [DSFont.Role.largeTitle, .title, .price, .caption])
+    @Test(arguments: [DSFont.Role.largeTitle, .title, .body, .price, .caption])
     func font_isSystem_whenNoTypefaceIsSet(role: DSFont.Role) {
         let theme = DSTheme(colors: .designSystem, radii: .designSystem, typeface: nil)
 

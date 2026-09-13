@@ -75,6 +75,7 @@ private extension SettingsView {
         } label: {
             HStack {
                 Text(verbatim: language.nativeName)
+                    .font(theme.font(for: .body))
                     .foregroundStyle(theme.colors.textPrimary)
                 Spacer()
                 if isSelected {
