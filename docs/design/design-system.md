@@ -11,26 +11,26 @@ match, letterforms differ.
 
 | Figma variable | Light | Dark | Swift |
 |---|---|---|---|
-| `color/surface` | #FFFFFF | #121417 | `DSColor.surface` |
-| `color/surfaceElevated` | #F2F3F6 | #1C2027 | `DSColor.surfaceElevated` |
-| `color/textPrimary` | #171B24 | #E7EAF0 | `DSColor.textPrimary` |
-| `color/textSecondary` | #626B7A | #97A0B0 | `DSColor.textSecondary` |
-| `color/accent` | #2946C4 | #8EA3FF | `DSColor.accent` |
-| `color/like` | #D83A56 | #FF6B81 | `DSColor.like` |
-| `color/onImage` | #FFFFFF | #FFFFFF | `DSColor.onImage` |
+| `color/surface` | #FFFFFF | #121417 | `theme.colors.surface` |
+| `color/surfaceElevated` | #F2F3F6 | #1C2027 | `theme.colors.surfaceElevated` |
+| `color/textPrimary` | #171B24 | #E7EAF0 | `theme.colors.textPrimary` |
+| `color/textSecondary` | #626B7A | #97A0B0 | `theme.colors.textSecondary` |
+| `color/accent` | #2946C4 | #8EA3FF | `theme.colors.accent` |
+| `color/like` | #D83A56 | #FF6B81 | `theme.colors.like` |
+| `color/onImage` | #FFFFFF | #FFFFFF | `theme.colors.onImage` |
 
 | Figma variable | Value | Swift |
 |---|---|---|
 | `spacing/xs` `s` `m` `l` `xl` | 4, 8, 16, 24, 32 | `DSSpacing.*` |
-| `radius/m` `l` | 12, 20 | `DSRadius.*` |
+| `radius/m` `l` | 12, 20 | `theme.radii.m` `l` |
 
 | Text style | Inter | Swift |
 |---|---|---|
-| `DSFont/largeTitle` | Bold 34/41 | navigation title |
-| `DSFont/title` | Semi Bold 17/22 | `DSFont.title` |
-| `DSFont/price` | Bold 15/20 | `DSFont.price` |
+| `DSFont/largeTitle` | Bold 34/41 | `theme.font(for: .largeTitle)`, applied to the navigation bar |
+| `DSFont/title` | Semi Bold 17/22 | `theme.font(for: .title)` |
+| `DSFont/price` | Bold 15/20 | `theme.font(for: .price)` |
 | `DSFont/body` | Regular 17/22 | body |
-| `DSFont/caption` | Regular 13/18 | `DSFont.caption` |
+| `DSFont/caption` | Regular 13/18 | `theme.font(for: .caption)` |
 | `DSFont/tab` | Medium 10/12 | tab bar labels |
 
 The v1 values in `Colors.xcassets` are the same numbers. Phase 6 copies any change made in Figma back
@@ -79,17 +79,36 @@ components only ever name the semantic variable.
 
 | Semantic name | PropertyListings light, dark | Lakeside light, dark | Swift |
 |---|---|---|---|
-| `surface` | #FFFFFF, #121417 | #FFFFFF, #1A1216 | `DSColor.surface` |
-| `surfaceElevated` | #F2F3F6, #1C2027 | #FCEFF4, #26191F | `DSColor.surfaceElevated` |
-| `textPrimary` | #171B24, #E7EAF0 | #24141B, #F2E6EB | `DSColor.textPrimary` |
-| `textSecondary` | #626B7A, #97A0B0 | #7A5C68, #B394A2 | `DSColor.textSecondary` |
-| `accent` | #2946C4, #8EA3FF | #D6336C, #FF7AA8 | `DSColor.accent` |
-| `like` | #D83A56, #FF6B81 | #E8590C, #FFA36B | `DSColor.like` |
-| `onImage` | #FFFFFF, #FFFFFF | #FFFFFF, #FFFFFF | `DSColor.onImage` |
+| `surface` | #FFFFFF, #121417 | #FFFFFF, #1A1216 | `theme.colors.surface` |
+| `surfaceElevated` | #F2F3F6, #1C2027 | #FCEFF4, #26191F | `theme.colors.surfaceElevated` |
+| `textPrimary` | #171B24, #E7EAF0 | #24141B, #F2E6EB | `theme.colors.textPrimary` |
+| `textSecondary` | #626B7A, #97A0B0 | #7A5C68, #B394A2 | `theme.colors.textSecondary` |
+| `accent` | #2946C4, #8EA3FF | #D6336C, #FF7AA8 | `theme.colors.accent` |
+| `like` | #D83A56, #FF6B81 | #E8590C, #FFA36B | `theme.colors.like` |
+| `onImage` | #FFFFFF, #FFFFFF | #FFFFFF, #FFFFFF | `theme.colors.onImage` |
 
 The values are exported per brand under [tokens/](tokens/), one JSON file each, straight from the
-Figma collection. In the app a brand ships them as a colour catalog with the seven semantic names,
-each set carrying a light and a dark appearance, which is the file the export script will write.
+Figma collection. In the app a brand ships them as a colour catalog with the six semantic names, each
+set carrying a light and a dark appearance.
+
+Nothing in the app reads a colour from a global. Each brand declares one `DSTheme` in its
+`Brand.swift`, built from its own catalog, its radii and its typeface:
+
+```swift
+theme: DSTheme(
+    colors: DSPalette(bundle: .main),
+    radii: DSRadii(m: 16, l: 28),
+    typeface: DSTypeface(regular: "Fraunces-Regular", semibold: "Fraunces-SemiBold", bold: "Fraunces-Bold")
+)
+```
+
+`RootView` injects it once with `.environment(\.theme, composition.theme)`, and every component and
+view declares `@Environment(\.theme)` and reads `theme.colors.accent`, `theme.radii.l`,
+`theme.font(for: .title)`. A name the brand catalog does not define falls back to the design system's
+own, one name at a time, so a brand can override three colours and inherit the rest. A preview or a
+package test injects nothing and gets `DSTheme.designSystem`. The one exception is UIKit's appearance
+proxies for the navigation bar and the segmented control, which are singletons by Apple's design:
+`DSAppearance.apply(theme)` writes them once at launch with the theme as its argument.
 
 Radius has the same two modes, `PropertyListings` with 12 and 20 and `Lakeside` with 16 and 28, so a
 brand can be rounder without a component change.
