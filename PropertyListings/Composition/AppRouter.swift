@@ -4,7 +4,7 @@ import Observation
 @MainActor
 @Observable
 final class AppRouter {
-    enum Tab: Hashable {
+    enum Tab: String, Hashable {
         case listings
         case saved
         case settings
