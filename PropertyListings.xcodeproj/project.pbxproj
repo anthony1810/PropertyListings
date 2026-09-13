@@ -8,26 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		00B171046366B5FB2FF8C526 /* FailingSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56029AD3C4CF80CD6CFDC799 /* FailingSettingsStore.swift */; };
-		00CBE186346E1E888AAF059C /* SharedPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = B6ADF3CD4AF231FDE5D3AEF4 /* SharedPresentation */; };
+		00CBE186346E1E888AAF059C /* RemoteConfigAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 44497782AE638F59A38D836C /* RemoteConfigAPI */; };
 		020B97562EFD2B703403DE7E /* AppCompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7B5F86D4432D0EAF32022 /* AppCompositionTests.swift */; };
 		02C8A5675D686A266E010AAE /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900585444AE411F2AAC4D0A /* RootView.swift */; };
 		064CF6126C61F3679C8E1E0F /* LaunchArguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3265C0674A1CEC16BE45C /* LaunchArguments.swift */; };
 		07E6F91B11F10A271A14B236 /* ListingsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 234D85778C9EBD2884E87568 /* ListingsFeature */; };
 		0BB59023D6C19F95B3AB5BB4 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341791FBF78E1523BD2B75B8 /* AppStrings.swift */; };
 		0DE52FD41F4449FAEC8A24CC /* AcceptanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889AE8F88A4E469E96572 /* AcceptanceApp.swift */; };
-		0E553E7F6F656C940DEE669C /* HTTPClient in Frameworks */ = {isa = PBXBuildFile; productRef = BD54B0390B38B1F7EBB6F7C0 /* HTTPClient */; };
+		0E553E7F6F656C940DEE669C /* RemoteConfigCache in Frameworks */ = {isa = PBXBuildFile; productRef = D71CA8F423067E13671A3F53 /* RemoteConfigCache */; };
 		0ECA0A1DF29C4B81ACA8323C /* BrandConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81028421D3DD7891F7DD937 /* BrandConfiguration.swift */; };
 		0FD7600FEBBAFCD2E3365DDB /* BookmarksAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090172B53A1F44780FE41147 /* BookmarksAcceptanceTests.swift */; };
 		127DDFE1351DFC7E6E8C0EE2 /* AppRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408ADE6F3D499E1ECC8037C5 /* AppRouterTests.swift */; };
 		1293CA35481D26B8BE0919AC /* ListingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6E8775681EF4E11EF330 /* ListingsService.swift */; };
 		14FE093BD8720ED0CFE3864A /* PropertyListingsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191461208EF00FD0D076FAD4 /* PropertyListingsApp.swift */; };
 		1AB3F72A9D1871FD92B013C8 /* ListingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F25E56306A7A8A2BD691F17 /* ListingsServiceTests.swift */; };
-		1DD434053A2D65BEFA7FFDB5 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 6E8C27170000908189C878AB /* DesignSystem */; };
+		1B1E062E01E9C07878D71C78 /* SharedPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 4637889EDC9753A828874667 /* SharedPresentation */; };
+		1C836DEC6FA795D66D3BC8BD /* SharedPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = B6ADF3CD4AF231FDE5D3AEF4 /* SharedPresentation */; };
+		1DD434053A2D65BEFA7FFDB5 /* RemoteConfigFeature in Frameworks */ = {isa = PBXBuildFile; productRef = CAE8F668238948BB2375518A /* RemoteConfigFeature */; };
 		1DF9E00E361AB9D18DC8ABDC /* ListingsTestValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */; };
 		1FCB78CF4B07E846591D3394 /* FailingBookmarkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D2B0BD28DDA930E8B219D /* FailingBookmarkStore.swift */; };
 		229377E39281DB42029FA451 /* Appearance+ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCC89960E627E4970D48C94 /* Appearance+ColorScheme.swift */; };
 		24166CDEA186B1C721EF108B /* BookmarksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30C8B751508D273CF279444 /* BookmarksUITests.swift */; };
 		255C07E3CA474F5A4FC1447B /* BrandSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA33788F0738E751A76B2A01 /* BrandSnapshotTests.swift */; };
+		27D0026640217E1E2E4D6DDE /* HTTPClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5D82C76C2887A03AEA77509A /* HTTPClient */; };
 		27EB483492D0BAAB813B49F4 /* BrandTestValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D846AAAECEAACA5F6EFD52 /* BrandTestValues.swift */; };
 		2CBAA21A0805B5C7E10C2DA6 /* BookmarksAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090172B53A1F44780FE41147 /* BookmarksAcceptanceTests.swift */; };
 		2D35F1D1050CAA52A36498F0 /* FailingBookmarkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D2B0BD28DDA930E8B219D /* FailingBookmarkStore.swift */; };
@@ -44,7 +47,7 @@
 		45D44413C0F56742E4805639 /* ListingsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227C27E158DB084646A55439 /* ListingsAcceptanceTests.swift */; };
 		483B745A984B0CFF187D422D /* Color+LightHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7393BF388F0BEEF2A4B9E783 /* Color+LightHex.swift */; };
 		4896EB387FBF2C2E2DA0F6D2 /* SettingsTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = CF74AD327B9FBB17F9FBF600 /* SettingsTestSupport */; };
-		508027AE0E8BF712F83A8CAE /* SharedPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 4637889EDC9753A828874667 /* SharedPresentation */; };
+		508027AE0E8BF712F83A8CAE /* RemoteConfigAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 18A0DEBE3DED4ADFF6BD28EC /* RemoteConfigAPI */; };
 		50BE31F2CE3C9210A33BFE52 /* HTTPClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D761F6E685539D94DBF5C850 /* HTTPClientStub.swift */; };
 		52DC44653C75D81AE94F6559 /* Listing+Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BA6453C4BAC20C49688B8D /* Listing+Bookmark.swift */; };
 		546AA46D71780CCB9DED3880 /* BrandCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F08EC06C9EAC139FA848357 /* BrandCatalogTests.swift */; };
@@ -57,7 +60,7 @@
 		65B438342C20DBA3616E84B7 /* AppCompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7B5F86D4432D0EAF32022 /* AppCompositionTests.swift */; };
 		664EFE19FBA8BC3E3888A71C /* ListingsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 17DEFD7762836B1286F2890F /* ListingsUI */; };
 		6851A8450C9FDDFE497AA98D /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = CDA5F3069E88F3DFEC8F7316 /* ListingsAPI */; };
-		6D208DC56FAB9EC3D0916F44 /* HTTPClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = FF46FBE7D280C3A8EAE73473 /* HTTPClientLive */; };
+		6D208DC56FAB9EC3D0916F44 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 6E8C27170000908189C878AB /* DesignSystem */; };
 		6E4ABBEB9AA4A8BBFBCFA970 /* HTTPClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D761F6E685539D94DBF5C850 /* HTTPClientStub.swift */; };
 		7308A88CB495A2FB9E3C5A43 /* BookmarksUI in Frameworks */ = {isa = PBXBuildFile; productRef = EB11F7B7E5C2F20D5A5FC730 /* BookmarksUI */; };
 		740D98CE058B304CE9801805 /* LiveListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057C550AFB2C4ECDAD5C16C1 /* LiveListing.swift */; };
@@ -67,27 +70,33 @@
 		7A8546C06DA23450D31F0BBA /* TestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 2DF054391E72E4715CE599E0 /* TestSupport */; };
 		7D170B60C4022C1DE9E38170 /* ListingsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B284E5A831E3D0A59FB4F4 /* ListingsTab.swift */; };
 		814960F3720822ED1280160E /* PropertyListingsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191461208EF00FD0D076FAD4 /* PropertyListingsApp.swift */; };
+		838BE685CE5F665CC4C76158 /* RemoteConfigServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E919DD6E2A765E37E790725 /* RemoteConfigServiceTests.swift */; };
+		860BE1120533F9EAACF742F4 /* HTTPClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = F8EDAE62ADF3DA58A23E201E /* HTTPClientLive */; };
 		86D29B8E2418E6669CDB40DA /* BrandSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA33788F0738E751A76B2A01 /* BrandSnapshotTests.swift */; };
 		8AABA70B9376B63F5C19237A /* BookmarksPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = EA0C7FFB346C084B43B2D9D4 /* BookmarksPresentation */; };
 		8CB8F7C616DF9B5BA0FF5755 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0900585444AE411F2AAC4D0A /* RootView.swift */; };
+		8DD8067BC462620F5A200E04 /* HTTPClient in Frameworks */ = {isa = PBXBuildFile; productRef = BD54B0390B38B1F7EBB6F7C0 /* HTTPClient */; };
 		90E021C576B36A78ECA96AFE /* ListingsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 0CE768B798ADBC571C77B0E1 /* ListingsFeature */; };
 		91A1DE9CE8FE5A259FAA7C1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 162C1067C22770C351BB4E91 /* Assets.xcassets */; };
+		9206D061706E0867D05C114E /* RemoteConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503F83BE4E69CCBD38BAE181 /* RemoteConfigService.swift */; };
 		921F587C2A09D615BC488EC3 /* SettingsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 62EDBE4E2DA696156C1745BB /* SettingsUI */; };
 		9249C5D83D4491AE9695BCA0 /* AppComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5710F2FB116C402EEF9FF486 /* AppComposition.swift */; };
 		94DA2F8CF782F1A3DB67FC4D /* Listing+Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BA6453C4BAC20C49688B8D /* Listing+Bookmark.swift */; };
+		9C85CB788A4D74A402D1433E /* RemoteConfigServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E919DD6E2A765E37E790725 /* RemoteConfigServiceTests.swift */; };
 		9EC7FAD4AC75AA3F51B6E9D1 /* ListingsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227C27E158DB084646A55439 /* ListingsAcceptanceTests.swift */; };
 		9FCEA2F17E4F0CB4F68ABB69 /* ListingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F25E56306A7A8A2BD691F17 /* ListingsServiceTests.swift */; };
 		A03BE7A596FE914E04413255 /* Date+Adding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EA247DB409233E2EDD2731 /* Date+Adding.swift */; };
 		A3D9DA4BB1B85F9BA7174042 /* ListingsPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 352F1E3D664A70669D12D4F9 /* ListingsPresentation */; };
 		A3ECBD93FC89E5AB21BB339A /* SettingsAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D468E9ED5FF66F83746284CB /* SettingsAcceptanceTests.swift */; };
 		A4D8D4DF21CE0F66A48686D0 /* BrandConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81028421D3DD7891F7DD937 /* BrandConfiguration.swift */; };
-		A5D1C562DC5770390C7BCDEE /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B3E5B4A3D0FA953B0FD7A43F /* DesignSystem */; };
+		A5D1C562DC5770390C7BCDEE /* RemoteConfigFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4F1C03E58885282AFEEFEAEE /* RemoteConfigFeature */; };
 		A756C1106BAE270DFD73F280 /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 8E41188FA089F1A4E0A1731E /* ListingsAPI */; };
 		A76070DE39048CE5941430E1 /* SettingsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04068168F4903AED8430B172 /* SettingsUI */; };
-		AC77686B1EDFE1DFF4A69BC0 /* HTTPClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = F8EDAE62ADF3DA58A23E201E /* HTTPClientLive */; };
+		AC77686B1EDFE1DFF4A69BC0 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B3E5B4A3D0FA953B0FD7A43F /* DesignSystem */; };
 		ADFE6FDCE48D6C24337EA583 /* Appearance+ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCC89960E627E4970D48C94 /* Appearance+ColorScheme.swift */; };
 		AFBE6CF98F1EFF2D428CBF61 /* ListingsCache in Frameworks */ = {isa = PBXBuildFile; productRef = D2111AA541B10C2537869C75 /* ListingsCache */; };
 		B293ADDC6D2A7D0F07E39719 /* ListingsTestValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA85F6FD04245F21EBEAEDE /* ListingsTestValues.swift */; };
+		B335CC071F6F173ADADC5068 /* HTTPClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = FF46FBE7D280C3A8EAE73473 /* HTTPClientLive */; };
 		B59982159FDAAF7226EA0086 /* AcceptanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9889AE8F88A4E469E96572 /* AcceptanceApp.swift */; };
 		B6653436F38679712593C1CF /* BookmarksUI in Frameworks */ = {isa = PBXBuildFile; productRef = F3AEF2F81E0FC21BBE977614 /* BookmarksUI */; };
 		B6B2E870283E27751CC23419 /* BookmarksFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 7979D3DE6E19B09F343AC5FF /* BookmarksFeature */; };
@@ -101,7 +110,7 @@
 		C8BD5CF1FEB9E9E6690C3824 /* BookmarksTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = FAC49A91B332D7DF64847EDA /* BookmarksTestSupport */; };
 		CACA67688884141EA9F5FB95 /* SavedTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 891070D7A04C09A679970D13 /* SavedTab.swift */; };
 		CB2D7A2D3F826E6E91187395 /* ListingsAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 0CD4157F80781B2AADE331C8 /* ListingsAPI */; };
-		CC40C2DF4F350987DED11C2F /* HTTPClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5D82C76C2887A03AEA77509A /* HTTPClient */; };
+		CC40C2DF4F350987DED11C2F /* RemoteConfigCache in Frameworks */ = {isa = PBXBuildFile; productRef = 6EE2BC580DC5E363E7121332 /* RemoteConfigCache */; };
 		CD18A2197037482806CBEA3F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 82070D5A912A1DAC3FE34668 /* Localizable.xcstrings */; };
 		CDFDACE11597A94BDE61CDF3 /* ListingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6E8775681EF4E11EF330 /* ListingsService.swift */; };
 		CECA766F75D2B05429E41682 /* AppComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5710F2FB116C402EEF9FF486 /* AppComposition.swift */; };
@@ -115,6 +124,7 @@
 		DF9BDE188A0A447251239536 /* SettingsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE5101ABFCE235F72777E45 /* SettingsTab.swift */; };
 		E1D4864E213DD8DD0E9DFE5E /* SettingsPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 8193A057B9F449F0B2740AFC /* SettingsPresentation */; };
 		E3561739C9FDAC6B6DF1727C /* SettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D858908CFCF10A74D498EE /* SettingsUITests.swift */; };
+		E7B221246BB139D188302FBC /* RemoteConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503F83BE4E69CCBD38BAE181 /* RemoteConfigService.swift */; };
 		EA2C4D9A322B8A33B59EDAC7 /* BrandConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BC94EF5F2717A4F593A7A4 /* BrandConfigurationTests.swift */; };
 		EB60079C647E25A6C80EF915 /* ListingsTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 5258B7E9FD5400E28448274A /* ListingsTestSupport */; };
 		EBE626E89A682944C760C0AF /* ListingsCache in Frameworks */ = {isa = PBXBuildFile; productRef = 8D60C12B895BC1F11F21614A /* ListingsCache */; };
@@ -180,10 +190,12 @@
 		341791FBF78E1523BD2B75B8 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
 		360A3C7B3D9B257DF72A9238 /* PropertyListingsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PropertyListingsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		380D621F7B3229DE4E048D6C /* settings.dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.dark.png; sourceTree = "<group>"; };
+		3E919DD6E2A765E37E790725 /* RemoteConfigServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigServiceTests.swift; sourceTree = "<group>"; };
 		401DE6CD7669E08F83C46C0D /* listings.light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = listings.light.png; sourceTree = "<group>"; };
 		408ADE6F3D499E1ECC8037C5 /* AppRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouterTests.swift; sourceTree = "<group>"; };
 		44D858908CFCF10A74D498EE /* SettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUITests.swift; sourceTree = "<group>"; };
 		4A0D2A33110AEB4CFEC44F54 /* PropertyListings.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PropertyListings.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		503F83BE4E69CCBD38BAE181 /* RemoteConfigService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigService.swift; sourceTree = "<group>"; };
 		50EA247DB409233E2EDD2731 /* Date+Adding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Adding.swift"; sourceTree = "<group>"; };
 		56029AD3C4CF80CD6CFDC799 /* FailingSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailingSettingsStore.swift; sourceTree = "<group>"; };
 		5710F2FB116C402EEF9FF486 /* AppComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppComposition.swift; sourceTree = "<group>"; };
@@ -251,10 +263,13 @@
 				F7AA621A431DFE54982E1DB7 /* SettingsPersistence in Frameworks */,
 				E1D4864E213DD8DD0E9DFE5E /* SettingsPresentation in Frameworks */,
 				921F587C2A09D615BC488EC3 /* SettingsUI in Frameworks */,
-				1DD434053A2D65BEFA7FFDB5 /* DesignSystem in Frameworks */,
-				00CBE186346E1E888AAF059C /* SharedPresentation in Frameworks */,
-				CC40C2DF4F350987DED11C2F /* HTTPClient in Frameworks */,
-				6D208DC56FAB9EC3D0916F44 /* HTTPClientLive in Frameworks */,
+				1DD434053A2D65BEFA7FFDB5 /* RemoteConfigFeature in Frameworks */,
+				00CBE186346E1E888AAF059C /* RemoteConfigAPI in Frameworks */,
+				CC40C2DF4F350987DED11C2F /* RemoteConfigCache in Frameworks */,
+				6D208DC56FAB9EC3D0916F44 /* DesignSystem in Frameworks */,
+				1C836DEC6FA795D66D3BC8BD /* SharedPresentation in Frameworks */,
+				27D0026640217E1E2E4D6DDE /* HTTPClient in Frameworks */,
+				B335CC071F6F173ADADC5068 /* HTTPClientLive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,10 +301,13 @@
 				784AB48B2F2F09B700C9778E /* SettingsPersistence in Frameworks */,
 				FBED1C6C8907E75D4246D0BA /* SettingsPresentation in Frameworks */,
 				A76070DE39048CE5941430E1 /* SettingsUI in Frameworks */,
-				A5D1C562DC5770390C7BCDEE /* DesignSystem in Frameworks */,
-				508027AE0E8BF712F83A8CAE /* SharedPresentation in Frameworks */,
-				0E553E7F6F656C940DEE669C /* HTTPClient in Frameworks */,
-				AC77686B1EDFE1DFF4A69BC0 /* HTTPClientLive in Frameworks */,
+				A5D1C562DC5770390C7BCDEE /* RemoteConfigFeature in Frameworks */,
+				508027AE0E8BF712F83A8CAE /* RemoteConfigAPI in Frameworks */,
+				0E553E7F6F656C940DEE669C /* RemoteConfigCache in Frameworks */,
+				AC77686B1EDFE1DFF4A69BC0 /* DesignSystem in Frameworks */,
+				1B1E062E01E9C07878D71C78 /* SharedPresentation in Frameworks */,
+				8DD8067BC462620F5A200E04 /* HTTPClient in Frameworks */,
+				860BE1120533F9EAACF742F4 /* HTTPClientLive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +344,7 @@
 				A81028421D3DD7891F7DD937 /* BrandConfiguration.swift */,
 				E4BA6453C4BAC20C49688B8D /* Listing+Bookmark.swift */,
 				7D4B6E8775681EF4E11EF330 /* ListingsService.swift */,
+				503F83BE4E69CCBD38BAE181 /* RemoteConfigService.swift */,
 				0900585444AE411F2AAC4D0A /* RootView.swift */,
 				5B1957ABA97A2F9CD526608D /* Debug */,
 			);
@@ -562,6 +581,7 @@
 				408ADE6F3D499E1ECC8037C5 /* AppRouterTests.swift */,
 				A9BC94EF5F2717A4F593A7A4 /* BrandConfigurationTests.swift */,
 				9F25E56306A7A8A2BD691F17 /* ListingsServiceTests.swift */,
+				3E919DD6E2A765E37E790725 /* RemoteConfigServiceTests.swift */,
 			);
 			path = Composition;
 			sourceTree = "<group>";
@@ -638,6 +658,9 @@
 				14C221D0D9F70BA0E63DD472 /* SettingsPersistence */,
 				C9DEFC2CC02252CD30B1E11C /* SettingsPresentation */,
 				04068168F4903AED8430B172 /* SettingsUI */,
+				4F1C03E58885282AFEEFEAEE /* RemoteConfigFeature */,
+				18A0DEBE3DED4ADFF6BD28EC /* RemoteConfigAPI */,
+				D71CA8F423067E13671A3F53 /* RemoteConfigCache */,
 				B3E5B4A3D0FA953B0FD7A43F /* DesignSystem */,
 				4637889EDC9753A828874667 /* SharedPresentation */,
 				BD54B0390B38B1F7EBB6F7C0 /* HTTPClient */,
@@ -696,6 +719,9 @@
 				3B956CAE3CB42361EC4F2D8F /* SettingsPersistence */,
 				8193A057B9F449F0B2740AFC /* SettingsPresentation */,
 				62EDBE4E2DA696156C1745BB /* SettingsUI */,
+				CAE8F668238948BB2375518A /* RemoteConfigFeature */,
+				44497782AE638F59A38D836C /* RemoteConfigAPI */,
+				6EE2BC580DC5E363E7121332 /* RemoteConfigCache */,
 				6E8C27170000908189C878AB /* DesignSystem */,
 				B6ADF3CD4AF231FDE5D3AEF4 /* SharedPresentation */,
 				5D82C76C2887A03AEA77509A /* HTTPClient */,
@@ -916,6 +942,7 @@
 				52DC44653C75D81AE94F6559 /* Listing+Bookmark.swift in Sources */,
 				1293CA35481D26B8BE0919AC /* ListingsService.swift in Sources */,
 				814960F3720822ED1280160E /* PropertyListingsApp.swift in Sources */,
+				9206D061706E0867D05C114E /* RemoteConfigService.swift in Sources */,
 				02C8A5675D686A266E010AAE /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -934,6 +961,7 @@
 				94DA2F8CF782F1A3DB67FC4D /* Listing+Bookmark.swift in Sources */,
 				CDFDACE11597A94BDE61CDF3 /* ListingsService.swift in Sources */,
 				14FE093BD8720ED0CFE3864A /* PropertyListingsApp.swift in Sources */,
+				E7B221246BB139D188302FBC /* RemoteConfigService.swift in Sources */,
 				8CB8F7C616DF9B5BA0FF5755 /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -960,6 +988,7 @@
 				B293ADDC6D2A7D0F07E39719 /* ListingsTestValues.swift in Sources */,
 				D8C268F2F4B71A869B8CC144 /* LocalBookmark+Bookmark.swift in Sources */,
 				5E39E510ACD8791012AC8659 /* LocalizationTests.swift in Sources */,
+				838BE685CE5F665CC4C76158 /* RemoteConfigServiceTests.swift in Sources */,
 				A3ECBD93FC89E5AB21BB339A /* SettingsAcceptanceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -986,6 +1015,7 @@
 				1DF9E00E361AB9D18DC8ABDC /* ListingsTestValues.swift in Sources */,
 				DABB95A71FC7C06466100F2C /* LocalBookmark+Bookmark.swift in Sources */,
 				B769A79A232BF8AB37777FB1 /* LocalizationTests.swift in Sources */,
+				9C85CB788A4D74A402D1433E /* RemoteConfigServiceTests.swift in Sources */,
 				751500C0D5075DE764F92BA9 /* SettingsAcceptanceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1488,6 +1518,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ListingsUI;
 		};
+		18A0DEBE3DED4ADFF6BD28EC /* RemoteConfigAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RemoteConfigAPI;
+		};
 		234D85778C9EBD2884E87568 /* ListingsFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ListingsFeature;
@@ -1512,9 +1546,17 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = SettingsPersistence;
 		};
+		44497782AE638F59A38D836C /* RemoteConfigAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RemoteConfigAPI;
+		};
 		4637889EDC9753A828874667 /* SharedPresentation */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SharedPresentation;
+		};
+		4F1C03E58885282AFEEFEAEE /* RemoteConfigFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RemoteConfigFeature;
 		};
 		5258B7E9FD5400E28448274A /* ListingsTestSupport */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1543,6 +1585,10 @@
 		6E8C27170000908189C878AB /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
+		};
+		6EE2BC580DC5E363E7121332 /* RemoteConfigCache */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RemoteConfigCache;
 		};
 		76495A00EBB965CAAECE4758 /* BookmarksPersistence */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1592,6 +1638,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = SettingsPresentation;
 		};
+		CAE8F668238948BB2375518A /* RemoteConfigFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RemoteConfigFeature;
+		};
 		CD85E1E5F8C3BB001FF7D48B /* ListingsFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ListingsFeature;
@@ -1607,6 +1657,10 @@
 		D2111AA541B10C2537869C75 /* ListingsCache */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ListingsCache;
+		};
+		D71CA8F423067E13671A3F53 /* RemoteConfigCache */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RemoteConfigCache;
 		};
 		DAB1B22B48FD3C75EFCDC310 /* ListingsPresentation */ = {
 			isa = XCSwiftPackageProductDependency;

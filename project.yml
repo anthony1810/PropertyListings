@@ -83,6 +83,12 @@ targetTemplates:
         product: SettingsPresentation
       - package: Settings
         product: SettingsUI
+      - package: RemoteConfig
+        product: RemoteConfigFeature
+      - package: RemoteConfig
+        product: RemoteConfigAPI
+      - package: RemoteConfig
+        product: RemoteConfigCache
       - package: DesignSystem
         product: DesignSystem
       - package: SharedPresentation
