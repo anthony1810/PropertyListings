@@ -10,8 +10,6 @@ import ListingsCache
 import ListingsFeature
 import ListingsPresentation
 import ListingsUI
-import RemoteConfigCache
-import RemoteConfigFeature
 import SettingsFeature
 import SettingsPersistence
 import SettingsPresentation
@@ -37,11 +35,8 @@ final class AppComposition {
     private lazy var settingsStore: SettingsStore = CodableSettingsStore(
         storeURL: Self.storeURL(named: "settings.json")
     )
-    private lazy var remoteBrandStore: RemoteBrandStore = CodableRemoteBrandStore(
-        storeURL: Self.storeURL(named: "remote-brand.json")
-    )
     private var preferredLanguageCodes: [String] = Bundle.main.preferredLocalizations
-    private let brandDocumentURL: URL?
+    private let refreshBrand: @Sendable () async -> Void
     private lazy var defaultSettings = Settings(
         appearance: .system,
         language: brand.settings.initialLanguage(preferring: preferredLanguageCodes)
@@ -74,9 +69,12 @@ final class AppComposition {
 
     // MARK: - Init
 
-    init(brand: BrandConfiguration, brandDocumentURL: URL? = nil) {
+    init(
+        brand: BrandConfiguration,
+        refreshBrand: @escaping @Sendable () async -> Void = {}
+    ) {
         self.brand = brand
-        self.brandDocumentURL = brandDocumentURL
+        self.refreshBrand = refreshBrand
         theme = brand.theme
         ImagePipeline.configure()
     }
@@ -84,9 +82,9 @@ final class AppComposition {
     convenience init(
         brand: BrandConfiguration,
         httpClient: HTTPClient,
-        brandDocumentURL: URL? = nil
+        refreshBrand: @escaping @Sendable () async -> Void = {}
     ) {
-        self.init(brand: brand, brandDocumentURL: brandDocumentURL)
+        self.init(brand: brand, refreshBrand: refreshBrand)
         self.httpClient = httpClient
     }
 
@@ -96,19 +94,17 @@ final class AppComposition {
         listingsStore: ListingsStore,
         bookmarkStore: BookmarkStore,
         settingsStore: SettingsStore,
-        remoteBrandStore: RemoteBrandStore = InMemoryRemoteBrandStore(),
-        brandDocumentURL: URL? = nil,
+        refreshBrand: @escaping @Sendable () async -> Void = {},
         preferredLanguageCodes: [String],
         currentDate: @escaping @Sendable () -> Date,
         locale: Locale,
         clock: any Clock<Duration> = ContinuousClock()
     ) {
-        self.init(brand: brand, brandDocumentURL: brandDocumentURL)
+        self.init(brand: brand, refreshBrand: refreshBrand)
         self.httpClient = httpClient
         self.listingsStore = listingsStore
         self.bookmarkStore = bookmarkStore
         self.settingsStore = settingsStore
-        self.remoteBrandStore = remoteBrandStore
         self.preferredLanguageCodes = preferredLanguageCodes
         self.currentDate = currentDate
         self.locale = locale
@@ -119,37 +115,11 @@ final class AppComposition {
 
     var tabs: [BrandConfiguration.Tab] { brand.tabs }
 
-    // MARK: - Remote configuration
-
-    static let remoteConfigPolicy = RemoteConfigCachePolicy(maxAgeInDays: 7)
-
-    static func resolvedBrand(
-        _ fallback: BrandConfiguration,
-        store: RemoteBrandStore,
-        currentDate: @escaping @Sendable () -> Date = Date.init
-    ) async -> BrandConfiguration {
-        let loader = LocalRemoteBrandLoader(
-            store: store,
-            policy: remoteConfigPolicy,
-            currentDate: currentDate
-        )
-        guard let remote = try? await loader.load() else { return fallback }
-        return BrandConfiguration(remote: remote, fallback: fallback) ?? fallback
-    }
-
-    func refreshRemoteConfig() async {
-        guard let brandDocumentURL else { return }
-        let service = RemoteConfigService(
-            httpClient: httpClient,
-            store: remoteBrandStore,
-            baseURL: brandDocumentURL,
-            cachePolicy: Self.remoteConfigPolicy,
-            currentDate: currentDate
-        )
-        await service.refresh()
-    }
-
     // MARK: - Launch
+
+    func refreshBrandForTheNextLaunch() async {
+        await refreshBrand()
+    }
 
     func validateCache() async {
         await listingsService.validateCache()

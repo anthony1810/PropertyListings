@@ -47,7 +47,7 @@ struct RootView: View {
             Text(route.message)
         }
         .task { await composition.validateCache() }
-        .task { await composition.refreshRemoteConfig() }
+        .task { await composition.refreshBrandForTheNextLaunch() }
         .task { await settings.observe() }
         .task { await composition.observeSettings() }
     }
