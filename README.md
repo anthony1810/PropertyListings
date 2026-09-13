@@ -7,7 +7,12 @@
 [![Live](https://github.com/anthony1810/PropertyListings/actions/workflows/live.yml/badge.svg?branch=main)](https://github.com/anthony1810/PropertyListings/actions/workflows/live.yml)
 
 A SwiftUI app that lists real estate from a REST endpoint, lets you bookmark listings on the device, and
-switches language and appearance in place. Three tabs: Listings, Saved and Settings. iOS 18.0, Xcode 26, Swift 6.
+switches language and appearance in place. iOS 18.0, Xcode 26, Swift 6.
+
+It is built as a white label product: one codebase, one app per brand. `PropertyListings` and `Lakeside`
+are two apps compiled from the same source, each with its own bundle identifier, icon, launch screen,
+palette, typeface, tab set, languages and backend. A brand can also be reconfigured after release, with no
+new binary, from a JSON document it fetches on launch.
 
 ## Architecture
 
@@ -48,6 +53,91 @@ that crosses a module boundary.
 | BDD specs for Bookmarks | [docs/specs/bookmarks.md](docs/specs/bookmarks.md) | How a customer likes a listing, relaunches, and uses the Saved tab, as Given, When, Then scenarios. Each scenario is what one acceptance test proves, and the map at the end names that test. |
 | BDD specs for Settings | [docs/specs/settings.md](docs/specs/settings.md) | How a customer switches language and appearance, and what survives a relaunch, as Given, When, Then scenarios. Each scenario is what one acceptance test proves, and the map at the end names that test. |
 | Figma design | [PropertyListings on Figma](https://www.figma.com/design/mGYnBSubQuhnIJkenp8aMC) | Foundations, components and every screen in light and dark. Anyone with the link can view. |
+
+## White label
+
+Two rules let one codebase serve many brands.
+
+**A feature never knows which brand it is in.** Every module under `Modules/` is compiled once and linked
+by every brand. Guard rule 8 fails the build if a feature names `CurrentBrand` or `BrandConfiguration`.
+Guard rule 9 fails it if any file reads a global design token instead of the `DSTheme` the root injects
+into the environment. A feature that knew its brand could not be reused by the next one.
+
+**A brand is a folder and four lines of `project.yml`.** Everything a brand owns lives in
+`Brands/<Brand>/`, and the target that compiles it comes from one template, so two brands cannot drift
+apart in build settings.
+
+<table>
+  <tr>
+    <th colspan="2">PropertyListings</th>
+    <th colspan="2">Lakeside</th>
+  </tr>
+  <tr>
+    <td><img src="PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/PropertyListings/root.light.png" width="150" alt="PropertyListings, light"></td>
+    <td><img src="PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/PropertyListings/root.dark.png" width="150" alt="PropertyListings, dark"></td>
+    <td><img src="PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/Lakeside/root.light.png" width="150" alt="Lakeside, light"></td>
+    <td><img src="PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/Lakeside/root.dark.png" width="150" alt="Lakeside, dark"></td>
+  </tr>
+</table>
+
+Both pairs are recorded references from `BrandSnapshotTests`, run inside each brand's own app.
+
+### What a brand owns
+
+| File | What it decides |
+|---|---|
+| `Brands/<Brand>/Brand.swift` | the one constant the app reads: where this brand's remote document lives, and the configuration to use until one arrives |
+| `Brands/<Brand>/Info.plist` | display name, launch screen, registered fonts |
+| `Brands/<Brand>/Assets.xcassets` | app icon, launch mark, accent, and the semantic colours the design system resolves by name |
+| `Brands/<Brand>/Fonts` | the typeface files, for a brand that ships one |
+
+`BrandConfiguration` holds the rest: the listings host, page size and cache age, the theme, the tab set,
+and the default and supported languages. No feature reads it. The composition root turns it into services,
+view models and views, and that root is the only place a concrete brand and a concrete feature meet.
+
+| | PropertyListings | Lakeside |
+|---|---|---|
+| Bundle identifier | `com.anthony.propertylistings` | `com.anthony.lakeside` |
+| Accent | blue | pink |
+| Typeface | system | Fraunces |
+| Corner radii | 12 and 20 | 16 and 28 |
+| Tabs | Listings, Saved, Settings | Listings, Settings |
+| Languages | German, French, Italian, English | English, Vietnamese |
+| Listings source | the sample endpoint | its own mock, eight lakeside properties |
+| Remote document | none | [docs/mock/lakeside/configuration](docs/mock/lakeside/configuration) |
+
+### Configuration after release
+
+`Modules/RemoteConfig` is a vertical like the other three, with a feature target, an API target and a cache
+target, and no UI. It fetches one document, maps it and caches it. It has never heard of a brand: languages
+and tabs are raw strings to it, and only the composition root turns a document into a `BrandConfiguration`.
+
+On launch the app reads the cached document, never the network. If one is there and every field is
+acceptable, it becomes the brand for this session. Otherwise the compiled fallback is used whole. The
+refresh runs in the background for the next launch, so the network is never on the path to the first frame,
+and a half written document can never half configure the app.
+
+| Part of the brand | The build | A document | Why |
+|---|---|---|---|
+| Bundle identifier, display name | yes | no | only a new binary can change them |
+| App icon, launch screen | yes | no | the system reads them before any code runs |
+| Colours, radii, typeface | yes | no | catalogs and font files live in the binary, and a remote restyle would leave the icon and launch screen behind |
+| Tab icons | yes | no | a symbol name or an image has to exist in the app |
+| Translations | yes | no | compiled string catalogs, covered by the localization tests |
+| Listings host | yes | yes | environment switching, HTTPS enforced |
+| Page size, cache age | yes | yes | numbers with no assets behind them |
+| Default and supported languages | yes | yes | can only choose among the catalogs already shipped |
+| Tab set and order | yes | yes | can narrow and reorder what the app already builds |
+
+### Add a brand
+
+1. Copy `Brands/PropertyListings/` to `Brands/<NewBrand>/`, then replace the icon, the launch mark and the colours.
+2. Write its `Brand.swift`: the fallback configuration, and a document URL if the brand has one.
+3. Add one app target and one test target to `project.yml`, four lines, then run `xcodegen`.
+4. Add the scheme to the `app` matrix in `.github/workflows/tests.yml`.
+5. Record its snapshots with `SNAPSHOT_RECORD=1`, and commit the folder they land in under `PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/<NewBrand>/`.
+
+No feature package is touched by any of those five steps.
 
 ## Continuous integration
 
@@ -109,9 +199,10 @@ Line coverage from the unit, snapshot and acceptance runs, measured with `xccov`
 
 ## Listings
 
-The Listings tab loads properties five at a time, shows each one as a card with its first image, title,
-price and address, and keeps working offline from a seven day cache. Every state below is a recorded
-snapshot from `ListingsViewSnapshotTests`, rendered on iPhone 17, iOS 26.
+The Listings tab loads properties a page at a time, five for PropertyListings and four for Lakeside, since
+the page size belongs to the brand. It shows each property as a card with its first image, title, price and
+address, and keeps working offline from a cache whose age the brand also sets. Every state below is a
+recorded snapshot from `ListingsViewSnapshotTests`, rendered on iPhone 17, iOS 26.
 
 <table>
   <tr>
@@ -152,7 +243,7 @@ change is a hop owned by exactly one layer.
 1. **Spamming the like button is harmless.** Taps are debounced with an injected clock: the heart flips at once, the store is written once with the final state. Proven in `ListingsViewModelTests` with a `TestClock`.
 2. **No duplicated load.** `load()` and `loadMore()` ignore a call while one is in flight, so Retry, pull to refresh and the two `.task` modifiers at appear cannot double a request. Proven in `ListingsViewModelTests` with a held spy.
 3. **Pagination** fits the offset shape the mock response provides, `from`, `size`, `total` and `maxFrom`: five listings per request, the next five when the footer scrolls into view, and nothing above the root knows an offset exists.
-4. **Four languages**, the three main Swiss languages plus English: German, French, Italian and English, one catalog per module, with a test per module that fails on any missing key. The Settings tab switches between them in place.
+4. **Languages come from the brand**: four for PropertyListings, the three main Swiss languages plus English, and two for Lakeside, English and Vietnamese. One catalog per module, with a test per module that fails on any missing key. The Settings tab switches between its brand's languages in place.
 
 ## Saved
 
@@ -186,10 +277,12 @@ One like on the Listings tab, and how the Saved tab learns about it.
 ## Settings
 
 The Settings tab holds two choices, appearance and language, saved in a JSON file beside the other two.
-Appearance is System, Light or Dark and applies to every screen at once. Language is German, French, Italian
-or English, each written in its own name, and applies without a relaunch: views resolve their strings against
-the locale the root puts in the SwiftUI environment, and the view models are told the new locale and rebuild
-their rows, so prices reformat and the loaded listings stay on screen. Both choices survive a relaunch, and a
+Appearance is System, Light or Dark and applies to every screen at once. Language is one of the languages
+its brand ships, German, French, Italian or English for PropertyListings and English or Vietnamese for
+Lakeside, each written in its own name, and applies without a relaunch: views resolve their strings against
+the locale the root puts in the SwiftUI environment, and the view models are told the new locale and
+rebuild their rows,
+ so prices reformat and the loaded listings stay on screen. Both choices survive a relaunch, and a
 choice that cannot be saved comes back with an alert.
 
 <table>
@@ -222,8 +315,9 @@ cd PropertyListings
 open PropertyListings.xcworkspace
 ```
 
-Select the `PropertyListings` scheme and the **iPhone 17** simulator (iOS 26), then Run. Any iOS 18.0 or later
-simulator works for the app itself; iPhone 17 is the one the snapshot tests are recorded on.
+Select a brand scheme, `PropertyListings` or `Lakeside`, and the **iPhone 17** simulator (iOS 26), then Run.
+The two schemes install as two separate apps, so both brands can sit on the same simulator at once. Any
+iOS 18.0 or later simulator works for the app itself; iPhone 17 is the one the snapshot tests are recorded on.
 
 ## Run the tests
 
@@ -231,14 +325,18 @@ simulator works for the app itself; iPhone 17 is the one the snapshot tests are 
 
 | What | Scheme | Destination | Then |
 |---|---|---|---|
-| App unit tests, acceptance tests and UI tests | `PropertyListings` | iPhone 17, iOS 26 | Cmd+U |
-| One package, all its targets | `Listings-Package`, `Bookmarks-Package`, `Settings-Package`, `SharedPresentation-Package`, `DesignSystem-Package` | iPhone 17, iOS 26 | Cmd+U |
+| App unit tests, acceptance tests and UI tests | `PropertyListings` or `Lakeside` | iPhone 17, iOS 26 | Cmd+U |
+| One package, all its targets | `Listings-Package`, `Bookmarks-Package`, `Settings-Package`, `RemoteConfig-Package`, `SharedPresentation-Package`, `DesignSystem-Package` | iPhone 17, iOS 26 | Cmd+U |
 | Packages with no UI or catalog | `HTTPClient-Package`, `TestSupport-Package` | My Mac | Cmd+U |
 | End to end against the live endpoint | `PropertyListingsEndToEndTests` | My Mac | Cmd+U |
 
 The scheme picker lists the package schemes under the workspace; pick one and the test navigator shows its
 targets. Use **iPhone 17, iOS 26** for anything with a snapshot test, because the references were recorded
 there and another device or OS renders differently and fails the comparison.
+
+The same app suite runs under either brand scheme. `BrandSnapshotTests` compares against the reference
+folder named for whichever brand is hosting it, so a change that affects one brand only is still visible
+in review.
 
 To re-record snapshots after an approved UI change: Product, Scheme, Edit Scheme, Test, Arguments, add the
 environment variable `SNAPSHOT_RECORD` with value `1`, run the tests once, remove the variable, run them
