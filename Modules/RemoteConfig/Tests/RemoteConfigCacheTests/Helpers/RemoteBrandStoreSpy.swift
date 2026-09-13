@@ -2,20 +2,20 @@ import Foundation
 import RemoteConfigCache
 import TestSupport
 
-final class RemoteConfigStoreSpy: RemoteConfigStore, Sendable {
+final class RemoteBrandStoreSpy: RemoteBrandStore, Sendable {
     enum Message: Equatable {
         case retrieve
-        case insert(LocalRemoteConfig, Date)
+        case insert(LocalRemoteBrand, Date)
     }
 
-    let retrievalStub = Stub<CachedRemoteConfig?>()
+    let retrievalStub = Stub<CachedRemoteBrand?>()
     let insertionStub = Stub<Void>(.success(()))
 
     private let _receivedMessages = LockIsolated<[Message]>([])
 
     var receivedMessages: [Message] { _receivedMessages.value }
 
-    func completeRetrieval(with cached: CachedRemoteConfig?) {
+    func completeRetrieval(with cached: CachedRemoteBrand?) {
         retrievalStub.complete(with: .success(cached))
     }
 
@@ -27,13 +27,13 @@ final class RemoteConfigStoreSpy: RemoteConfigStore, Sendable {
         insertionStub.complete(with: .failure(error))
     }
 
-    func retrieve() async throws -> CachedRemoteConfig? {
+    func retrieve() async throws -> CachedRemoteBrand? {
         _receivedMessages.withValue { $0.append(.retrieve) }
         return try await retrievalStub.call()
     }
 
-    func insert(_ configuration: LocalRemoteConfig, timestamp: Date) async throws {
-        _receivedMessages.withValue { $0.append(.insert(configuration, timestamp)) }
+    func insert(_ brand: LocalRemoteBrand, timestamp: Date) async throws {
+        _receivedMessages.withValue { $0.append(.insert(brand, timestamp)) }
         try await insertionStub.call()
     }
 }

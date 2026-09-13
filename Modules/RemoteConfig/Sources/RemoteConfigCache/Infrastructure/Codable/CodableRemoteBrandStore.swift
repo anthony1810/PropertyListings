@@ -1,36 +1,30 @@
 import Foundation
 
-public actor CodableRemoteConfigStore: RemoteConfigStore {
+public actor CodableRemoteBrandStore: RemoteBrandStore {
     private let storeURL: URL
 
     public init(storeURL: URL) {
         self.storeURL = storeURL
     }
 
-    public func retrieve() async throws -> CachedRemoteConfig? {
+    public func retrieve() async throws -> CachedRemoteBrand? {
         guard FileManager.default.fileExists(atPath: storeURL.path) else { return nil }
         let data = try Data(contentsOf: storeURL)
         let cache = try JSONDecoder().decode(CodableCache.self, from: data)
-        return CachedRemoteConfig(
-            configuration: Self.local(from: cache.configuration),
-            timestamp: cache.timestamp
-        )
+        return CachedRemoteBrand(brand: Self.local(from: cache.brand), timestamp: cache.timestamp)
     }
 
-    public func insert(_ configuration: LocalRemoteConfig, timestamp: Date) async throws {
-        let cache = CodableCache(
-            configuration: Self.codable(from: configuration),
-            timestamp: timestamp
-        )
+    public func insert(_ brand: LocalRemoteBrand, timestamp: Date) async throws {
+        let cache = CodableCache(brand: Self.codable(from: brand), timestamp: timestamp)
         try JSONEncoder().encode(cache).write(to: storeURL, options: .atomic)
     }
 }
 
 // MARK: - Codable to local
 
-private extension CodableRemoteConfigStore {
-    static func local(from codable: CodableConfiguration) -> LocalRemoteConfig {
-        LocalRemoteConfig(
+private extension CodableRemoteBrandStore {
+    static func local(from codable: CodableBrand) -> LocalRemoteBrand {
+        LocalRemoteBrand(
             listingsHost: codable.listingsHost,
             listingsPageSize: codable.listingsPageSize,
             listingsCacheMaxAgeInDays: codable.listingsCacheMaxAgeInDays,
@@ -43,9 +37,9 @@ private extension CodableRemoteConfigStore {
 
 // MARK: - Local to codable
 
-private extension CodableRemoteConfigStore {
-    static func codable(from local: LocalRemoteConfig) -> CodableConfiguration {
-        CodableConfiguration(
+private extension CodableRemoteBrandStore {
+    static func codable(from local: LocalRemoteBrand) -> CodableBrand {
+        CodableBrand(
             listingsHost: local.listingsHost,
             listingsPageSize: local.listingsPageSize,
             listingsCacheMaxAgeInDays: local.listingsCacheMaxAgeInDays,
@@ -58,18 +52,18 @@ private extension CodableRemoteConfigStore {
 
 // MARK: - Codable representation
 
-private extension CodableRemoteConfigStore {
+private extension CodableRemoteBrandStore {
     struct CodableCache: Codable {
-        let configuration: CodableConfiguration
+        let brand: CodableBrand
         let timestamp: Date
     }
 
-    struct CodableConfiguration: Codable {
-        let listingsHost: URL?
-        let listingsPageSize: Int?
-        let listingsCacheMaxAgeInDays: Int?
-        let defaultLanguage: String?
-        let supportedLanguages: [String]?
-        let tabs: [String]?
+    struct CodableBrand: Codable {
+        let listingsHost: URL
+        let listingsPageSize: Int
+        let listingsCacheMaxAgeInDays: Int
+        let defaultLanguage: String
+        let supportedLanguages: [String]
+        let tabs: [String]
     }
 }

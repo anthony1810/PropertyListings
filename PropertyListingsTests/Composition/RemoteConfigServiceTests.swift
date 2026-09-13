@@ -7,95 +7,126 @@ import TestSupport
 @testable import PropertyListings
 
 struct RemoteConfigServiceTests {
-    // MARK: - Cached configuration
+    // MARK: - Cached brand
 
-    @Test func cachedConfiguration_hasNoOverrides_whenTheCacheIsEmpty() async {
+    @Test func cachedBrand_isNothing_whenTheCacheIsEmpty() async {
         let sut = makeSUT(client: .offline)
 
-        #expect(await sut.cachedConfiguration() == RemoteConfig())
+        #expect(await sut.cachedBrand() == nil)
     }
 
-    @Test func cachedConfiguration_isTheCachedDocument_whenTheCacheIsFresh() async {
-        let cached = makeCachedConfiguration(pageSize: pageSize)
-        let sut = makeSUT(client: .offline, store: InMemoryRemoteConfigStore(cache: cached))
+    @Test func cachedBrand_isTheCachedDocument_whenTheCacheIsFresh() async {
+        let pair = makeRemoteBrandPair()
+        let store = InMemoryRemoteBrandStore(
+            cache: CachedRemoteBrand(brand: pair.local, timestamp: now)
+        )
+        let sut = makeSUT(client: .offline, store: store)
 
-        #expect(await sut.cachedConfiguration() == RemoteConfig(listingsPageSize: pageSize))
+        #expect(await sut.cachedBrand() == pair.model)
     }
 
-    @Test func cachedConfiguration_hasNoOverrides_whenTheCacheReachedTheMaxAge() async {
-        let expired = makeCachedConfiguration(pageSize: pageSize, age: maxAgeInDays)
-        let sut = makeSUT(client: .offline, store: InMemoryRemoteConfigStore(cache: expired))
+    @Test func cachedBrand_isNothing_whenTheCacheReachedTheMaxAge() async {
+        let pair = makeRemoteBrandPair()
+        let expired = CachedRemoteBrand(
+            brand: pair.local,
+            timestamp: now.adding(days: -maxAgeInDays)
+        )
+        let sut = makeSUT(client: .offline, store: InMemoryRemoteBrandStore(cache: expired))
 
-        #expect(await sut.cachedConfiguration() == RemoteConfig())
+        #expect(await sut.cachedBrand() == nil)
     }
 
     // MARK: - Refresh
 
     @Test func refresh_cachesTheRemoteDocument() async {
-        let store = InMemoryRemoteConfigStore()
-        let sut = makeSUT(client: online, store: store)
+        let sut = makeSUT(client: online)
 
         await sut.refresh()
 
-        #expect(await sut.cachedConfiguration() == RemoteConfig(listingsPageSize: pageSize))
+        #expect(await sut.cachedBrand() == makeRemoteBrandPair().model)
     }
 
     @Test func refresh_keepsTheCachedDocument_whenTheRequestFails() async {
-        let cached = makeCachedConfiguration(pageSize: pageSize)
-        let sut = makeSUT(client: .offline, store: InMemoryRemoteConfigStore(cache: cached))
+        let pair = makeRemoteBrandPair()
+        let store = InMemoryRemoteBrandStore(
+            cache: CachedRemoteBrand(brand: pair.local, timestamp: now)
+        )
+        let sut = makeSUT(client: .offline, store: store)
 
         await sut.refresh()
 
-        #expect(await sut.cachedConfiguration() == RemoteConfig(listingsPageSize: pageSize))
+        #expect(await sut.cachedBrand() == pair.model)
     }
 
-    @Test func refresh_keepsTheCachedDocument_whenTheResponseIsInvalid() async {
-        let cached = makeCachedConfiguration(pageSize: pageSize)
-        let malformed = HTTPClientStub([configurationURL: [.success(invalidJSON())]])
-        let sut = makeSUT(client: malformed, store: InMemoryRemoteConfigStore(cache: cached))
+    @Test func refresh_keepsTheCachedDocument_whenTheDocumentIsIncomplete() async {
+        let pair = makeRemoteBrandPair()
+        let store = InMemoryRemoteBrandStore(
+            cache: CachedRemoteBrand(brand: pair.local, timestamp: now)
+        )
+        let incomplete = HTTPClientStub([documentURL: [.success(invalidJSON())]])
+        let sut = makeSUT(client: incomplete, store: store)
 
         await sut.refresh()
 
-        #expect(await sut.cachedConfiguration() == RemoteConfig(listingsPageSize: pageSize))
+        #expect(await sut.cachedBrand() == pair.model)
     }
 
     // MARK: - Helpers
 
     private let now = Date()
-    private let pageSize = 4
     private let maxAgeInDays = 7
-    private let configurationURL = RemoteConfigEndpoint.current.url(baseURL: anyURL())
+    private let baseURL = anyURL()
+
+    private var documentURL: URL { RemoteBrandEndpoint.current.url(baseURL: baseURL) }
 
     private var online: HTTPClientStub {
-        HTTPClientStub([configurationURL: [.success(remoteConfigJSON(pageSize: pageSize))]])
+        HTTPClientStub([documentURL: [.success(document)]])
     }
 
-    private func makeCachedConfiguration(pageSize: Int, age: Int = 0) -> CachedRemoteConfig {
-        CachedRemoteConfig(
-            configuration: LocalRemoteConfig(
-                listingsHost: nil,
-                listingsPageSize: pageSize,
-                listingsCacheMaxAgeInDays: nil,
-                defaultLanguage: nil,
-                supportedLanguages: nil,
-                tabs: nil
-            ),
-            timestamp: now.adding(days: -age)
+    private var document: Data {
+        let brand = makeRemoteBrandPair().model
+        return try! JSONSerialization.data(withJSONObject: [
+            "listings": [
+                "host": brand.listingsHost.absoluteString,
+                "pageSize": brand.listingsPageSize,
+                "cacheMaxAgeInDays": brand.listingsCacheMaxAgeInDays,
+            ],
+            "settings": [
+                "defaultLanguage": brand.defaultLanguage,
+                "supportedLanguages": brand.supportedLanguages,
+            ],
+            "tabs": brand.tabs,
+        ])
+    }
+
+    private func makeRemoteBrandPair() -> (model: RemoteBrand, local: LocalRemoteBrand) {
+        let model = RemoteBrand(
+            listingsHost: URL(string: "https://staging.brand.example/api")!,
+            listingsPageSize: 4,
+            listingsCacheMaxAgeInDays: 3,
+            defaultLanguage: "en",
+            supportedLanguages: ["en", "vi"],
+            tabs: ["listings", "settings"]
         )
-    }
-
-    private func remoteConfigJSON(pageSize: Int) -> Data {
-        try! JSONSerialization.data(withJSONObject: ["listings": ["pageSize": pageSize]])
+        let local = LocalRemoteBrand(
+            listingsHost: model.listingsHost,
+            listingsPageSize: model.listingsPageSize,
+            listingsCacheMaxAgeInDays: model.listingsCacheMaxAgeInDays,
+            defaultLanguage: model.defaultLanguage,
+            supportedLanguages: model.supportedLanguages,
+            tabs: model.tabs
+        )
+        return (model, local)
     }
 
     private func makeSUT(
         client: HTTPClientStub,
-        store: RemoteConfigStore = InMemoryRemoteConfigStore()
+        store: RemoteBrandStore = InMemoryRemoteBrandStore()
     ) -> RemoteConfigService {
         RemoteConfigService(
             httpClient: client,
             store: store,
-            baseURL: anyURL(),
+            baseURL: baseURL,
             cachePolicy: RemoteConfigCachePolicy(maxAgeInDays: maxAgeInDays),
             currentDate: { [now] in now }
         )

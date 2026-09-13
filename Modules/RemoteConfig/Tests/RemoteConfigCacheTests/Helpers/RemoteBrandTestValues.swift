@@ -1,13 +1,18 @@
 import Foundation
 import RemoteConfigCache
 import RemoteConfigFeature
+import TestSupport
 
-func makeRemoteConfigPair(
-    pageSize: Int? = 4,
-    tabs: [String]? = ["listings", "settings"]
-) -> (model: RemoteConfig, local: LocalRemoteConfig) {
-    let model = RemoteConfig(listingsPageSize: pageSize, tabs: tabs)
-    let local = LocalRemoteConfig(
+func makeRemoteBrandPair(pageSize: Int = 4) -> (model: RemoteBrand, local: LocalRemoteBrand) {
+    let model = RemoteBrand(
+        listingsHost: anyURL(),
+        listingsPageSize: pageSize,
+        listingsCacheMaxAgeInDays: 3,
+        defaultLanguage: "en",
+        supportedLanguages: ["en", "vi"],
+        tabs: ["listings", "settings"]
+    )
+    let local = LocalRemoteBrand(
         listingsHost: model.listingsHost,
         listingsPageSize: model.listingsPageSize,
         listingsCacheMaxAgeInDays: model.listingsCacheMaxAgeInDays,

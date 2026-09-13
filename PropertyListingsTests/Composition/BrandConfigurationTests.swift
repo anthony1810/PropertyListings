@@ -37,155 +37,108 @@ import Testing
         #expect(brandSettings.initialLanguage(preferring: [unknownToTheApp, "de"]) == .german)
     }
 
-    // MARK: - Applying a remote document
+    // MARK: - Building from a remote document
 
-    @Test func applying_keepsTheBrand_whenTheDocumentIsEmpty() {
-        let brand = makeBrand()
+    @Test func initRemote_isTheRemoteBrand_whenTheDocumentIsUsable() {
+        let fallback = makeBrand()
+        let remote = makeRemoteBrand()
 
-        #expect(brand.applying(RemoteConfig()) == brand)
+        let brand = BrandConfiguration(remote: remote, fallback: fallback)
+
+        #expect(brand?.listings.host == remote.listingsHost)
+        #expect(brand?.listings.pageSize == remote.listingsPageSize)
+        #expect(brand?.listings.cacheMaxAgeInDays == remote.listingsCacheMaxAgeInDays)
+        #expect(brand?.settings.defaultLanguage == .english)
+        #expect(brand?.settings.supportedLanguages == [.english, .vietnamese])
+        #expect(brand?.tabs.map(\.destination) == [.listings, .settings])
     }
 
-    @Test func applying_takesTheListingsHost_whenItIsSecure() {
-        let staging = URL(string: "https://staging.brand.example/api")!
-        let brand = makeBrand()
+    @Test func initRemote_keepsTheFallbackTheme() {
+        let fallback = makeBrand(theme: makeTheme(radii: DSRadii(m: 3, l: 5)))
 
-        let applied = brand.applying(RemoteConfig(listingsHost: staging))
+        let brand = BrandConfiguration(remote: makeRemoteBrand(), fallback: fallback)
 
-        #expect(applied.listings.host == staging)
+        #expect(brand?.theme == fallback.theme)
     }
 
-    @Test func applying_keepsTheListingsHost_whenTheDocumentAsksForCleartext() {
-        let insecure = URL(string: "http://staging.brand.example/api")!
-        let brand = makeBrand()
+    @Test func initRemote_keepsTheFallbackIconForEveryTab() {
+        let fallback = makeBrand(tabs: [
+            BrandConfiguration.Tab(destination: .listings, icon: .image("TabListings")),
+            BrandConfiguration.Tab(destination: .settings, icon: .image("TabSettings")),
+        ])
 
-        let applied = brand.applying(RemoteConfig(listingsHost: insecure))
+        let brand = BrandConfiguration(remote: makeRemoteBrand(), fallback: fallback)
 
-        #expect(applied.listings.host == brand.listings.host)
+        #expect(brand?.tabs.map(\.icon) == [.image("TabListings"), .image("TabSettings")])
     }
 
-    @Test(arguments: [1, 50])
-    func applying_takesThePageSize_whenItIsWithinBounds(pageSize: Int) {
-        let brand = makeBrand()
+    @Test func initRemote_isNothing_whenTheHostIsNotSecure() {
+        let insecure = URL(string: "http://brand.example/api")!
 
         #expect(
-            brand.applying(RemoteConfig(listingsPageSize: pageSize)).listings.pageSize == pageSize
+            BrandConfiguration(remote: makeRemoteBrand(host: insecure), fallback: makeBrand())
+                == nil
         )
     }
 
-    @Test(arguments: [0, 51])
-    func applying_keepsThePageSize_whenTheDocumentIsOutOfBounds(pageSize: Int) {
-        let brand = makeBrand(listingsPageSize: 5)
-
-        #expect(brand.applying(RemoteConfig(listingsPageSize: pageSize)).listings.pageSize == 5)
-    }
-
-    @Test(arguments: [1, 30])
-    func applying_takesTheCacheAge_whenItIsWithinBounds(days: Int) {
-        let brand = makeBrand()
-
-        #expect(
-            brand.applying(RemoteConfig(listingsCacheMaxAgeInDays: days)).listings.cacheMaxAgeInDays
-                == days
-        )
-    }
-
-    @Test(arguments: [0, 31])
-    func applying_keepsTheCacheAge_whenTheDocumentIsOutOfBounds(days: Int) {
-        let brand = makeBrand(listingsCacheMaxAgeInDays: 7)
-
-        #expect(
-            brand.applying(RemoteConfig(listingsCacheMaxAgeInDays: days)).listings.cacheMaxAgeInDays
-                == 7
-        )
-    }
-
-    @Test func applying_takesTheSupportedLanguagesTheAppKnows() {
+    @Test func initRemote_isNothing_whenALanguageIsUnknownToTheApp() {
         let unknownToTheApp = "ja"
-        let brand = makeBrand(supportedLanguages: AppLanguage.allCases)
 
-        let applied = brand.applying(
-            RemoteConfig(supportedLanguages: ["en", unknownToTheApp, "vi"])
+        #expect(
+            BrandConfiguration(
+                remote: makeRemoteBrand(supportedLanguages: ["en", unknownToTheApp]),
+                fallback: makeBrand()
+            ) == nil
         )
-
-        #expect(applied.settings.supportedLanguages == [.english, .vietnamese])
     }
 
-    @Test func applying_keepsTheSupportedLanguages_whenNoneAreKnownToTheApp() {
-        let brand = makeBrand(supportedLanguages: [.german, .english])
-
-        let applied = brand.applying(RemoteConfig(supportedLanguages: ["ja", "ko"]))
-
-        #expect(applied.settings.supportedLanguages == brand.settings.supportedLanguages)
-    }
-
-    @Test func applying_takesTheDefaultLanguage_whenTheAppliedListSupportsIt() {
-        let brand = makeBrand(
-            defaultLanguage: .english,
-            supportedLanguages: [.english, .vietnamese]
+    @Test func initRemote_isNothing_whenTheDefaultLanguageIsNotSupported() {
+        #expect(
+            BrandConfiguration(
+                remote: makeRemoteBrand(defaultLanguage: "de", supportedLanguages: ["en", "vi"]),
+                fallback: makeBrand()
+            ) == nil
         )
-
-        let applied = brand.applying(RemoteConfig(defaultLanguage: "vi"))
-
-        #expect(applied.settings.defaultLanguage == .vietnamese)
     }
 
-    @Test func applying_keepsTheDefaultLanguage_whenTheAppliedListDoesNotSupportIt() {
-        let brand = makeBrand(
-            defaultLanguage: .english,
-            supportedLanguages: [.english, .vietnamese]
-        )
-
-        let applied = brand.applying(RemoteConfig(defaultLanguage: "de"))
-
-        #expect(applied.settings.defaultLanguage == .english)
-    }
-
-    @Test func applying_takesTheTabsTheBrandAlreadyBuilds() {
-        let brand = makeBrand(tabs: [
-            BrandConfiguration.Tab(destination: .listings, icon: .symbol("house")),
-            BrandConfiguration.Tab(destination: .saved, icon: .symbol("heart")),
-            BrandConfiguration.Tab(destination: .settings, icon: .symbol("gear")),
-        ])
-
-        let applied = brand.applying(RemoteConfig(tabs: ["settings", "listings"]))
-
-        #expect(applied.tabs.map(\.destination) == [.settings, .listings])
-        #expect(applied.tabs.map(\.icon) == [.symbol("gear"), .symbol("house")])
-    }
-
-    @Test func applying_keepsTheTabs_whenTheDocumentNamesTabsTheBrandDoesNotBuild() {
-        let brand = makeBrand(tabs: [
+    @Test func initRemote_isNothing_whenATabIsNotOneTheBrandBuilds() {
+        let fallback = makeBrand(tabs: [
             BrandConfiguration.Tab(destination: .listings, icon: .symbol("house")),
             BrandConfiguration.Tab(destination: .settings, icon: .symbol("gear")),
         ])
 
-        let applied = brand.applying(RemoteConfig(tabs: ["saved"]))
-
-        #expect(applied.tabs == brand.tabs)
-    }
-
-    @Test func applying_keepsTheTabs_whenTheDocumentDropsListings() {
-        let brand = makeBrand()
-
-        let applied = brand.applying(RemoteConfig(tabs: ["settings"]))
-
-        #expect(applied.tabs == brand.tabs)
-    }
-
-    @Test func applying_takesTheFirstSupportedLanguageAsDefault_whenNeitherChoiceSurvives() {
-        let brand = makeBrand(defaultLanguage: .german, supportedLanguages: [.german, .french])
-
-        let applied = brand.applying(
-            RemoteConfig(defaultLanguage: "it", supportedLanguages: ["vi", "en"])
+        #expect(
+            BrandConfiguration(
+                remote: makeRemoteBrand(tabs: ["listings", "saved"]),
+                fallback: fallback
+            ) == nil
         )
-
-        #expect(applied.settings.defaultLanguage == .vietnamese)
-        #expect(applied.settings.supportedLanguages == [.vietnamese, .english])
     }
 
-    @Test func applying_keepsTheTheme() {
-        let brand = makeBrand(theme: makeTheme(radii: DSRadii(m: 3, l: 5)))
+    @Test func initRemote_isNothing_whenTheTabsDropListings() {
+        #expect(
+            BrandConfiguration(remote: makeRemoteBrand(tabs: ["settings"]), fallback: makeBrand())
+                == nil
+        )
+    }
 
-        #expect(brand.applying(RemoteConfig(listingsPageSize: 4)).theme == brand.theme)
+    // MARK: - Helpers
+
+    private func makeRemoteBrand(
+        host: URL = URL(string: "https://staging.brand.example/api")!,
+        pageSize: Int = 4,
+        cacheMaxAgeInDays: Int = 3,
+        defaultLanguage: String = "en",
+        supportedLanguages: [String] = ["en", "vi"],
+        tabs: [String] = ["listings", "settings"]
+    ) -> RemoteBrand {
+        RemoteBrand(
+            listingsHost: host,
+            listingsPageSize: pageSize,
+            listingsCacheMaxAgeInDays: cacheMaxAgeInDays,
+            defaultLanguage: defaultLanguage,
+            supportedLanguages: supportedLanguages,
+            tabs: tabs
+        )
     }
 }

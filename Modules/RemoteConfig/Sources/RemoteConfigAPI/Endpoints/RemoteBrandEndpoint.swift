@@ -1,6 +1,6 @@
 import Foundation
 
-public enum RemoteConfigEndpoint {
+public enum RemoteBrandEndpoint {
     case current
 
     public func url(baseURL: URL) -> URL {

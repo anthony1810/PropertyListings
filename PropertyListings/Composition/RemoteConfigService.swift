@@ -7,40 +7,40 @@ import RemoteConfigFeature
 struct RemoteConfigService: Sendable {
     private let httpClient: HTTPClient
     private let baseURL: URL
-    private let localConfiguration: LocalRemoteConfigLoader
+    private let localBrand: LocalRemoteBrandLoader
 
     init(
         httpClient: HTTPClient,
-        store: RemoteConfigStore,
+        store: RemoteBrandStore,
         baseURL: URL,
         cachePolicy: RemoteConfigCachePolicy,
         currentDate: @escaping @Sendable () -> Date
     ) {
         self.httpClient = httpClient
         self.baseURL = baseURL
-        self.localConfiguration = LocalRemoteConfigLoader(
+        self.localBrand = LocalRemoteBrandLoader(
             store: store,
             policy: cachePolicy,
             currentDate: currentDate
         )
     }
 
-    func cachedConfiguration() async -> RemoteConfig {
-        (try? await localConfiguration.load()) ?? RemoteConfig()
+    func cachedBrand() async -> RemoteBrand? {
+        try? await localBrand.load()
     }
 
     func refresh() async {
-        guard let configuration = try? await loadRemoteConfiguration() else { return }
-        try? await localConfiguration.save(configuration)
+        guard let brand = try? await loadRemoteBrand() else { return }
+        try? await localBrand.save(brand)
     }
 }
 
 // MARK: - Remote
 
 private extension RemoteConfigService {
-    func loadRemoteConfiguration() async throws -> RemoteConfig {
-        let url = RemoteConfigEndpoint.current.url(baseURL: baseURL)
+    func loadRemoteBrand() async throws -> RemoteBrand {
+        let url = RemoteBrandEndpoint.current.url(baseURL: baseURL)
         let (data, response) = try await httpClient.get(from: url)
-        return try RemoteConfigMapper.map(data, from: response)
+        return try RemoteBrandMapper.map(data, from: response)
     }
 }

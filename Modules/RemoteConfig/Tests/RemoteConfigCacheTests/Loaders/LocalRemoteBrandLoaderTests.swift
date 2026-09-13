@@ -4,7 +4,7 @@ import RemoteConfigFeature
 import Testing
 import TestSupport
 
-@Suite final class LocalRemoteConfigLoaderTests {
+@Suite final class LocalRemoteBrandLoaderTests {
     @Test func init_doesNotMessageTheStore() {
         let (_, store) = makeSUT()
 
@@ -35,38 +35,38 @@ import TestSupport
         let (sut, store) = makeSUT()
         store.completeRetrieval(with: nil)
 
-        await #expect(throws: LocalRemoteConfigLoader.Error.cacheMiss) {
+        await #expect(throws: LocalRemoteBrandLoader.Error.cacheMiss) {
             try await sut.load()
         }
     }
 
     @Test func load_deliversTheCachedConfiguration_whenItIsWithinTheMaxAge() async throws {
         let now = Date()
-        let pair = makeRemoteConfigPair()
+        let pair = makeRemoteBrandPair()
         let (sut, store) = makeSUT(currentDate: now)
         store.completeRetrieval(
-            with: CachedRemoteConfig(
-                configuration: pair.local,
+            with: CachedRemoteBrand(
+                brand: pair.local,
                 timestamp: now.adding(days: -maxAgeInDays).adding(seconds: 1)
             )
         )
 
-        let configuration = try await sut.load()
+        let brand = try await sut.load()
 
-        #expect(configuration == pair.model)
+        #expect(brand == pair.model)
     }
 
     @Test func load_throwsCacheMiss_whenTheCacheReachedTheMaxAge() async {
         let now = Date()
         let (sut, store) = makeSUT(currentDate: now)
         store.completeRetrieval(
-            with: CachedRemoteConfig(
-                configuration: makeRemoteConfigPair().local,
+            with: CachedRemoteBrand(
+                brand: makeRemoteBrandPair().local,
                 timestamp: now.adding(days: -maxAgeInDays)
             )
         )
 
-        await #expect(throws: LocalRemoteConfigLoader.Error.cacheMiss) {
+        await #expect(throws: LocalRemoteBrandLoader.Error.cacheMiss) {
             try await sut.load()
         }
     }
@@ -75,7 +75,7 @@ import TestSupport
 
     @Test func save_insertsTheConfigurationWithTheCurrentDate() async throws {
         let now = Date()
-        let pair = makeRemoteConfigPair()
+        let pair = makeRemoteBrandPair()
         let (sut, store) = makeSUT(currentDate: now)
 
         try await sut.save(pair.model)
@@ -88,7 +88,7 @@ import TestSupport
         store.completeInsertion(with: anyNSError())
 
         await #expect(throws: Error.self) {
-            try await sut.save(makeRemoteConfigPair().model)
+            try await sut.save(makeRemoteBrandPair().model)
         }
     }
 
@@ -104,9 +104,9 @@ import TestSupport
     private func makeSUT(
         currentDate: Date = Date(),
         sourceLocation: SourceLocation = #_sourceLocation
-    ) -> (sut: LocalRemoteConfigLoader, store: RemoteConfigStoreSpy) {
-        let store = RemoteConfigStoreSpy()
-        let sut = LocalRemoteConfigLoader(
+    ) -> (sut: LocalRemoteBrandLoader, store: RemoteBrandStoreSpy) {
+        let store = RemoteBrandStoreSpy()
+        let sut = LocalRemoteBrandLoader(
             store: store,
             policy: RemoteConfigCachePolicy(maxAgeInDays: maxAgeInDays),
             currentDate: { currentDate }
