@@ -7,6 +7,7 @@ let package = Package(
     products: [
         .library(name: "RemoteConfigFeature", targets: ["RemoteConfigFeature"]),
         .library(name: "RemoteConfigAPI", targets: ["RemoteConfigAPI"]),
+        .library(name: "RemoteConfigCache", targets: ["RemoteConfigCache"]),
     ],
     dependencies: [
         .package(path: "../Shared/TestSupport")
@@ -14,6 +15,11 @@ let package = Package(
     targets: [
         .target(name: "RemoteConfigFeature"),
         .target(name: "RemoteConfigAPI", dependencies: ["RemoteConfigFeature"]),
+        .target(name: "RemoteConfigCache", dependencies: ["RemoteConfigFeature"]),
+        .testTarget(
+            name: "RemoteConfigCacheTests",
+            dependencies: ["RemoteConfigCache", "TestSupport"]
+        ),
         .testTarget(
             name: "RemoteConfigAPITests",
             dependencies: ["RemoteConfigAPI", "TestSupport"]
