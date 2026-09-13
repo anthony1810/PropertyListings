@@ -158,13 +158,14 @@ the tests that need the network and reports on the pull request and its own badg
 | Live | `end-to-end` | `PropertyListingsEndToEndTests` on the Mac against the live endpoint |
 | Live | `ui-tests` | `PropertyListingsUITests` on iPhone 17, eight scenarios launching the app with `-reset` and `-connectivity offline` |
 
-## Testing strategy (93% Test Coverage as of 10 September 2026)
+## Testing strategy (93% Test Coverage as of 13 September 2026)
 
-286 tests in five kinds, each aimed at one risk. The widest tier runs most often.
+358 tests in five kinds, each aimed at one risk. The widest tier runs most often. The app suite is counted
+once here and runs twice on CI, 89 tests under each brand scheme.
 
-- **Unit Tests**: 240 tests in total, proving the correctness of the smallest units of code, one type at a time.
-- **Snapshot Tests**: 10 tests in total, 18 recorded references, proving every screen state renders as designed in light and dark.
-- **Acceptance Tests**: 27 tests in total, guaranteeing the behaviours listed in [BDD Specs: Listings](docs/specs/listings.md), [BDD Specs: Bookmarks](docs/specs/bookmarks.md) and [BDD Specs: Settings](docs/specs/settings.md).
+- **Unit Tests**: 305 tests in total, proving the correctness of the smallest units of code, one type at a time.
+- **Snapshot Tests**: 16 tests in total, 36 recorded references, proving every screen state renders as designed in light and dark, and each brand renders as its own product.
+- **Acceptance Tests**: 28 tests in total, guaranteeing the behaviours listed in [BDD Specs: Listings](docs/specs/listings.md), [BDD Specs: Bookmarks](docs/specs/bookmarks.md) and [BDD Specs: Settings](docs/specs/settings.md).
 - **UI Automation Tests**: 8 tests in total, driving the shipped app on a simulator against the live endpoint.
 - **End to End Tests**: 1 test in total, proving the live endpoint still answers in the shape the mapper expects.
 
@@ -172,7 +173,9 @@ the tests that need the network and reports on the pull request and its own badg
   <img alt="Test pyramid" src="docs/test-pyramid.svg" width="900">
 </p>
 
-Line coverage from the unit, snapshot and acceptance runs, measured with `xccov` on 10 September 2026:
+Line coverage from the unit, snapshot and acceptance runs, measured with `xccov` on 13 September 2026. Every
+figure below was re-measured after the brand work, the theme migration and the RemoteConfig vertical, and
+every one of them held.
 
 | Feature | Target | Coverage | Locations |
 |---|---|---|---|
@@ -189,11 +192,14 @@ Line coverage from the unit, snapshot and acceptance runs, measured with `xccov`
 | Settings | SettingsPersistence | 99% | [LocalSettingsLoaderTests](Modules/Settings/Tests/SettingsPersistenceTests/Loaders/LocalSettingsLoaderTests.swift), [CodableSettingsStoreTests](Modules/Settings/Tests/SettingsPersistenceTests/Infrastructure/Codable/CodableSettingsStoreTests.swift), [InMemorySettingsStoreTests](Modules/Settings/Tests/SettingsPersistenceTests/Infrastructure/InMemory/InMemorySettingsStoreTests.swift) |
 | Settings | SettingsPresentation | 100% | [SettingsViewModelTests](Modules/Settings/Tests/SettingsPresentationTests/ViewModels/SettingsViewModelTests.swift), [LocalizationTests](Modules/Settings/Tests/SettingsPresentationTests/LocalizationTests.swift) |
 | Settings | SettingsUI | 89% | [SettingsViewSnapshotTests](Modules/Settings/Tests/SettingsUITests/Views/SettingsViewSnapshotTests.swift), [LocalizationTests](Modules/Settings/Tests/SettingsUITests/LocalizationTests.swift) |
+| RemoteConfig | RemoteConfigFeature | 94% | covered through the API and Cache suites |
+| RemoteConfig | RemoteConfigAPI | 100% | [RemoteBrandEndpointTests](Modules/RemoteConfig/Tests/RemoteConfigAPITests/Endpoints/RemoteBrandEndpointTests.swift), [RemoteBrandMapperTests](Modules/RemoteConfig/Tests/RemoteConfigAPITests/Mappers/RemoteBrandMapperTests.swift) |
+| RemoteConfig | RemoteConfigCache | 89% | [LocalRemoteBrandLoaderTests](Modules/RemoteConfig/Tests/RemoteConfigCacheTests/Loaders/LocalRemoteBrandLoaderTests.swift), [CodableRemoteBrandStoreTests](Modules/RemoteConfig/Tests/RemoteConfigCacheTests/Infrastructure/Codable/CodableRemoteBrandStoreTests.swift) |
 | Shared | SharedPresentation | 100% | [PriceFormatterTests](Modules/Shared/SharedPresentation/Tests/SharedPresentationTests/PriceFormatterTests.swift), [AddressFormatterTests](Modules/Shared/SharedPresentation/Tests/SharedPresentationTests/AddressFormatterTests.swift), [BundleLocalizedTests](Modules/Shared/SharedPresentation/Tests/SharedPresentationTests/BundleLocalizedTests.swift), [LocalizationTests](Modules/Shared/SharedPresentation/Tests/SharedPresentationTests/LocalizationTests.swift) |
 | Shared | HTTPClientLive | 100% | [URLSessionHTTPClientTests](Modules/Shared/HTTPClient/Tests/HTTPClientLiveTests/URLSessionHTTPClientTests.swift) |
 | Shared | DesignSystem | attributed to the UI targets | [TokensTests](Modules/Shared/DesignSystem/Tests/DesignSystemTests/TokensTests.swift), [LocalizationTests](Modules/Shared/DesignSystem/Tests/DesignSystemTests/LocalizationTests.swift) |
 | Shared | TestSupport | not measured | [StubTests](Modules/Shared/TestSupport/Tests/TestSupportTests/StubTests.swift), [MemoryLeakTrackerTests](Modules/Shared/TestSupport/Tests/TestSupportTests/MemoryLeakTrackerTests.swift), [FixtureCoverageTests](Modules/Shared/TestSupport/Tests/TestSupportTests/FixtureCoverageTests.swift) |
-| App | App root | 93% | [ListingsServiceTests](PropertyListingsTests/Composition/ListingsServiceTests.swift), [AppCompositionTests](PropertyListingsTests/Composition/AppCompositionTests.swift), [AppRouterTests](PropertyListingsTests/Composition/AppRouterTests.swift), [LocalizationTests](PropertyListingsTests/Resources/LocalizationTests.swift), [ListingsAcceptanceTests](PropertyListingsTests/Acceptance/ListingsAcceptanceTests.swift), [BookmarksAcceptanceTests](PropertyListingsTests/Acceptance/BookmarksAcceptanceTests.swift), [SettingsAcceptanceTests](PropertyListingsTests/Acceptance/SettingsAcceptanceTests.swift) |
+| App | App root | 93% | [BrandSnapshotTests](PropertyListingsTests/Brand/BrandSnapshotTests.swift), [ListingsServiceTests](PropertyListingsTests/Composition/ListingsServiceTests.swift), [AppCompositionTests](PropertyListingsTests/Composition/AppCompositionTests.swift), [AppRouterTests](PropertyListingsTests/Composition/AppRouterTests.swift), [LocalizationTests](PropertyListingsTests/Resources/LocalizationTests.swift), [ListingsAcceptanceTests](PropertyListingsTests/Acceptance/ListingsAcceptanceTests.swift), [BookmarksAcceptanceTests](PropertyListingsTests/Acceptance/BookmarksAcceptanceTests.swift), [SettingsAcceptanceTests](PropertyListingsTests/Acceptance/SettingsAcceptanceTests.swift) |
 | App | Separate process | not counted | [ListingsUITests](PropertyListingsUITests/ListingsUITests.swift), [BookmarksUITests](PropertyListingsUITests/BookmarksUITests.swift), [SettingsUITests](PropertyListingsUITests/SettingsUITests.swift), [ListingsAPIEndToEndTests](PropertyListingsEndToEndTests/ListingsAPIEndToEndTests.swift) |
 | **Total Test Coverage** | | **93%** | |
 
