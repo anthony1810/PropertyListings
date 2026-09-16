@@ -71,18 +71,19 @@ public struct EmptyStateView: View {
 }
 
 public struct SkeletonRow: View {
+    @Environment(\.theme) private var theme
     public init() {}
 
     public var body: some View {
         VStack(alignment: .leading, spacing: DSSpacing.s) {
-            RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous)
+            RoundedRectangle(cornerRadius: theme.radii.l, style: .continuous)
                 .frame(height: 220)
-            RoundedRectangle(cornerRadius: DSRadius.m)
+            RoundedRectangle(cornerRadius: theme.radii.m)
                 .frame(width: 220, height: 18)
-            RoundedRectangle(cornerRadius: DSRadius.m)
+            RoundedRectangle(cornerRadius: theme.radii.m)
                 .frame(width: 160, height: 14)
         }
-        .foregroundStyle(DSColor.surfaceElevated)
+        .foregroundStyle(theme.colors.surfaceElevated)
         .redacted(reason: .placeholder)
         .shimmering()
     }

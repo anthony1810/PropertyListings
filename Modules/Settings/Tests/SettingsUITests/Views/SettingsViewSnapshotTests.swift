@@ -30,6 +30,7 @@ import TestSupport
     private func makeView(settings: Settings) async -> some View {
         let viewModel = SettingsViewModel(
             initial: settings,
+            supportedLanguages: [.german, .french, .italian, .english],
             observeSettings: { AsyncStream { $0.yield(settings); $0.finish() } },
             saveSettings: { _ in },
             notify: { _ in },

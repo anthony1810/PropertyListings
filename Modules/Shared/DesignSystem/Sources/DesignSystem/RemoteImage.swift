@@ -26,15 +26,16 @@ public struct RemoteImage: View {
 }
 
 struct ImagePlaceholder: View {
+    @Environment(\.theme) private var theme
     enum State { case loading, failed }
     let state: State
 
     var body: some View {
         ZStack {
-            DSColor.surfaceElevated
+            theme.colors.surfaceElevated
             Image(systemName: state == .failed ? "photo.badge.exclamationmark" : "photo")
                 .font(.title2)
-                .foregroundStyle(DSColor.textSecondary)
+                .foregroundStyle(theme.colors.textSecondary)
         }
     }
 }
@@ -43,10 +44,14 @@ struct ImagePlaceholder: View {
     VStack(spacing: DSSpacing.m) {
         RemoteImage(url: nil, targetSize: CGSize(width: 400, height: 260))
             .frame(height: 180)
-            .clipShape(RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous))
+            .clipShape(
+                RoundedRectangle(cornerRadius: DSTheme.designSystem.radii.l, style: .continuous)
+            )
         ImagePlaceholder(state: .failed)
             .frame(height: 180)
-            .clipShape(RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous))
+            .clipShape(
+                RoundedRectangle(cornerRadius: DSTheme.designSystem.radii.l, style: .continuous)
+            )
     }
     .padding()
 }

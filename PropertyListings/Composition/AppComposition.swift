@@ -18,14 +18,29 @@ import SettingsUI
 @MainActor
 final class AppComposition {
     let router = AppRouter()
+    private let brand: BrandConfiguration
+    let theme: DSTheme
 
     // MARK: - Edges
 
-    private lazy var httpClient: HTTPClient = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-    private lazy var listingsStore: ListingsStore = CodableListingsStore(storeURL: Self.storeURL(named: "listings.json"))
-    private lazy var bookmarkStore: BookmarkStore = CodableBookmarkStore(storeURL: Self.storeURL(named: "bookmarks.json"))
-    private lazy var settingsStore: SettingsStore = CodableSettingsStore(storeURL: Self.storeURL(named: "settings.json"))
-    private var defaultSettings: Settings = AppComposition.deviceSettings
+    private lazy var httpClient: HTTPClient = URLSessionHTTPClient(
+        session: URLSession(configuration: .ephemeral)
+    )
+    private lazy var listingsStore: ListingsStore = CodableListingsStore(
+        storeURL: Self.storeURL(named: "listings.json")
+    )
+    private lazy var bookmarkStore: BookmarkStore = CodableBookmarkStore(
+        storeURL: Self.storeURL(named: "bookmarks.json")
+    )
+    private lazy var settingsStore: SettingsStore = CodableSettingsStore(
+        storeURL: Self.storeURL(named: "settings.json")
+    )
+    private var preferredLanguageCodes: [String] = Bundle.main.preferredLocalizations
+    private let refreshBrand: @Sendable () async -> Void
+    private lazy var defaultSettings = Settings(
+        appearance: .system,
+        language: brand.settings.initialLanguage(preferring: preferredLanguageCodes)
+    )
     private var currentDate: @Sendable () -> Date = Date.init
     private var locale: Locale = .current
     private var clock: any Clock<Duration> = ContinuousClock()
@@ -35,11 +50,16 @@ final class AppComposition {
     private lazy var listingsService = ListingsService(
         httpClient: httpClient,
         store: listingsStore,
-        baseURL: ServiceURLs.listings,
+        baseURL: brand.listings.host,
+        pageSize: brand.listings.pageSize,
+        cachePolicy: ListingsCachePolicy(maxAgeInDays: brand.listings.cacheMaxAgeInDays),
         currentDate: currentDate
     )
     private lazy var bookmarks = LocalBookmarksLoader(store: bookmarkStore)
-    private lazy var settings = LocalSettingsLoader(store: settingsStore, defaultSettings: defaultSettings)
+    private lazy var settings = LocalSettingsLoader(
+        store: settingsStore,
+        defaultSettings: defaultSettings
+    )
 
     // MARK: - View models
 
@@ -49,37 +69,57 @@ final class AppComposition {
 
     // MARK: - Init
 
-    init() {
+    init(
+        brand: BrandConfiguration,
+        refreshBrand: @escaping @Sendable () async -> Void = {}
+    ) {
+        self.brand = brand
+        self.refreshBrand = refreshBrand
+        theme = brand.theme
         ImagePipeline.configure()
     }
 
-    convenience init(httpClient: HTTPClient) {
-        self.init()
+    convenience init(
+        brand: BrandConfiguration,
+        httpClient: HTTPClient,
+        refreshBrand: @escaping @Sendable () async -> Void = {}
+    ) {
+        self.init(brand: brand, refreshBrand: refreshBrand)
         self.httpClient = httpClient
     }
 
     convenience init(
+        brand: BrandConfiguration,
         httpClient: HTTPClient,
         listingsStore: ListingsStore,
         bookmarkStore: BookmarkStore,
         settingsStore: SettingsStore,
-        defaultSettings: Settings = AppComposition.deviceSettings,
+        refreshBrand: @escaping @Sendable () async -> Void = {},
+        preferredLanguageCodes: [String],
         currentDate: @escaping @Sendable () -> Date,
         locale: Locale,
         clock: any Clock<Duration> = ContinuousClock()
     ) {
-        self.init()
+        self.init(brand: brand, refreshBrand: refreshBrand)
         self.httpClient = httpClient
         self.listingsStore = listingsStore
         self.bookmarkStore = bookmarkStore
         self.settingsStore = settingsStore
-        self.defaultSettings = defaultSettings
+        self.preferredLanguageCodes = preferredLanguageCodes
         self.currentDate = currentDate
         self.locale = locale
         self.clock = clock
     }
 
+    // MARK: - Tabs
+
+    var tabs: [BrandConfiguration.Tab] { brand.tabs }
+
     // MARK: - Launch
+
+    func refreshBrandForTheNextLaunch() async {
+        await refreshBrand()
+    }
 
     func validateCache() async {
         await listingsService.validateCache()
@@ -101,7 +141,9 @@ extension AppComposition {
         return ListingsViewModel(
             loadListings: { try await service.loadListings() },
             observeBookmarkedIDs: { bookmarks.observe().map { Set($0.map(\.id)) } },
-            saveBookmark: { try await bookmarks.save(Bookmark(listing: $0, savedAt: currentDate())) },
+            saveBookmark: {
+                try await bookmarks.save(Bookmark(listing: $0, savedAt: currentDate()))
+            },
             removeBookmark: { try await bookmarks.remove(id: $0) },
             notify: { router.present(.error($0)) },
             locale: locale,
@@ -136,11 +178,6 @@ extension AppComposition {
 // MARK: - Settings
 
 extension AppComposition {
-    static var deviceSettings: Settings {
-        let code = Bundle.main.preferredLocalizations.first ?? AppLanguage.english.rawValue
-        return Settings(appearance: .system, language: AppLanguage(rawValue: code) ?? .english)
-    }
-
     func makeSettingsView() -> SettingsView {
         SettingsView(viewModel: settingsViewModel)
     }
@@ -163,6 +200,7 @@ extension AppComposition {
         let router = router
         return SettingsViewModel(
             initial: defaultSettings,
+            supportedLanguages: brand.settings.supportedLanguages,
             observeSettings: { settings.observe() },
             saveSettings: { try await settings.save($0) },
             notify: { router.present(.error($0)) },
@@ -175,10 +213,16 @@ extension AppComposition {
 // MARK: - Storage
 
 extension AppComposition {
-    static let storageDirectory = URL.applicationSupportDirectory.appending(path: "PropertyListings", directoryHint: .isDirectory)
+    static let storageDirectory = URL.applicationSupportDirectory.appending(
+        path: "PropertyListings",
+        directoryHint: .isDirectory
+    )
 
-    private static func storeURL(named fileName: String) -> URL {
-        try? FileManager.default.createDirectory(at: storageDirectory, withIntermediateDirectories: true)
+    static func storeURL(named fileName: String) -> URL {
+        try? FileManager.default.createDirectory(
+            at: storageDirectory,
+            withIntermediateDirectories: true
+        )
         return storageDirectory.appending(path: fileName)
     }
 }

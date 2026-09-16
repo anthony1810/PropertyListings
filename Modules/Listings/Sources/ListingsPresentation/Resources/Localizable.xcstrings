@@ -28,6 +28,12 @@
             "state": "translated",
             "value": "Impossibile caricare gli annunci. Controlla la connessione e riprova."
           }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không tải được tin đăng. Hãy kiểm tra kết nối và thử lại."
+          }
         }
       }
     },
@@ -56,6 +62,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Questa modifica non è stata salvata. Riprova."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không lưu được thay đổi này. Vui lòng thử lại."
           }
         }
       }

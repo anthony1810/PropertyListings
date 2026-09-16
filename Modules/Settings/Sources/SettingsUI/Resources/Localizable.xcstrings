@@ -8,7 +8,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "Settings" } },
         "de": { "stringUnit": { "state": "translated", "value": "Einstellungen" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Réglages" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Impostazioni" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Impostazioni" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Cài đặt" } }
       }
     },
     "settings.appearance": {
@@ -17,7 +18,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "Appearance" } },
         "de": { "stringUnit": { "state": "translated", "value": "Erscheinungsbild" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Apparence" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Aspetto" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Aspetto" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Giao diện" } }
       }
     },
     "settings.appearance.system": {
@@ -26,7 +28,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "System" } },
         "de": { "stringUnit": { "state": "translated", "value": "System" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Système" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Sistema" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Sistema" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Hệ thống" } }
       }
     },
     "settings.appearance.light": {
@@ -35,7 +38,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "Light" } },
         "de": { "stringUnit": { "state": "translated", "value": "Hell" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Clair" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Chiaro" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Chiaro" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Sáng" } }
       }
     },
     "settings.appearance.dark": {
@@ -44,7 +48,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "Dark" } },
         "de": { "stringUnit": { "state": "translated", "value": "Dunkel" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Sombre" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Scuro" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Scuro" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tối" } }
       }
     },
     "settings.language": {
@@ -53,7 +58,8 @@
         "en": { "stringUnit": { "state": "translated", "value": "Language" } },
         "de": { "stringUnit": { "state": "translated", "value": "Sprache" } },
         "fr": { "stringUnit": { "state": "translated", "value": "Langue" } },
-        "it": { "stringUnit": { "state": "translated", "value": "Lingua" } }
+        "it": { "stringUnit": { "state": "translated", "value": "Lingua" } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Ngôn ngữ" } }
       }
     }
   }

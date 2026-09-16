@@ -1,0 +1,52 @@
+{
+  "brand": "Lakeside",
+  "source": "Figma collection Brand, mode Lakeside, exported 12 September 2026",
+  "colors": {
+    "surface": {
+      "light": "#FFFFFF",
+      "dark": "#1A1216"
+    },
+    "surfaceElevated": {
+      "light": "#FCEFF4",
+      "dark": "#26191F"
+    },
+    "textPrimary": {
+      "light": "#24141B",
+      "dark": "#F2E6EB"
+    },
+    "textSecondary": {
+      "light": "#7A5C68",
+      "dark": "#B394A2"
+    },
+    "accent": {
+      "light": "#D6336C",
+      "dark": "#FF7AA8"
+    },
+    "like": {
+      "light": "#E8590C",
+      "dark": "#FFA36B"
+    },
+    "onImage": {
+      "light": "#FFFFFF",
+      "dark": "#FFFFFF"
+    }
+  },
+  "radius": {
+    "m": 16,
+    "l": 28
+  },
+  "typeface": "Fraunces",
+  "mark": "lighthouse-fill (Phosphor, MIT)",
+  "languages": {
+    "default": "en",
+    "offered": [
+      "en",
+      "vi"
+    ]
+  },
+  "tabIcons": {
+    "listings": "lighthouse",
+    "settings": "gear-six",
+    "source": "Phosphor, MIT, fill variant when selected"
+  }
+}

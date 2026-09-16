@@ -42,6 +42,12 @@ Given a fresh install
  Then the app speaks the language the phone chose for it
 ```
 
+```
+Given a fresh install on a phone whose language the brand does not offer
+ When the customer opens the app
+ Then the app speaks the brand's default language
+```
+
 ### Narrative #2
 
 > As a customer
@@ -114,7 +120,7 @@ Primary course:
 
 ## Scenario to test map
 
-Acceptance tests live in `PropertyListingsTests/SettingsAcceptanceTests`, through the real composition
+Acceptance tests live in `PropertyListingsTests/Acceptance/SettingsAcceptanceTests.swift`, through the real composition
 over in-memory stores. A relaunch is a second composition over the same stores.
 
 | Scenario | Proven by |
@@ -122,5 +128,6 @@ over in-memory stores. A relaunch is a second composition over the same stores.
 | Picking a language relabels every tab at once | `customerPicksFrench_seesEveryTabFollowAtOnce` · UI test `settingsTab_pickingFrenchRelabelsTheTabsAndSurvivesRelaunch` · snapshots `emptyFrench`, `settingsFrench` |
 | The language survives a relaunch | `customerPicksFrench_seesItKeptAfterRelaunch` · UI test `settingsTab_pickingFrenchRelabelsTheTabsAndSurvivesRelaunch` |
 | A fresh install follows the phone | `freshInstall_followsTheLanguageThePhoneChose` |
+| A fresh install on a phone the brand does not speak follows the brand | `freshInstallOnAPhoneTheBrandDoesNotSpeak_startsInTheBrandDefault` |
 | Dark switches every screen and survives a relaunch | `customerPicksDark_seesItKeptAfterRelaunch` · snapshot `settings.dark` |
 | A choice that cannot be saved comes back with an alert | `customerPicksDarkAndSavingFails_seesSystemBackAndAnAlert` |

@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct LikeButton: View {
+    @Environment(\.theme) private var theme
     private let isOn: Bool
     private let action: () -> Void
 
@@ -13,14 +14,16 @@ public struct LikeButton: View {
         Button(action: action) {
             Image(systemName: isOn ? "heart.fill" : "heart")
                 .font(.system(size: 20, weight: .semibold))
-                .foregroundStyle(isOn ? DSColor.like : DSColor.onImage)
+                .foregroundStyle(isOn ? theme.colors.like : theme.colors.onImage)
                 .padding(10)
                 .background(.ultraThinMaterial, in: Circle())
                 .contentTransition(.symbolEffect(.replace))
         }
         .buttonStyle(.plain)
         .accessibilityLabel(DesignSystemStrings.likeLabel)
-        .accessibilityValue(isOn ? DesignSystemStrings.likeValueOn : DesignSystemStrings.likeValueOff)
+        .accessibilityValue(
+            isOn ? DesignSystemStrings.likeValueOn : DesignSystemStrings.likeValueOff
+        )
         .accessibilityAddTraits(isOn ? .isSelected : [])
         .sensoryFeedback(.impact(weight: .light), trigger: isOn)
     }

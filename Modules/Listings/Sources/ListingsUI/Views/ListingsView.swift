@@ -5,6 +5,7 @@ import SwiftUI
 
 public struct ListingsView: View {
     @Environment(\.locale) private var locale
+    @Environment(\.theme) private var theme
 
     private let viewModel: ListingsViewModel
 
@@ -15,7 +16,7 @@ public struct ListingsView: View {
     public var body: some View {
         content
             .navigationTitle(ListingsUIStrings.title(for: locale))
-            .background(DSColor.surface)
+            .background(theme.colors.surface)
             .task { await viewModel.loadIfNeeded() }
             .task { await viewModel.observeBookmarks() }
             .refreshable { await viewModel.load() }

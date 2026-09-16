@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct ListingCard: View {
+    @Environment(\.theme) private var theme
     public struct Model: Sendable, Hashable {
         public let imageURL: URL?
         public let title: String
@@ -8,7 +9,13 @@ public struct ListingCard: View {
         public let addressText: String
         public let isLiked: Bool
 
-        public init(imageURL: URL?, title: String, priceText: String, addressText: String, isLiked: Bool) {
+        public init(
+            imageURL: URL?,
+            title: String,
+            priceText: String,
+            addressText: String,
+            isLiked: Bool
+        ) {
             self.imageURL = imageURL
             self.title = title
             self.priceText = priceText
@@ -31,12 +38,12 @@ public struct ListingCard: View {
         VStack(alignment: .leading, spacing: DSSpacing.s) {
             image
             Text(model.title)
-                .font(DSFont.title)
-                .foregroundStyle(DSColor.textPrimary)
+                .font(theme.font(for: .title))
+                .foregroundStyle(theme.colors.textPrimary)
                 .lineLimit(2)
             Label(model.addressText, systemImage: "mappin.and.ellipse")
-                .font(DSFont.caption)
-                .foregroundStyle(DSColor.textSecondary)
+                .font(theme.font(for: .caption))
+                .foregroundStyle(theme.colors.textSecondary)
                 .lineLimit(1)
         }
     }
@@ -44,10 +51,10 @@ public struct ListingCard: View {
     private var image: some View {
         RemoteImage(url: model.imageURL, targetSize: CGSize(width: 400, height: 260))
             .frame(height: 220)
-            .clipShape(RoundedRectangle(cornerRadius: DSRadius.l, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: theme.radii.l, style: .continuous))
             .overlay(alignment: .bottomLeading) {
                 Text(model.priceText)
-                    .font(DSFont.price)
+                    .font(theme.font(for: .price))
                     .padding(.horizontal, DSSpacing.s)
                     .padding(.vertical, DSSpacing.xs)
                     .background(.thinMaterial, in: Capsule())
@@ -89,5 +96,5 @@ public struct ListingCard: View {
         }
         .padding(DSSpacing.m)
     }
-    .background(DSColor.surface)
+    .background(DSTheme.designSystem.colors.surface)
 }

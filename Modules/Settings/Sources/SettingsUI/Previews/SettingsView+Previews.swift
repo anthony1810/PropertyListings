@@ -5,9 +5,12 @@ import SettingsPresentation
 import SwiftUI
 
 extension SettingsViewModel {
-    static func preview(settings: Settings = Settings(appearance: .system, language: .german)) -> SettingsViewModel {
+    static func preview(
+        settings: Settings = Settings(appearance: .system, language: .german)
+    ) -> SettingsViewModel {
         SettingsViewModel(
             initial: settings,
+            supportedLanguages: [.german, .french, .italian, .english],
             observeSettings: { AsyncStream { $0.yield(settings) } },
             saveSettings: { _ in },
             notify: { _ in },
@@ -22,8 +25,10 @@ extension SettingsViewModel {
 }
 
 #Preview("Settings, dark, French") {
-    NavigationStack { SettingsView(viewModel: .preview(settings: Settings(appearance: .dark, language: .french))) }
-        .preferredColorScheme(.dark)
-        .environment(\.locale, Locale(identifier: "fr_CH"))
+    NavigationStack {
+        SettingsView(viewModel: .preview(settings: Settings(appearance: .dark, language: .french)))
+    }
+    .preferredColorScheme(.dark)
+    .environment(\.locale, Locale(identifier: "fr_CH"))
 }
 #endif

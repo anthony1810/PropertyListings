@@ -7,7 +7,12 @@
 [![Live](https://github.com/anthony1810/PropertyListings/actions/workflows/live.yml/badge.svg?branch=main)](https://github.com/anthony1810/PropertyListings/actions/workflows/live.yml)
 
 A SwiftUI app that lists real estate from a REST endpoint, lets you bookmark listings on the device, and
-switches language and appearance in place. Three tabs: Listings, Saved and Settings. iOS 18.0, Xcode 26, Swift 6.
+switches language and appearance in place. iOS 18.0, Xcode 26, Swift 6.
+
+It is built as a white label product: one codebase, one app per brand. `PropertyListings` and `Lakeside`
+are two apps compiled from the same source, each with its own bundle identifier, icon, launch screen,
+palette, typeface, tab set, languages and backend. A brand can also be reconfigured after release, with no
+new binary, from a JSON document it fetches on launch.
 
 ## Architecture
 
@@ -30,9 +35,11 @@ that crosses a module boundary.
 | 2 | Listings, Bookmarks and Settings never import each other. | Each feature knows nothing about the others, so they can be composed and reused anywhere without coupling. |
 | 3 | Kingfisher may only be imported inside DesignSystem. | One place to swap the image pipeline. |
 | 4 | HTTPClient may only be imported by the composition root and its own live module, never by a feature. | The API layer of a feature stays agnostic of how the request is made, Alamofire or URLSession alike. |
-| 5 | The backend host is named in one file, `ServiceURLs`, plus the end to end test. | One file to change when the backend environment changes. |
+| 5 | The backend host is named in one file, the brand's `Brand.swift`, plus the end to end test. | One file to change when the backend environment changes, and a second brand is a second file, not a search. |
 | 6 | A TestSupport module may only be linked by a test bundle. | Test doubles never ship. |
 | 7 | ListingsAPI and ListingsCache never import each other. | The two infrastructure layers know nothing about each other, so when either one has to go, the other stays intact. |
+| 8 | A feature package never names a brand: `CurrentBrand` and `BrandConfiguration` exist only in the composition root and the `Brands/` folders. | Features are built once and linked by every brand. The brand is decided in one place, the root, and a feature that knew its brand could not be reused by the next one. |
+| 9 | No file names `DSTokens`, `DSColor.` or `DSRadius.`: the design system is read through a `DSTheme` injected into the environment. | A component that asks a global for its colours hides that it has a theme at all, and makes two brands impossible to render in one process. The theme is an input, like every other dependency. |
 
 ## Module map
 
@@ -47,6 +54,91 @@ that crosses a module boundary.
 | BDD specs for Settings | [docs/specs/settings.md](docs/specs/settings.md) | How a customer switches language and appearance, and what survives a relaunch, as Given, When, Then scenarios. Each scenario is what one acceptance test proves, and the map at the end names that test. |
 | Figma design | [PropertyListings on Figma](https://www.figma.com/design/mGYnBSubQuhnIJkenp8aMC) | Foundations, components and every screen in light and dark. Anyone with the link can view. |
 
+## White label
+
+Two rules let one codebase serve many brands.
+
+**A feature never knows which brand it is in.** Every module under `Modules/` is compiled once and linked
+by every brand. Guard rule 8 fails the build if a feature names `CurrentBrand` or `BrandConfiguration`.
+Guard rule 9 fails it if any file reads a global design token instead of the `DSTheme` the root injects
+into the environment. A feature that knew its brand could not be reused by the next one.
+
+**A brand is a folder and four lines of `project.yml`.** Everything a brand owns lives in
+`Brands/<Brand>/`, and the target that compiles it comes from one template, so two brands cannot drift
+apart in build settings.
+
+<table>
+  <tr>
+    <th colspan="2">PropertyListings</th>
+    <th colspan="2">Lakeside</th>
+  </tr>
+  <tr>
+    <td><img src="PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/PropertyListings/root.light.png" width="150" alt="PropertyListings, light"></td>
+    <td><img src="PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/PropertyListings/root.dark.png" width="150" alt="PropertyListings, dark"></td>
+    <td><img src="PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/Lakeside/root.light.png" width="150" alt="Lakeside, light"></td>
+    <td><img src="PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/Lakeside/root.dark.png" width="150" alt="Lakeside, dark"></td>
+  </tr>
+</table>
+
+Both pairs are recorded references from `BrandSnapshotTests`, run inside each brand's own app.
+
+### What a brand owns
+
+| File | What it decides |
+|---|---|
+| `Brands/<Brand>/Brand.swift` | the one constant the app reads: where this brand's remote document lives, and the configuration to use until one arrives |
+| `Brands/<Brand>/Info.plist` | display name, launch screen, registered fonts |
+| `Brands/<Brand>/Assets.xcassets` | app icon, launch mark, accent, and the semantic colours the design system resolves by name |
+| `Brands/<Brand>/Fonts` | the typeface files, for a brand that ships one |
+
+`BrandConfiguration` holds the rest: the listings host, page size and cache age, the theme, the tab set,
+and the default and supported languages. No feature reads it. The composition root turns it into services,
+view models and views, and that root is the only place a concrete brand and a concrete feature meet.
+
+| | PropertyListings | Lakeside |
+|---|---|---|
+| Bundle identifier | `com.anthony.propertylistings` | `com.anthony.lakeside` |
+| Accent | blue | pink |
+| Typeface | system | Fraunces |
+| Corner radii | 12 and 20 | 16 and 28 |
+| Tabs | Listings, Saved, Settings | Listings, Settings |
+| Languages | German, French, Italian, English | English, Vietnamese |
+| Listings source | the sample endpoint | its own mock, eight lakeside properties |
+| Remote document | none | [docs/mock/lakeside/configuration](docs/mock/lakeside/configuration) |
+
+### Configuration after release
+
+`Modules/RemoteConfig` is a vertical like the other three, with a feature target, an API target and a cache
+target, and no UI. It fetches one document, maps it and caches it. It has never heard of a brand: languages
+and tabs are raw strings to it, and only the composition root turns a document into a `BrandConfiguration`.
+
+On launch the app reads the cached document, never the network. If one is there and every field is
+acceptable, it becomes the brand for this session. Otherwise the compiled fallback is used whole. The
+refresh runs in the background for the next launch, so the network is never on the path to the first frame,
+and a half written document can never half configure the app.
+
+| Part of the brand | The build | A document | Why |
+|---|---|---|---|
+| Bundle identifier, display name | yes | no | only a new binary can change them |
+| App icon, launch screen | yes | no | the system reads them before any code runs |
+| Colours, radii, typeface | yes | no | catalogs and font files live in the binary, and a remote restyle would leave the icon and launch screen behind |
+| Tab icons | yes | no | a symbol name or an image has to exist in the app |
+| Translations | yes | no | compiled string catalogs, covered by the localization tests |
+| Listings host | yes | yes | environment switching, HTTPS enforced |
+| Page size, cache age | yes | yes | numbers with no assets behind them |
+| Default and supported languages | yes | yes | can only choose among the catalogs already shipped |
+| Tab set and order | yes | yes | can narrow and reorder what the app already builds |
+
+### Add a brand
+
+1. Copy `Brands/PropertyListings/` to `Brands/<NewBrand>/`, then replace the icon, the launch mark and the colours.
+2. Write its `Brand.swift`: the fallback configuration, and a document URL if the brand has one.
+3. Add one app target and one test target to `project.yml`, four lines, then run `xcodegen`.
+4. Add the scheme to the `app` matrix in `.github/workflows/tests.yml`.
+5. Record its snapshots with `SNAPSHOT_RECORD=1`, and commit the folder they land in under `PropertyListingsTests/Brand/__Snapshots__/BrandSnapshotTests/<NewBrand>/`.
+
+No feature package is touched by any of those five steps.
+
 ## Continuous integration
 
 Two workflows run on every pull request to `main` and every push to `main`. `Tests` is the gate: its
@@ -60,19 +152,20 @@ the tests that need the network and reports on the pull request and its own badg
 | Workflow | Job | What it runs |
 |---|---|---|
 | Tests | `host-packages` | `swift test` for TestSupport and HTTPClient on the Mac, no simulator |
-| Tests | `simulator-packages` | `xcodebuild test` for SharedPresentation, DesignSystem, Listings, Bookmarks and Settings on iPhone 17, for catalogs, locale formatting and snapshots |
-| Tests | `app` | the architecture guard, then the `PropertyListings` scheme with the UI tests skipped: unit and acceptance tests |
+| Tests | `simulator-packages` | `xcodebuild test` for SharedPresentation, DesignSystem, Listings, Bookmarks, Settings and RemoteConfig on iPhone 17, for catalogs, locale formatting and snapshots |
+| Tests | `app` | the architecture guard, then one brand scheme per matrix entry, `PropertyListings` and `Lakeside`, with the UI tests skipped: the unit and acceptance suite hosted by that brand's app, so a brand that stops compiling or ships a broken catalog fails the merge |
 | Tests | `all-green` | nothing, the one name branch protection requires |
 | Live | `end-to-end` | `PropertyListingsEndToEndTests` on the Mac against the live endpoint |
 | Live | `ui-tests` | `PropertyListingsUITests` on iPhone 17, eight scenarios launching the app with `-reset` and `-connectivity offline` |
 
-## Testing strategy (93% Test Coverage as of 10 September 2026)
+## Testing strategy (93% Test Coverage as of 13 September 2026)
 
-286 tests in five kinds, each aimed at one risk. The widest tier runs most often.
+358 tests in five kinds, each aimed at one risk. The widest tier runs most often. The app suite is counted
+once here and runs twice on CI, 89 tests under each brand scheme.
 
-- **Unit Tests**: 240 tests in total, proving the correctness of the smallest units of code, one type at a time.
-- **Snapshot Tests**: 10 tests in total, 18 recorded references, proving every screen state renders as designed in light and dark.
-- **Acceptance Tests**: 27 tests in total, guaranteeing the behaviours listed in [BDD Specs: Listings](docs/specs/listings.md), [BDD Specs: Bookmarks](docs/specs/bookmarks.md) and [BDD Specs: Settings](docs/specs/settings.md).
+- **Unit Tests**: 305 tests in total, proving the correctness of the smallest units of code, one type at a time.
+- **Snapshot Tests**: 16 tests in total, 36 recorded references, proving every screen state renders as designed in light and dark, and each brand renders as its own product.
+- **Acceptance Tests**: 28 tests in total, guaranteeing the behaviours listed in [BDD Specs: Listings](docs/specs/listings.md), [BDD Specs: Bookmarks](docs/specs/bookmarks.md) and [BDD Specs: Settings](docs/specs/settings.md).
 - **UI Automation Tests**: 8 tests in total, driving the shipped app on a simulator against the live endpoint.
 - **End to End Tests**: 1 test in total, proving the live endpoint still answers in the shape the mapper expects.
 
@@ -80,7 +173,9 @@ the tests that need the network and reports on the pull request and its own badg
   <img alt="Test pyramid" src="docs/test-pyramid.svg" width="900">
 </p>
 
-Line coverage from the unit, snapshot and acceptance runs, measured with `xccov` on 10 September 2026:
+Line coverage from the unit, snapshot and acceptance runs, measured with `xccov` on 13 September 2026. Every
+figure below was re-measured after the brand work, the theme migration and the RemoteConfig vertical, and
+every one of them held.
 
 | Feature | Target | Coverage | Locations |
 |---|---|---|---|
@@ -97,19 +192,23 @@ Line coverage from the unit, snapshot and acceptance runs, measured with `xccov`
 | Settings | SettingsPersistence | 99% | [LocalSettingsLoaderTests](Modules/Settings/Tests/SettingsPersistenceTests/Loaders/LocalSettingsLoaderTests.swift), [CodableSettingsStoreTests](Modules/Settings/Tests/SettingsPersistenceTests/Infrastructure/Codable/CodableSettingsStoreTests.swift), [InMemorySettingsStoreTests](Modules/Settings/Tests/SettingsPersistenceTests/Infrastructure/InMemory/InMemorySettingsStoreTests.swift) |
 | Settings | SettingsPresentation | 100% | [SettingsViewModelTests](Modules/Settings/Tests/SettingsPresentationTests/ViewModels/SettingsViewModelTests.swift), [LocalizationTests](Modules/Settings/Tests/SettingsPresentationTests/LocalizationTests.swift) |
 | Settings | SettingsUI | 89% | [SettingsViewSnapshotTests](Modules/Settings/Tests/SettingsUITests/Views/SettingsViewSnapshotTests.swift), [LocalizationTests](Modules/Settings/Tests/SettingsUITests/LocalizationTests.swift) |
+| RemoteConfig | RemoteConfigFeature | 94% | covered through the API and Cache suites |
+| RemoteConfig | RemoteConfigAPI | 100% | [RemoteBrandEndpointTests](Modules/RemoteConfig/Tests/RemoteConfigAPITests/Endpoints/RemoteBrandEndpointTests.swift), [RemoteBrandMapperTests](Modules/RemoteConfig/Tests/RemoteConfigAPITests/Mappers/RemoteBrandMapperTests.swift) |
+| RemoteConfig | RemoteConfigCache | 89% | [LocalRemoteBrandLoaderTests](Modules/RemoteConfig/Tests/RemoteConfigCacheTests/Loaders/LocalRemoteBrandLoaderTests.swift), [CodableRemoteBrandStoreTests](Modules/RemoteConfig/Tests/RemoteConfigCacheTests/Infrastructure/Codable/CodableRemoteBrandStoreTests.swift) |
 | Shared | SharedPresentation | 100% | [PriceFormatterTests](Modules/Shared/SharedPresentation/Tests/SharedPresentationTests/PriceFormatterTests.swift), [AddressFormatterTests](Modules/Shared/SharedPresentation/Tests/SharedPresentationTests/AddressFormatterTests.swift), [BundleLocalizedTests](Modules/Shared/SharedPresentation/Tests/SharedPresentationTests/BundleLocalizedTests.swift), [LocalizationTests](Modules/Shared/SharedPresentation/Tests/SharedPresentationTests/LocalizationTests.swift) |
 | Shared | HTTPClientLive | 100% | [URLSessionHTTPClientTests](Modules/Shared/HTTPClient/Tests/HTTPClientLiveTests/URLSessionHTTPClientTests.swift) |
 | Shared | DesignSystem | attributed to the UI targets | [TokensTests](Modules/Shared/DesignSystem/Tests/DesignSystemTests/TokensTests.swift), [LocalizationTests](Modules/Shared/DesignSystem/Tests/DesignSystemTests/LocalizationTests.swift) |
 | Shared | TestSupport | not measured | [StubTests](Modules/Shared/TestSupport/Tests/TestSupportTests/StubTests.swift), [MemoryLeakTrackerTests](Modules/Shared/TestSupport/Tests/TestSupportTests/MemoryLeakTrackerTests.swift), [FixtureCoverageTests](Modules/Shared/TestSupport/Tests/TestSupportTests/FixtureCoverageTests.swift) |
-| App | App root | 93% | [ListingsServiceTests](PropertyListingsTests/ListingsServiceTests.swift), [AppCompositionTests](PropertyListingsTests/AppCompositionTests.swift), [AppRouterTests](PropertyListingsTests/AppRouterTests.swift), [LocalizationTests](PropertyListingsTests/LocalizationTests.swift), [ListingsAcceptanceTests](PropertyListingsTests/ListingsAcceptanceTests.swift), [BookmarksAcceptanceTests](PropertyListingsTests/BookmarksAcceptanceTests.swift), [SettingsAcceptanceTests](PropertyListingsTests/SettingsAcceptanceTests.swift) |
+| App | App root | 93% | [BrandSnapshotTests](PropertyListingsTests/Brand/BrandSnapshotTests.swift), [ListingsServiceTests](PropertyListingsTests/Composition/ListingsServiceTests.swift), [AppCompositionTests](PropertyListingsTests/Composition/AppCompositionTests.swift), [AppRouterTests](PropertyListingsTests/Composition/AppRouterTests.swift), [LocalizationTests](PropertyListingsTests/Resources/LocalizationTests.swift), [ListingsAcceptanceTests](PropertyListingsTests/Acceptance/ListingsAcceptanceTests.swift), [BookmarksAcceptanceTests](PropertyListingsTests/Acceptance/BookmarksAcceptanceTests.swift), [SettingsAcceptanceTests](PropertyListingsTests/Acceptance/SettingsAcceptanceTests.swift) |
 | App | Separate process | not counted | [ListingsUITests](PropertyListingsUITests/ListingsUITests.swift), [BookmarksUITests](PropertyListingsUITests/BookmarksUITests.swift), [SettingsUITests](PropertyListingsUITests/SettingsUITests.swift), [ListingsAPIEndToEndTests](PropertyListingsEndToEndTests/ListingsAPIEndToEndTests.swift) |
 | **Total Test Coverage** | | **93%** | |
 
 ## Listings
 
-The Listings tab loads properties five at a time, shows each one as a card with its first image, title,
-price and address, and keeps working offline from a seven day cache. Every state below is a recorded
-snapshot from `ListingsViewSnapshotTests`, rendered on iPhone 17, iOS 26.
+The Listings tab loads properties a page at a time, five for PropertyListings and four for Lakeside, since
+the page size belongs to the brand. It shows each property as a card with its first image, title, price and
+address, and keeps working offline from a cache whose age the brand also sets. Every state below is a
+recorded snapshot from `ListingsViewSnapshotTests`, rendered on iPhone 17, iOS 26.
 
 <table>
   <tr>
@@ -150,7 +249,7 @@ change is a hop owned by exactly one layer.
 1. **Spamming the like button is harmless.** Taps are debounced with an injected clock: the heart flips at once, the store is written once with the final state. Proven in `ListingsViewModelTests` with a `TestClock`.
 2. **No duplicated load.** `load()` and `loadMore()` ignore a call while one is in flight, so Retry, pull to refresh and the two `.task` modifiers at appear cannot double a request. Proven in `ListingsViewModelTests` with a held spy.
 3. **Pagination** fits the offset shape the mock response provides, `from`, `size`, `total` and `maxFrom`: five listings per request, the next five when the footer scrolls into view, and nothing above the root knows an offset exists.
-4. **Four languages**, the three main Swiss languages plus English: German, French, Italian and English, one catalog per module, with a test per module that fails on any missing key. The Settings tab switches between them in place.
+4. **Languages come from the brand**: four for PropertyListings, the three main Swiss languages plus English, and two for Lakeside, English and Vietnamese. One catalog per module, with a test per module that fails on any missing key. The Settings tab switches between its brand's languages in place.
 
 ## Saved
 
@@ -184,10 +283,12 @@ One like on the Listings tab, and how the Saved tab learns about it.
 ## Settings
 
 The Settings tab holds two choices, appearance and language, saved in a JSON file beside the other two.
-Appearance is System, Light or Dark and applies to every screen at once. Language is German, French, Italian
-or English, each written in its own name, and applies without a relaunch: views resolve their strings against
-the locale the root puts in the SwiftUI environment, and the view models are told the new locale and rebuild
-their rows, so prices reformat and the loaded listings stay on screen. Both choices survive a relaunch, and a
+Appearance is System, Light or Dark and applies to every screen at once. Language is one of the languages
+its brand ships, German, French, Italian or English for PropertyListings and English or Vietnamese for
+Lakeside, each written in its own name, and applies without a relaunch: views resolve their strings against
+the locale the root puts in the SwiftUI environment, and the view models are told the new locale and
+rebuild their rows,
+ so prices reformat and the loaded listings stay on screen. Both choices survive a relaunch, and a
 choice that cannot be saved comes back with an alert.
 
 <table>
@@ -220,8 +321,9 @@ cd PropertyListings
 open PropertyListings.xcworkspace
 ```
 
-Select the `PropertyListings` scheme and the **iPhone 17** simulator (iOS 26), then Run. Any iOS 18.0 or later
-simulator works for the app itself; iPhone 17 is the one the snapshot tests are recorded on.
+Select a brand scheme, `PropertyListings` or `Lakeside`, and the **iPhone 17** simulator (iOS 26), then Run.
+The two schemes install as two separate apps, so both brands can sit on the same simulator at once. Any
+iOS 18.0 or later simulator works for the app itself; iPhone 17 is the one the snapshot tests are recorded on.
 
 ## Run the tests
 
@@ -229,14 +331,18 @@ simulator works for the app itself; iPhone 17 is the one the snapshot tests are 
 
 | What | Scheme | Destination | Then |
 |---|---|---|---|
-| App unit tests, acceptance tests and UI tests | `PropertyListings` | iPhone 17, iOS 26 | Cmd+U |
-| One package, all its targets | `Listings-Package`, `Bookmarks-Package`, `Settings-Package`, `SharedPresentation-Package`, `DesignSystem-Package` | iPhone 17, iOS 26 | Cmd+U |
+| App unit tests, acceptance tests and UI tests | `PropertyListings` or `Lakeside` | iPhone 17, iOS 26 | Cmd+U |
+| One package, all its targets | `Listings-Package`, `Bookmarks-Package`, `Settings-Package`, `RemoteConfig-Package`, `SharedPresentation-Package`, `DesignSystem-Package` | iPhone 17, iOS 26 | Cmd+U |
 | Packages with no UI or catalog | `HTTPClient-Package`, `TestSupport-Package` | My Mac | Cmd+U |
 | End to end against the live endpoint | `PropertyListingsEndToEndTests` | My Mac | Cmd+U |
 
 The scheme picker lists the package schemes under the workspace; pick one and the test navigator shows its
 targets. Use **iPhone 17, iOS 26** for anything with a snapshot test, because the references were recorded
 there and another device or OS renders differently and fails the comparison.
+
+The same app suite runs under either brand scheme. `BrandSnapshotTests` compares against the reference
+folder named for whichever brand is hosting it, so a change that affects one brand only is still visible
+in review.
 
 To re-record snapshots after an approved UI change: Product, Scheme, Edit Scheme, Test, Arguments, add the
 environment variable `SNAPSHOT_RECORD` with value `1`, run the tests once, remove the variable, run them

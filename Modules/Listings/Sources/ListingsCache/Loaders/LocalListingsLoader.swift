@@ -5,16 +5,22 @@ public struct LocalListingsLoader: Sendable {
     public enum Error: Swift.Error, Equatable { case cacheMiss }
 
     private let store: ListingsStore
+    private let policy: ListingsCachePolicy
     private let currentDate: @Sendable () -> Date
 
-    public init(store: ListingsStore, currentDate: @escaping @Sendable () -> Date) {
+    public init(
+        store: ListingsStore,
+        policy: ListingsCachePolicy,
+        currentDate: @escaping @Sendable () -> Date
+    ) {
         self.store = store
+        self.policy = policy
         self.currentDate = currentDate
     }
 
     public func load() async throws -> [Listing] {
         guard let cache = try await store.retrieve(),
-              ListingsCachePolicy.validate(cache.timestamp, against: currentDate())
+              policy.validate(cache.timestamp, against: currentDate())
         else { throw Error.cacheMiss }
         return cache.listings.map(Self.listing(from:))
     }
@@ -33,7 +39,7 @@ extension LocalListingsLoader {
     public func validateCache() async {
         do {
             if let cache = try await store.retrieve(),
-               !ListingsCachePolicy.validate(cache.timestamp, against: currentDate()) {
+               !policy.validate(cache.timestamp, against: currentDate()) {
                 throw InvalidCache()
             }
         } catch {

@@ -64,7 +64,9 @@ import TestSupport
 
     @Test func selectAppearance_flipsAtOnceAndAppliesAfterTheDebounce() async {
         await withMainSerialExecutor {
-            let (sut, spy, clock) = makeSUT(initial: makeSettings(appearance: .system, language: .german))
+            let (sut, spy, clock) = makeSUT(
+                initial: makeSettings(appearance: .system, language: .german)
+            )
 
             sut.select(appearance: .dark)
             await Task.megaYield()
@@ -74,7 +76,11 @@ import TestSupport
             #expect(spy.receivedMessages == [])
             await clock.advance(by: SettingsViewModel.debounce)
             #expect(sut.appliedSettings.appearance == .dark)
-            #expect(spy.receivedMessages == [.saveSettings(makeSettings(appearance: .dark, language: .german))])
+            #expect(
+                spy.receivedMessages == [
+                    .saveSettings(makeSettings(appearance: .dark, language: .german))
+                ]
+            )
         }
     }
 
@@ -134,18 +140,39 @@ import TestSupport
 
             #expect(sut.settings == makeSettings(appearance: .light))
             #expect(sut.appliedSettings == makeSettings(appearance: .light))
-            #expect(spy.receivedMessages == [
-                .saveSettings(makeSettings(appearance: .dark)),
-                .notify(SettingsViewModel.Message.saveFailed(locale)),
-            ])
+            #expect(
+                spy.receivedMessages == [
+                    .saveSettings(makeSettings(appearance: .dark)),
+                    .notify(SettingsViewModel.Message.saveFailed(locale)),
+                ]
+            )
         }
     }
 
     // MARK: - Select language
 
+    @Test func selectLanguage_ignoresALanguageTheBrandDoesNotSupport() async {
+        await withMainSerialExecutor {
+            let unsupported = AppLanguage.italian
+            let (sut, spy, clock) = makeSUT(
+                initial: makeSettings(language: .german),
+                supportedLanguages: [.german, .french]
+            )
+
+            sut.select(language: unsupported)
+            await Task.megaYield()
+            await clock.advance(by: SettingsViewModel.debounce)
+
+            #expect(sut.settings.language == .german)
+            #expect(spy.receivedMessages == [])
+        }
+    }
+
     @Test func selectLanguage_flipsAtOnceAndAppliesAfterTheDebounce() async {
         await withMainSerialExecutor {
-            let (sut, spy, clock) = makeSUT(initial: makeSettings(appearance: .dark, language: .german))
+            let (sut, spy, clock) = makeSUT(
+                initial: makeSettings(appearance: .dark, language: .german)
+            )
 
             sut.select(language: .french)
             await Task.megaYield()
@@ -154,7 +181,11 @@ import TestSupport
             #expect(sut.appliedSettings.language == .german)
             await clock.advance(by: SettingsViewModel.debounce)
             #expect(sut.appliedSettings.language == .french)
-            #expect(spy.receivedMessages == [.saveSettings(makeSettings(appearance: .dark, language: .french))])
+            #expect(
+                spy.receivedMessages == [
+                    .saveSettings(makeSettings(appearance: .dark, language: .french))
+                ]
+            )
         }
     }
 
@@ -198,10 +229,12 @@ import TestSupport
 
             #expect(sut.settings == makeSettings(language: .german))
             #expect(sut.appliedSettings == makeSettings(language: .german))
-            #expect(spy.receivedMessages == [
-                .saveSettings(makeSettings(language: .italian)),
-                .notify(SettingsViewModel.Message.saveFailed(locale)),
-            ])
+            #expect(
+                spy.receivedMessages == [
+                    .saveSettings(makeSettings(language: .italian)),
+                    .notify(SettingsViewModel.Message.saveFailed(locale)),
+                ]
+            )
         }
     }
 
@@ -219,10 +252,12 @@ import TestSupport
             await clock.advance(by: SettingsViewModel.debounce)
 
             #expect(sut.locale == french)
-            #expect(spy.receivedMessages == [
-                .saveSettings(makeSettings(appearance: .dark)),
-                .notify(SettingsViewModel.Message.saveFailed(french)),
-            ])
+            #expect(
+                spy.receivedMessages == [
+                    .saveSettings(makeSettings(appearance: .dark)),
+                    .notify(SettingsViewModel.Message.saveFailed(french)),
+                ]
+            )
         }
     }
 
@@ -237,12 +272,14 @@ import TestSupport
 
     private func makeSUT(
         initial: Settings = makeSettings(),
+        supportedLanguages: [AppLanguage] = AppLanguage.allCases,
         sourceLocation: SourceLocation = #_sourceLocation
     ) -> (sut: SettingsViewModel, spy: SettingsLoaderSpy, clock: TestClock<Duration>) {
         let spy = SettingsLoaderSpy()
         let clock = TestClock()
         let sut = SettingsViewModel(
             initial: initial,
+            supportedLanguages: supportedLanguages,
             observeSettings: spy.observeSettings,
             saveSettings: spy.saveSettings,
             notify: spy.notify,

@@ -26,9 +26,9 @@
 <line x1="680" y1="254" x2="712" y2="254" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
 <rect x="276" y="322" width="400" height="96" rx="9" fill="#161b22" stroke="#f78166" stroke-width="1.6"/>
 <text x="290" y="346" class="s" fill="#f78166">app</text>
-<text x="290" y="366" class="d">Scripts/architecture-guard.sh first</text>
-<text x="290" y="382" class="d">PropertyListings scheme, UI tests skipped</text>
-<text x="290" y="398" class="d">unit and acceptance tests on the simulator</text>
+<text x="290" y="366" class="d">Scripts/architecture-guard.sh first, UI tests skipped</text>
+<text x="290" y="382" class="d">matrix: PropertyListings, Lakeside, one scheme per brand</text>
+<text x="290" y="398" class="d">unit and acceptance tests hosted by that brand's app</text>
 <line x1="230" y1="254" x2="272" y2="370" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
 <line x1="680" y1="370" x2="712" y2="254" stroke="#8b949e" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#a)"/>
 <rect x="716" y="206" width="170" height="96" rx="9" fill="#161b22" stroke="#e3b341" stroke-width="1.6"/>

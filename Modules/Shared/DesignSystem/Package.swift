@@ -18,7 +18,11 @@ let package = Package(
             dependencies: [.product(name: "Kingfisher", package: "Kingfisher")],
             resources: [.process("Resources")]
         ),
-        .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem", "TestSupport"]),
+        .testTarget(
+            name: "DesignSystemTests",
+            dependencies: ["DesignSystem", "TestSupport"],
+            resources: [.process("Resources")]
+        ),
     ],
     swiftLanguageModes: [.v6]
 )

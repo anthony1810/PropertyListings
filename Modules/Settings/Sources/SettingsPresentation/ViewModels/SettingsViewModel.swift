@@ -14,6 +14,7 @@ public final class SettingsViewModel {
 
     public static let debounce: Duration = .milliseconds(300)
 
+    public let supportedLanguages: [AppLanguage]
     public private(set) var settings: Settings
     public private(set) var appliedSettings: Settings
     public private(set) var locale: Locale
@@ -28,6 +29,7 @@ public final class SettingsViewModel {
 
     public init(
         initial: Settings,
+        supportedLanguages: [AppLanguage],
         observeSettings: @Sendable @escaping () -> any AsyncSequence<Settings, Never>,
         saveSettings: @Sendable @escaping (Settings) async throws -> Void,
         notify: @MainActor @escaping (String) -> Void,
@@ -36,6 +38,7 @@ public final class SettingsViewModel {
     ) {
         settings = initial
         appliedSettings = initial
+        self.supportedLanguages = supportedLanguages
         self.observeSettings = observeSettings
         self.saveSettings = saveSettings
         self.notify = notify
@@ -56,6 +59,7 @@ public final class SettingsViewModel {
     }
 
     public func select(language: AppLanguage) {
+        guard supportedLanguages.contains(language) else { return }
         choose(Settings(appearance: settings.appearance, language: language))
     }
 

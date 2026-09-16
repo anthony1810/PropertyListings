@@ -64,6 +64,17 @@ import TestSupport
         }
     }
 
+    @Test func load_throwsCacheMissOnCacheOlderThanTheInjectedPolicy() async {
+        let now = Date()
+        let threeDaysOld = now.adding(days: -3)
+        let (sut, store) = makeSUT(policy: ListingsCachePolicy(maxAgeInDays: 3), currentDate: now)
+        store.completeRetrieval(with: CachedListings(listings: [makeLocalListing()], timestamp: threeDaysOld))
+
+        await #expect(throws: LocalListingsLoader.Error.cacheMiss) {
+            try await sut.load()
+        }
+    }
+
     // MARK: - Save
 
     @Test func save_requestsDeletionThenInsertionOfMappedListingsWithTimestamp() async throws {
@@ -152,11 +163,12 @@ import TestSupport
     }
 
     private func makeSUT(
+        policy: ListingsCachePolicy = ListingsCachePolicy(maxAgeInDays: 7),
         currentDate: Date = Date(),
         sourceLocation: SourceLocation = #_sourceLocation
     ) -> (sut: LocalListingsLoader, store: ListingsStoreSpy) {
         let store = ListingsStoreSpy()
-        let sut = LocalListingsLoader(store: store, currentDate: { currentDate })
+        let sut = LocalListingsLoader(store: store, policy: policy, currentDate: { currentDate })
         trackForMemoryLeaks(store, sourceLocation: sourceLocation)
         return (sut, store)
     }
@@ -169,7 +181,11 @@ import TestSupport
 
 private extension Date {
     func minusCacheMaxAge() -> Date {
-        Calendar(identifier: .gregorian).date(byAdding: .day, value: -7, to: self)!
+        adding(days: -7)
+    }
+
+    func adding(days: Int) -> Date {
+        Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
     }
 
     func adding(seconds: TimeInterval) -> Date {

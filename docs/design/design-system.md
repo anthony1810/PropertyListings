@@ -11,26 +11,26 @@ match, letterforms differ.
 
 | Figma variable | Light | Dark | Swift |
 |---|---|---|---|
-| `color/surface` | #FFFFFF | #121417 | `DSColor.surface` |
-| `color/surfaceElevated` | #F2F3F6 | #1C2027 | `DSColor.surfaceElevated` |
-| `color/textPrimary` | #171B24 | #E7EAF0 | `DSColor.textPrimary` |
-| `color/textSecondary` | #626B7A | #97A0B0 | `DSColor.textSecondary` |
-| `color/accent` | #2946C4 | #8EA3FF | `DSColor.accent` |
-| `color/like` | #D83A56 | #FF6B81 | `DSColor.like` |
-| `color/onImage` | #FFFFFF | #FFFFFF | `DSColor.onImage` |
+| `color/surface` | #FFFFFF | #121417 | `theme.colors.surface` |
+| `color/surfaceElevated` | #F2F3F6 | #1C2027 | `theme.colors.surfaceElevated` |
+| `color/textPrimary` | #171B24 | #E7EAF0 | `theme.colors.textPrimary` |
+| `color/textSecondary` | #626B7A | #97A0B0 | `theme.colors.textSecondary` |
+| `color/accent` | #2946C4 | #8EA3FF | `theme.colors.accent` |
+| `color/like` | #D83A56 | #FF6B81 | `theme.colors.like` |
+| `color/onImage` | #FFFFFF | #FFFFFF | `theme.colors.onImage` |
 
 | Figma variable | Value | Swift |
 |---|---|---|
 | `spacing/xs` `s` `m` `l` `xl` | 4, 8, 16, 24, 32 | `DSSpacing.*` |
-| `radius/m` `l` | 12, 20 | `DSRadius.*` |
+| `radius/m` `l` | 12, 20 | `theme.radii.m` `l` |
 
 | Text style | Inter | Swift |
 |---|---|---|
-| `DSFont/largeTitle` | Bold 34/41 | navigation title |
-| `DSFont/title` | Semi Bold 17/22 | `DSFont.title` |
-| `DSFont/price` | Bold 15/20 | `DSFont.price` |
+| `DSFont/largeTitle` | Bold 34/41 | `theme.font(for: .largeTitle)`, applied to the navigation bar |
+| `DSFont/title` | Semi Bold 17/22 | `theme.font(for: .title)` |
+| `DSFont/price` | Bold 15/20 | `theme.font(for: .price)` |
 | `DSFont/body` | Regular 17/22 | body |
-| `DSFont/caption` | Regular 13/18 | `DSFont.caption` |
+| `DSFont/caption` | Regular 13/18 | `theme.font(for: .caption)` |
 | `DSFont/tab` | Medium 10/12 | tab bar labels |
 
 The v1 values in `Colors.xcassets` are the same numbers. Phase 6 copies any change made in Figma back
@@ -47,7 +47,7 @@ into the asset catalog; names never change.
 | `PriceTag` | Amount, OnRequest | inside `ListingCard`, text from `PriceFormatter` |
 | `StateView` | Empty, Error | `EmptyStateView`, `ErrorStateView` |
 | `SkeletonRow` | one | `SkeletonRow().shimmering()` |
-| `TabBar` | Listings, Saved, Settings | `TabView` in `RootView`, driven by `AppRouter` |
+| `TabBar` | Brand PropertyListings or Lakeside, Selected Listings, Saved or Settings | `TabView` in `RootView`, driven by `AppRouter` |
 
 Card anatomy: 3:2 image with `radius/l` corners, `PriceTag` bottom leading, `LikeButton` top trailing on a
 thin material disc, title on two lines in `DSFont/title`, address on one line with a pin in `DSFont/caption`.
@@ -59,11 +59,88 @@ thin material disc, title on two lines in `DSFont/title`, address on one line wi
 | Asset | Figma | Xcode |
 |---|---|---|
 | App icon | `Brand / App icon / 1024`, a flat square, iOS applies the mask | `AppIcon.appiconset`, one 1024 image with no alpha |
-| Launch screen | `Brand / Launch / Light` and `Launch / Dark`, `color/surface` with the mark in `color/accent` | `UILaunchScreen` with `LaunchBackground` and `LaunchMark`, both with a dark appearance |
+| Launch screen | `Brand / Launch / Light` and `Launch / Dark`, `color/surface` with the mark in `color/accent` and the display name under it | `UILaunchScreen` with `LaunchBackground` and `LaunchMark`, both with a dark appearance. A plist launch screen shows one image and one colour, so the name joins the mark as a lockup image when the brand work lands |
 | Accent | `color/accent` | `AccentColor` |
 
 The mark is `house-fill` from [Phosphor Icons](https://phosphoricons.com), MIT licensed. It ships as an SVG
 asset with its vector representation preserved, so the launch screen renders it at any scale.
+
+## Brands
+
+![Lakeside](screens-lakeside.png)
+
+Colour has two dimensions in the file: the brand and the appearance. A `Brand` collection holds one
+mode per brand, `PropertyListings` and `Lakeside`, and fourteen primitives, a light and a dark value
+for each semantic name, `brand/accent/light`, `brand/accent/dark` and so on. The `Color` collection
+keeps its `Light` and `Dark` modes, and every semantic variable now aliases the matching primitive:
+`color/accent` in Light is `brand/accent/light`, in Dark `brand/accent/dark`. A frame picks a brand
+mode and an appearance mode independently, and every component follows without a change, because
+components only ever name the semantic variable.
+
+| Semantic name | PropertyListings light, dark | Lakeside light, dark | Swift |
+|---|---|---|---|
+| `surface` | #FFFFFF, #121417 | #FFFFFF, #1A1216 | `theme.colors.surface` |
+| `surfaceElevated` | #F2F3F6, #1C2027 | #FCEFF4, #26191F | `theme.colors.surfaceElevated` |
+| `textPrimary` | #171B24, #E7EAF0 | #24141B, #F2E6EB | `theme.colors.textPrimary` |
+| `textSecondary` | #626B7A, #97A0B0 | #7A5C68, #B394A2 | `theme.colors.textSecondary` |
+| `accent` | #2946C4, #8EA3FF | #D6336C, #FF7AA8 | `theme.colors.accent` |
+| `like` | #D83A56, #FF6B81 | #E8590C, #FFA36B | `theme.colors.like` |
+| `onImage` | #FFFFFF, #FFFFFF | #FFFFFF, #FFFFFF | `theme.colors.onImage` |
+
+The values are exported per brand under [tokens/](tokens/), one JSON file each, straight from the
+Figma collection. In the app a brand ships them as a colour catalog with the six semantic names, each
+set carrying a light and a dark appearance.
+
+Nothing in the app reads a colour from a global. Each brand declares one `DSTheme` in its
+`Brand.swift`, built from its own catalog, its radii and its typeface:
+
+```swift
+theme: DSTheme(
+    colors: DSPalette(bundle: .main),
+    radii: DSRadii(m: 16, l: 28),
+    typeface: DSTypeface(regular: "Fraunces-Regular", semibold: "Fraunces-SemiBold", bold: "Fraunces-Bold")
+)
+```
+
+`RootView` injects it once with `.environment(\.theme, composition.theme)`, and every component and
+view declares `@Environment(\.theme)` and reads `theme.colors.accent`, `theme.radii.l`,
+`theme.font(for: .title)`. A name the brand catalog does not define falls back to the design system's
+own, one name at a time, so a brand can override three colours and inherit the rest. A preview or a
+package test injects nothing and gets `DSTheme.designSystem`. The one exception is UIKit's appearance
+proxies for the navigation bar and the segmented control, which are singletons by Apple's design:
+`DSAppearance.apply(theme)` writes them once at launch with the theme as its argument.
+
+Radius has the same two modes, `PropertyListings` with 12 and 20 and `Lakeside` with 16 and 28, so a
+brand can be rounder without a component change.
+
+Lakeside is a fictional second brand that exists to prove the mechanism. Everything a brand can
+change is shown on it:
+
+| What a brand changes | PropertyListings | Lakeside |
+|---|---|---|
+| Display name | PropertyListings | Lakeside |
+| Mark | house-fill, Phosphor | lighthouse-fill, Phosphor |
+| Icon | the house on a blue gradient | the lighthouse on a pink gradient |
+| Launch screen | the mark over `surface`, the display name under it | the same lockup with the Lakeside mark and name |
+| Colours | the palette above | the palette above |
+| Typeface | Inter, standing in for SF Pro | Fraunces |
+| Radii | 12 and 20 | 16 and 28 |
+| Tabs | Listings, Saved, Settings | Listings, Settings, no Saved |
+| Tab icons | house, heart, sliders, the SF Symbols | lighthouse and gear-six, Phosphor, fill when selected |
+| Default language and languages offered | the device language; German, French, Italian, English | English; English, Vietnamese |
+| Listings source | the sample endpoint, nine listings | its own mock, eight lakeside listings, see below |
+
+The cache validity, the page size and the debounces differ per brand as well; they are
+configuration and do not show on a screen.
+
+The Lakeside listings come from a mock the repository serves itself: [docs/mock/lakeside/properties](../mock/lakeside/properties)
+is a JSON document in the same shape as the sample endpoint, reachable at
+`https://raw.githubusercontent.com/anthony1810/PropertyListings/main/docs/mock/lakeside` as the base
+URL. Raw GitHub ignores the `from` and `size` query items, so the existing endpoint and mapper read it
+unchanged, and the brand only swaps its base URL. The Figma cards show the first three of its
+listings.
+
+![Lakeside brand](brand-lakeside.png)
 
 ## Screens
 
