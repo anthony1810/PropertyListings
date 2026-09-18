@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import ListingsFeature
 
 @MainActor
 @Observable
@@ -19,8 +20,13 @@ final class AppRouter {
             }
         }
     }
+    
+    enum ListingsRoute: Hashable {
+        case detail(Listing)
+    }
 
     var selectedTab: Tab = .listings
+    var listingsRoute: [ListingsRoute] = []
     var alert: AlertRoute?
 
     func present(_ alert: AlertRoute) {
@@ -33,5 +39,9 @@ final class AppRouter {
 
     func dismissAlert() {
         alert = nil
+    }
+    
+    func showListingDetail(_ listing: Listing) {
+        listingsRoute.append(.detail(listing))
     }
 }

@@ -103,6 +103,7 @@ extension AppComposition {
             observeBookmarkedIDs: { bookmarks.observe().map { Set($0.map(\.id)) } },
             saveBookmark: { try await bookmarks.save(Bookmark(listing: $0, savedAt: currentDate())) },
             removeBookmark: { try await bookmarks.remove(id: $0) },
+            onSelect: { router.showListingDetail($0) },
             notify: { router.present(.error($0)) },
             locale: locale,
             clock: clock

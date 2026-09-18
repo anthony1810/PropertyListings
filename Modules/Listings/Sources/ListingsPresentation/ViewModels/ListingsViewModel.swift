@@ -34,6 +34,7 @@ public final class ListingsViewModel {
     private let observeBookmarkedIDs: @Sendable () -> any AsyncSequence<Set<Listing.ID>, Never>
     private let saveBookmark: @Sendable (Listing) async throws -> Void
     private let removeBookmark: @Sendable (Listing.ID) async throws -> Void
+    private let onSelect: @MainActor (Listing) async -> Void
     private let notify: @MainActor (String) -> Void
     public private(set) var locale: Locale
     private let clock: any Clock<Duration>
@@ -43,6 +44,7 @@ public final class ListingsViewModel {
         observeBookmarkedIDs: @Sendable @escaping () -> any AsyncSequence<Set<Listing.ID>, Never>,
         saveBookmark: @Sendable @escaping (Listing) async throws -> Void,
         removeBookmark: @Sendable @escaping (Listing.ID) async throws -> Void,
+        onSelect: @MainActor @escaping (Listing) async -> Void,
         notify: @MainActor @escaping (String) -> Void,
         locale: Locale,
         clock: any Clock<Duration>
@@ -51,6 +53,8 @@ public final class ListingsViewModel {
         self.observeBookmarkedIDs = observeBookmarkedIDs
         self.saveBookmark = saveBookmark
         self.removeBookmark = removeBookmark
+        self.onSelect = onSelect
+        
         self.notify = notify
         self.locale = locale
         self.clock = clock
@@ -93,6 +97,11 @@ public final class ListingsViewModel {
             guard (try? await clock.sleep(for: Self.toggleDebounce)) != nil else { return }
             await self?.persistBookmark(for: listing)
         }
+    }
+    
+    public func select(id: Listing.ID) async {
+        guard let listing = listings.first(where: { $0.id == id }) else { return }
+        await onSelect(listing)
     }
 
     public func observeBookmarks() async {

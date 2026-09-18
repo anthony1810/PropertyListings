@@ -18,7 +18,13 @@ struct RootView: View {
     var body: some View {
         TabView(selection: $router.selectedTab) {
             Tab(value: .listings) {
-                NavigationStack { composition.makeListingsView() }
+                NavigationStack(path: $router.listingsRoute) {
+                    composition
+                        .makeListingsView()
+                        .navigationDestination(for: AppRouter.ListingsRoute.self) { listing in
+                            Color.red
+                        }
+                }
             } label: {
                 Label { AppStrings.listingsTab } icon: { Image(systemName: "house") }
             }

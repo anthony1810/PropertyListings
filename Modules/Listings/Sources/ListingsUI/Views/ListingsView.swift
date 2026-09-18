@@ -85,6 +85,10 @@ private extension ListingsView {
             likeIdentifier: AccessibilityID.like(row.id, isOn: row.isBookmarked),
             onLike: { viewModel.toggleBookmark(id: row.id) }
         )
+        .contentShape(Rectangle())
+        .onTapGesture {
+            Task { await viewModel.select(id: row.id) }
+        }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(AccessibilityID.row(row.id))
         .listRowSeparator(.hidden)

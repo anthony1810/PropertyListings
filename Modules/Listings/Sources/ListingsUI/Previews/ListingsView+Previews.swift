@@ -39,6 +39,7 @@ extension ListingsViewModel {
             observeBookmarkedIDs: { AsyncStream { $0.yield(bookmarkedIDs) } },
             saveBookmark: { _ in },
             removeBookmark: { _ in },
+            onSelect: { _ in },
             notify: { _ in },
             locale: Locale(identifier: "de_CH"),
             clock: ContinuousClock()
